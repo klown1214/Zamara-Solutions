@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JCK Batch Plant — AI Bid Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #D4910A;
+  --gold-light: #F0A820;
+  --gold-dim: #7A5200;
+  --dark: #0E0E0C;
+  --dark-2: #161614;
+  --dark-3: #1E1E1B;
+  --dark-4: #272724;
+  --dark-5: #323230;
+  --mid: #4A4A46;
+  --muted: #7A7A74;
+  --dim: #A8A8A0;
+  --light: #D8D8D0;
+  --white: #F4F4EE;
+  --red: #C0392B;
+  --red-bg: #1A0A08;
+  --green: #27AE60;
+  --green-bg: #081A0E;
+  --blue: #2980B9;
+  --blue-bg: #08121A;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--dark);
+  color: var(--light);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.header {
+  background: var(--dark-2);
+  border-bottom: 1px solid var(--dark-5);
+  padding: 0 32px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 60px;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.logo-mark {
+  height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark img { height: 32px; }
+.header-divider { width: 1px; height: 28px; background: var(--dark-5); }
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 16px;
+  color: var(--white);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.status-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--dark-4);
+  border: 1px solid var(--dark-5);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.status-dot.active { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.powered-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  border: 1px solid var(--gold-dim);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.layout { display: flex; min-height: calc(100vh - 60px); }
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--dark-2);
+  border-right: 1px solid var(--dark-5);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 32px;
+  overflow-y: auto;
+}
+.sidebar-section { }
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.upload-zone {
+  background: var(--dark-3);
+  border: 1px dashed var(--dark-5);
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.upload-zone:hover, .upload-zone.drag {
+  border-color: var(--gold);
+  background: rgba(212,145,10,0.05);
+}
+.upload-zone.loaded {
+  border-style: solid;
+  border-color: var(--gold-dim);
+  background: rgba(212,145,10,0.08);
+}
+.upload-icon-wrap {
+  width: 44px; height: 44px;
+  background: var(--dark-4);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin: 0 auto 10px;
+  transition: background 0.2s;
+}
+.upload-zone:hover .upload-icon-wrap { background: rgba(212,145,10,0.15); }
+.upload-title { font-size: 13px; font-weight: 500; color: var(--light); margin-bottom: 4px; }
+.upload-sub { font-size: 11px; color: var(--muted); }
+input[type=file] { display: none; }
+.analyze-btn {
+  width: 100%;
+  background: var(--gold);
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--dark);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.analyze-btn:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+.analyze-btn:disabled { background: var(--dark-5); color: var(--mid); cursor: not-allowed; }
+.tier-select {
+  width: 100%;
+  background: var(--dark-3);
+  border: 1px solid var(--dark-5);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-size: 12px;
+  font-family: 'Barlow', sans-serif;
+  color: var(--light);
+  cursor: pointer;
+}
+.tier-select:focus { outline: none; border-color: var(--gold); }
+.fuel-label {
+  font-size: 11px; color: var(--muted); margin-bottom: 6px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fuel-editable { font-size: 10px; color: var(--gold); font-weight: 600; letter-spacing: 0.5px; }
+.fuel-input-row { display: flex; align-items: center; gap: 8px; }
+.fuel-input-row span { font-size: 13px; color: var(--dim); }
+.fuel-input {
+  flex: 1;
+  background: var(--dark-3);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--gold-light);
+  font-weight: 600;
+}
+.fuel-input:focus { outline: none; border-color: var(--gold); }
+.progress-text { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.progress-bar { background: var(--dark-4); border-radius: 4px; height: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-light)); border-radius: 4px; transition: width 0.4s ease; }
+.error-msg {
+  background: var(--red-bg);
+  border: 1px solid rgba(192,57,43,0.4);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #E74C3C;
+  line-height: 1.5;
+}
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-card {
+  background: var(--dark-2);
+  border: 1px solid var(--dark-5);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--dark-5); }
+.stat-card.highlight::before { background: var(--gold); }
+.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+.stat-value { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; color: var(--white); line-height: 1; }
+.stat-value.gold { color: var(--gold-light); }
+.stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.tabs-row { display: flex; gap: 0; border-bottom: 1px solid var(--dark-5); margin-bottom: 24px; }
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--light); }
+.tab-btn.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+.section-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); margin-bottom: 20px; overflow: hidden; }
+.section-head { padding: 14px 20px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: center; justify-content: space-between; }
+.section-head-left { display: flex; align-items: center; gap: 10px; }
+.section-head-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; background: var(--dark-4); flex-shrink: 0; }
+.section-head-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--light); }
+.section-body { padding: 20px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.info-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
+.info-field value { font-size: 13px; color: var(--white); font-weight: 500; display: block; }
+.mix-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.mix-tbl th { text-align: left; padding: 8px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); border-bottom: 1px solid var(--dark-5); background: var(--dark-3); white-space: nowrap; }
+.mix-tbl td { padding: 10px 14px; border-bottom: 1px solid var(--dark-4); vertical-align: middle; }
+.mix-tbl tr:last-child td { border-bottom: none; }
+.mix-tbl tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.mix-tbl tfoot td { padding: 12px 14px; border-top: 1px solid var(--dark-5); background: var(--dark-3); }
+.code-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; background: var(--dark-4); border: 1px solid var(--dark-5); color: var(--gold-light); padding: 3px 8px; border-radius: 4px; letter-spacing: 0.3px; white-space: nowrap; }
+.est-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(212,145,10,0.12); border: 1px solid var(--gold-dim); color: var(--gold); padding: 2px 5px; border-radius: 3px; margin-left: 4px; }
+.app-text { color: var(--white); font-weight: 500; }
+.desc-text { color: var(--dim); font-size: 11px; }
+.price-text { color: var(--white); font-weight: 600; }
+.ext-text { color: var(--gold-light); font-weight: 700; }
+.total-label { text-align: right; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+.total-value { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--gold-light); }
+.vol-input { width: 72px; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: 5px; padding: 5px 8px; font-size: 12px; color: var(--light); text-align: right; font-family: 'Barlow', sans-serif; }
+.vol-input:focus { outline: none; border-color: var(--gold); }
+.fees-section { }
+.fees-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--dark-5); border: 1px solid var(--dark-5); border-radius: var(--radius); overflow: hidden; }
+.fee-row { background: var(--dark-3); padding: 9px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.fee-name { color: var(--dim); }
+.fee-unit { font-size: 10px; color: var(--muted); margin-left: 4px; }
+.fee-amount { color: var(--white); font-weight: 600; font-size: 13px; }
+.fee-locked { color: var(--mid); font-size: 10px; }
+.flag-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; background: rgba(212,145,10,0.06); border-left: 2px solid var(--gold-dim); border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 12px; color: var(--dim); }
+.flag-icon { color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+.crm-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.crm-project-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.5px; }
+.badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 4px; }
+.badge-commercial { background: rgba(41,128,185,0.15); border: 1px solid rgba(41,128,185,0.4); color: #5DADE2; }
+.badge-residential { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4); color: #58D68D; }
+.badge-pending { background: rgba(212,145,10,0.12); border: 1px solid var(--gold-dim); color: var(--gold); }
+.badge-txdot { background: rgba(142,68,173,0.15); border: 1px solid rgba(142,68,173,0.4); color: #C39BD3; }
+.crm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.crm-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
+.crm-field value { font-size: 13px; color: var(--white); font-weight: 500; display: block; }
+.crm-summary { padding: 12px 14px; background: var(--dark-3); border-radius: var(--radius); font-size: 12px; color: var(--dim); line-height: 1.6; border-left: 2px solid var(--dark-5); }
+.followup-row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--dark-5); }
+.followup-label { font-size: 11px; color: var(--muted); }
+.followup-date { font-size: 13px; font-weight: 600; color: var(--gold-light); }
+.raw-pre { font-size: 11px; font-family: 'Courier New', monospace; background: var(--dark-3); border-radius: var(--radius); padding: 16px; white-space: pre-wrap; color: var(--muted); max-height: 400px; overflow-y: auto; line-height: 1.7; border: 1px solid var(--dark-5); }
+.action-row { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+.btn-outline { background: transparent; border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 9px 16px; font-size: 12px; font-weight: 600; color: var(--dim); cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; }
+.btn-outline:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+.btn-gold { background: var(--gold); border: none; border-radius: var(--radius); padding: 9px 18px; font-size: 12px; font-weight: 700; color: var(--dark); cursor: pointer; transition: all 0.2s; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; }
+.btn-gold:hover { background: var(--gold-light); }
+.empty-state { text-align: center; padding: 64px 32px; }
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+.empty-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.empty-sub { font-size: 13px; color: var(--muted); }
+.spin { display: inline-block; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.separator { height: 1px; background: var(--dark-5); margin: 4px 0; }
+.row-select { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: 5px; padding: 4px 6px; font-size: 11px; color: var(--light); cursor: pointer; width: 100%; font-family: 'Barlow', sans-serif; }
+.row-select:focus { outline: none; border-color: var(--gold); }
+.mix-code-select { background: var(--dark-4); border: 1px solid var(--dark-5); border-radius: 5px; padding: 4px 6px; font-size: 11px; color: var(--gold-light); font-family: 'Barlow Condensed', monospace; font-weight: 700; cursor: pointer; width: 100%; letter-spacing: 0.3px; }
+.mix-code-select:focus { outline: none; border-color: var(--gold); }
+.app-input { background: transparent; border: none; border-bottom: 1px solid var(--dark-5); padding: 3px 4px; font-size: 13px; color: var(--white); font-weight: 500; width: 100%; font-family: 'Barlow', sans-serif; }
+.app-input:focus { outline: none; border-bottom-color: var(--gold); }
+.addon-input { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: 5px; padding: 5px 8px; font-size: 12px; color: var(--light); width: 100%; font-family: 'Barlow', sans-serif; }
+.addon-input:focus { outline: none; border-color: var(--gold); }
+.addon-name-input { background: transparent; border: none; border-bottom: 1px solid var(--dark-5); padding: 4px 4px; font-size: 12px; color: var(--white); width: 100%; font-family: 'Barlow', sans-serif; }
+.addon-name-input:focus { outline: none; border-bottom-color: var(--gold); }
+.del-btn { background: none; border: none; color: var(--mid); cursor: pointer; font-size: 14px; padding: 4px 6px; border-radius: 4px; transition: color 0.2s; }
+.del-btn:hover { color: #e74c3c; }
+
+/* Editable project info fields */
+.info-edit-field { display: flex; flex-direction: column; gap: 4px; }
+.info-edit-field label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--muted);
+}
+.info-edit-input {
+  background: var(--dark-3);
+  border: 1px solid var(--dark-5);
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 12px;
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.info-edit-input:focus { outline: none; border-color: var(--gold); background: var(--dark-4); }
+.info-edit-input::placeholder { color: var(--mid); }
+.info-edit-input.ai-filled { border-color: var(--gold-dim); }
+.quote-num-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--dark-3);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-bottom: 4px;
+}
+.quote-num-row label { font-size: 11px; color: var(--gold); font-weight: 700; white-space: nowrap; }
+.quote-num-input {
+  flex: 1; background: transparent; border: none;
+  font-size: 13px; font-weight: 700; color: var(--gold-light);
+  font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px;
+}
+.quote-num-input:focus { outline: none; }
+.quote-num-input::placeholder { color: var(--gold-dim); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAxAHkDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAIDAQcEBQYI/8QALhAAAgICAAMGBgEFAAAAAAAAAAECAwQRBTGBBhIhMkFxBxMzUWGRIqGx0eHw/8QAGgEBAAIDAQAAAAAAAAAAAAAAAAEEAwUGAv/EACQRAAIBBAEEAgMAAAAAAAAAAAABAgMEESExBQYSQRNxMrHB/9oADAMBAAIRAxEAPwD4yBmC3JL7lrqWubBGSkEoQcn+C35UfyBkoBZOvS2n4CuClHbbAyVgnOHdaS9STqilttgZKgbF7NfD3E4hwPFzs3Myabr4d/uQjHSi3/Hn+NPqeL7SYeLw/jmXg4V07qaLPlqc9bbXPl+dmCncQqScI8o3F70S8sbeFxXSUZ4xtZ2s8HXAAzmoAAAAAAJV/Uj7l75P2KK/qR9y98n7Eo8shT5Oosb+ZAzT5OpG56lFoD2WPkyFPk6kPmT/AOROnydQMaJNbmn9jmcIwZ8T4ticPr3vItUG16R9X0W2cU7/AOH2VHE7U02OEZTnVOFbkvLJr/G11MdaTjTbXJd6bRp17ylTqvEXJJ/WTbXFsurhPBcnLSUa8WhuEfZaiv3pHz9ZOVlkrJycpyblJv1bNq/ELKzMzsrkVR7qjGUJzUV4uKfL96fQ1QUOm0/GDk+Wdf33ffPc0qUfxjHK+29/pAAGyOFAAAAAAJVede5e+T9iqqcYp7JTsWmlvZJ5Yp8nUWfUgQrn3X48mWd+H3A9knyZCnydTFlia1EVTjGOnvmBjRNvU0vui3Gvni5NOVDzU2RmujONOacotehN2Qa14/oh4eiYycGpLlG3JxpzMRxepU31694yX+zUOZRPFy7caxanVNwfume17O9qOHY3BsfGzbLY3VJw/jW2mk/D+h5vtZlYObxieXgzlKFsU596OtS5P+yKFrCdObi1o7DuC5tr22pVoTXmuVne1/GdSAC+cgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//Z" /></div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">AI Bid Analyzer</div>
+      <div class="header-sub">Ready-Mix Intelligence Platform</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Upload documents</span>
+    </div>
+    <div class="powered-tag">Zamara Solutions</div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.11</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Backend</div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--dark-3);border:1px solid var(--green);border-radius:var(--radius);padding:9px 12px">
+        <span style="color:var(--green);font-size:14px">●</span>
+        <span style="font-size:11px;color:var(--dim)">Zamara Solutions API</span>
+        <span style="font-size:10px;color:var(--muted);margin-left:auto">CONNECTED</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Bid Documents</div>
+      <input type="file" id="fileInput" accept=".pdf" multiple onchange="handleFileChange(this)" style="position:absolute;opacity:0;width:0;height:0;overflow:hidden" />
+      <label for="fileInput" class="upload-zone" id="uploadZone" style="cursor:pointer;display:block">
+        <div class="upload-icon-wrap" id="uploadIconWrap">📄</div>
+        <div class="upload-title">Upload PDF Plans</div>
+        <div class="upload-sub">Ctrl+Click to select multiple PDFs</div>
+      </label>
+      <div id="fileList" style="margin-top:8px;display:none">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:6px">Files queued</div>
+        <div id="fileItems"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyzeBid()" disabled>
+        Analyze Bid
+      </button>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Pricing Tier</div>
+      <select class="tier-select" id="globalTier" onchange="updatePrices()">
+        <option value="price_aaa">Tier AAA — 301+ CY</option>
+        <option value="price_a" selected>Tier A — 201–300 CY</option>
+        <option value="price_b">Tier B — 101–200 CY</option>
+        <option value="price_c">Tier C — 51–100 CY</option>
+        <option value="price_d">Tier D — 50 CY or less</option>
+      </select>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Fuel Surcharge</div>
+      <div class="fuel-label">
+        <span>Per load — set by sales rep</span>
+        <span class="fuel-editable">● EDITABLE</span>
+      </div>
+      <div class="fuel-input-row">
+        <span>$</span>
+        <input class="fuel-input" type="number" id="fuelSurcharge" placeholder="0.00" min="0" step="0.01" onchange="updatePrices()" />
+        <span style="font-size:11px;color:var(--muted)">/load</span>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="sidebar-section" id="progressSection" style="display:none">
+      <div class="sidebar-label">Analysis Progress</div>
+      <div class="progress-text" id="progressText">Initializing...</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="error-msg" id="errorMsg" style="display:none"></div>
+
+  </aside>
+
+  <main class="main">
+
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">🏗️</div>
+      <div class="empty-title">No Document Analyzed</div>
+      <div class="empty-sub">Upload bid documents (PDF) and click Analyze Bid to get started.<br><span style="font-size:11px;color:var(--muted)">Drag & drop or click the upload zone — multiple files supported</span></div>
+    </div>
+
+    <div id="results" style="display:none">
+
+      <div class="stats-row">
+        <div class="stat-card highlight">
+          <div class="stat-label">Project</div>
+          <div class="stat-value" id="sumProject" style="font-size:16px;line-height:1.2">—</div>
+          <div class="stat-sub" id="sumClient">—</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="stat-label">Est. Total Yardage</div>
+          <div class="stat-value gold" id="sumYards">—</div>
+          <div class="stat-sub" id="sumYardsSub">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Mix Codes</div>
+          <div class="stat-value" id="sumMixes">—</div>
+          <div class="stat-sub">concrete types identified</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="stat-label">Est. Revenue</div>
+          <div class="stat-value gold" id="sumRevenue">—</div>
+          <div class="stat-sub" id="sumTier">at selected tier</div>
+        </div>
+      </div>
+
+      <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchTab('quote',this)">Quote Builder</button>
+        <button class="tab-btn" onclick="switchTab('crm',this)">CRM Entry</button>
+        <button class="tab-btn" onclick="switchTab('fees',this)">Fees & Add-Ons</button>
+        <button class="tab-btn" onclick="switchTab('raw',this)">Raw Extraction</button>
+      </div>
+
+      <div id="tabQuote">
+
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">📋</div>
+              <div class="section-head-title">Project Information</div>
+            </div>
+            <div style="font-size:11px;color:var(--gold);font-weight:600;letter-spacing:0.5px">● EDITABLE</div>
+          </div>
+          <div class="section-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" id="projectInfo">
+              <!-- populated by renderResults -->
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">🧱</div>
+              <div class="section-head-title">Concrete Requirements — Mix Matching</div>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="mix-tbl">
+              <thead>
+                <tr>
+                  <th>Application</th>
+                  <th>Type</th>
+                  <th>Mix Code</th>
+                  <th>Description</th>
+                  <th>Volume (CY)</th>
+                  <th>Unit Price</th>
+                  <th>Adj (±$)</th>
+                  <th>Extended</th>
+                </tr>
+              </thead>
+              <tbody id="mixRows"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4"></td>
+                  <td class="total-label">Total Yardage</td>
+                  <td class="total-label">Est. Revenue</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td colspan="4"></td>
+                  <td><span class="total-value" id="totalYards">—</span> <span style="font-size:11px;color:var(--muted)">CY</span></td>
+                  <td colspan="2"><span class="total-value" id="totalRevenue">—</span></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-card" id="addonsCard">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">➕</div>
+              <div class="section-head-title">Add-Ons & Admixtures</div>
+            </div>
+            <button class="btn-outline" onclick="addAddonRow()" style="padding:5px 12px;font-size:11px">+ Add Row</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="mix-tbl">
+              <thead>
+                <tr>
+                  <th style="width:220px">Item</th>
+                  <th style="width:80px">Unit</th>
+                  <th style="width:90px">Rate ($)</th>
+                  <th style="width:90px">Quantity</th>
+                  <th style="width:110px">Extended</th>
+                  <th style="width:40px"></th>
+                </tr>
+              </thead>
+              <tbody id="addonRows"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="total-label" style="text-align:right;padding:12px 14px">Add-Ons Total</td>
+                  <td></td>
+                  <td><span class="total-value" id="addonTotal">—</span></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-card" id="flagsCard" style="display:none">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">⚠️</div>
+              <div class="section-head-title">Flags & Missing Information</div>
+            </div>
+          </div>
+          <div class="section-body" id="flagsBody"></div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-outline" onclick="resetTool()">↺ New Analysis</button>
+          <button class="btn-gold" onclick="exportQuote()">↓ Export Quote Draft</button>
+        </div>
+
+      </div>
+
+      <div id="tabCrm" style="display:none">
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">💼</div>
+              <div class="section-head-title">CRM Entry — Auto-Generated</div>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">William Emmett · <span id="crmDate"></span></div>
+          </div>
+          <div class="section-body" id="crmBody"></div>
+        </div>
+      </div>
+
+      <div id="tabFees" style="display:none">
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">💲</div>
+              <div class="section-head-title">Standard Fees</div>
+            </div>
+            <div style="font-size:11px;color:var(--muted)">Fixed rates — not editable</div>
+          </div>
+          <div class="section-body" style="padding:0">
+            <div class="fees-grid">
+              <div class="fee-row"><span class="fee-name">Environmental Fee<span class="fee-unit">/ CY</span></span><span class="fee-amount">$0.00 <span class="fee-locked">LOCKED</span></span></div>
+              <div class="fee-row"><span class="fee-name">Fuel Surcharge<span class="fee-unit">/ Load</span></span><span class="fee-amount" style="color:var(--gold-light)">$<span id="fuelDisplay">—</span> <span style="font-size:9px;color:var(--gold);font-weight:700">EDITABLE</span></span></div>
+              <div class="fee-row"><span class="fee-name">Wait Time (after 40 min)<span class="fee-unit">/ hr</span></span><span class="fee-amount">$120.00 <span class="fee-locked">LOCKED</span></span></div>
+              <div class="fee-row"><span class="fee-name">Truck Wash Color<span class="fee-unit">/ Load</span></span><span class="fee-amount">$150.00 <span class="fee-locked">LOCKED</span></span></div>
+              <div class="fee-row"><span class="fee-name">Short Load Fee<span class="fee-unit">/ Load</span></span><span class="fee-amount">$200.00 <span class="fee-locked">LOCKED</span></span></div>
+              <div class="fee-row"><span class="fee-name">Cancellation &lt;12 hrs<span class="fee-unit">/ Order</span></span><span class="fee-amount">$900.00 <span class="fee-locked">LOCKED</span></span></div>
+              <div class="fee-row"><span class="fee-name">Additional Tags<span class="fee-unit">/ Load</span></span><span class="fee-amount">$150.00 <span class="fee-locked">LOCKED</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">➕</div>
+              <div class="section-head-title">Add-On Pricing</div>
+            </div>
+          </div>
+          <div class="section-body" style="padding:0">
+            <div class="fees-grid">
+              <div class="fee-row"><span class="fee-name">Full Sack Adjustment<span class="fee-unit">/ CY</span></span><span class="fee-amount">$10.00</span></div>
+              <div class="fee-row"><span class="fee-name">Cement Sub. on Fly Ash Mixes<span class="fee-unit">/ CY</span></span><span class="fee-amount">$4.00</span></div>
+              <div class="fee-row"><span class="fee-name">Stabilizer (Premium Retarder) 1%<span class="fee-unit">/ CY</span></span><span class="fee-amount">$2.50</span></div>
+              <div class="fee-row"><span class="fee-name">NCL Stabilizer 1%<span class="fee-unit">/ CY</span></span><span class="fee-amount">$5.00</span></div>
+              <div class="fee-row"><span class="fee-name">Accelerator 1%<span class="fee-unit">/ CY</span></span><span class="fee-amount">$2.50</span></div>
+              <div class="fee-row"><span class="fee-name">NCL Accelerator 1%<span class="fee-unit">/ CY</span></span><span class="fee-amount">$5.00</span></div>
+              <div class="fee-row"><span class="fee-name">Pump Primer (1 CY)<span class="fee-unit">/ CY</span></span><span class="fee-amount">$300.00</span></div>
+              <div class="fee-row"><span class="fee-name">ICE — Temp Control 95°<span class="fee-unit">/ CY</span></span><span class="fee-amount">$25.00</span></div>
+              <div class="fee-row"><span class="fee-name">ICE — Temp Control 85°<span class="fee-unit">/ CY</span></span><span class="fee-amount">$35.00</span></div>
+              <div class="fee-row"><span class="fee-name">Superplasticizer<span class="fee-unit">/ CY</span></span><span class="fee-amount">$7.00</span></div>
+              <div class="fee-row"><span class="fee-name">Shrinkage Fiber (Fibermesh 300)<span class="fee-unit">/ CY</span></span><span class="fee-amount">$5.00</span></div>
+              <div class="fee-row"><span class="fee-name">Structural Fiber (Fibermesh 650)<span class="fee-unit">/ CY</span></span><span class="fee-amount">$20.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tabRaw" style="display:none">
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-left">
+              <div class="section-head-icon">🤖</div>
+              <div class="section-head-title">Raw AI Extraction Output</div>
+            </div>
+          </div>
+          <div class="section-body">
+            <pre class="raw-pre" id="rawPre"></pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const MIXES = [{"code":"R3015ABL","description":"3000PSI, 4.5SK, NA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":3000,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"20%FA","agg_mix":"BL","sack":4.5,"price_aaa":136,"price_a":139,"price_b":142,"price_c":145,"price_d":148},{"code":"R3515ABL","description":"3500PSI, 5SK, NA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":3500,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"20%FA","agg_mix":"BL","sack":5,"price_aaa":139,"price_a":142,"price_b":145,"price_c":148,"price_d":151},{"code":"R4015ABL","description":"4000PSI, 5.7SK, NA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":4000,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"20%FA","agg_mix":"BL","sack":5.7,"price_aaa":144,"price_a":147,"price_b":150,"price_c":153,"price_d":157},{"code":"R4515ABL","description":"4500PSI, 6SK, NA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":4500,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"20%FA","agg_mix":"BL","sack":6,"price_aaa":145,"price_a":148,"price_b":151,"price_c":155,"price_d":159},{"code":"R3015CBL","description":"3000PSI, NA, 1in RR-3/8in PG, 100% Cem","type":"Residential","psi":3000,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"100% Cem","agg_mix":"BL","sack":4.3,"price_aaa":137,"price_a":140,"price_b":143,"price_c":146,"price_d":149},{"code":"R3515CBL","description":"3500PSI, NA, 1in RR-3/8in PG, 100% Cem","type":"Residential","psi":3500,"aggregate":"1in RR-3/8in PG","air":"NA","cementitious":"100% Cem","agg_mix":"BL","sack":4.8,"price_aaa":141,"price_a":144,"price_b":147,"price_c":150,"price_d":153},{"code":"R3025ABL","description":"3000PSI, 4.5SK, AEA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":3000,"aggregate":"1in RR-3/8in PG","air":"AEA","cementitious":"20%FA","agg_mix":"BL","sack":4.5,"price_aaa":134,"price_a":137,"price_b":140,"price_c":143,"price_d":146},{"code":"R3525ABL","description":"3500PSI, 5SK, AEA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":3500,"aggregate":"1in RR-3/8in PG","air":"AEA","cementitious":"20%FA","agg_mix":"BL","sack":5,"price_aaa":138,"price_a":141,"price_b":144,"price_c":147,"price_d":150},{"code":"R4025ABL","description":"4000PSI, 5.7SK, AEA, 1in RR-3/8in PG, 20%FA","type":"Residential","psi":4000,"aggregate":"1in RR-3/8in PG","air":"AEA","cementitious":"20%FA","agg_mix":"BL","sack":5.7,"price_aaa":142,"price_a":145,"price_b":148,"price_c":151,"price_d":155},{"code":"C3015ALS","description":"3000PSI, 5SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":3000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":5,"price_aaa":147,"price_a":150,"price_b":153,"price_c":157,"price_d":161},{"code":"C3515ALS","description":"3500PSI, 5.5SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":3500,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":5.5,"price_aaa":149,"price_a":152,"price_b":156,"price_c":160,"price_d":164},{"code":"C3615ALS","description":"3600PSI, 5.7SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":3600,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":5.7,"price_aaa":151,"price_a":155,"price_b":159,"price_c":163,"price_d":167},{"code":"C4015ALS","description":"4000PSI, 6SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":4000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":6,"price_aaa":153,"price_a":157,"price_b":161,"price_c":165,"price_d":169},{"code":"C4515ALS","description":"4500PSI, 6.5SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":4500,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":6.5,"price_aaa":156,"price_a":160,"price_b":164,"price_c":168,"price_d":172},{"code":"C5015ALS","description":"5000PSI, 7SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":5000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":7,"price_aaa":159,"price_a":163,"price_b":167,"price_c":171,"price_d":175},{"code":"C6015ALS","description":"6000PSI, 8SK, NA, 1in LS Only, 20%FA","type":"Commercial","psi":6000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":8,"price_aaa":166,"price_a":170,"price_b":174,"price_c":178,"price_d":182},{"code":"C3015CLS","description":"3000PSI, 5SK, NA, 1in LS Only, 100% Cem","type":"Commercial","psi":3000,"aggregate":"1in LS Only","air":"NA","cementitious":"100% Cem","agg_mix":"LS","sack":5,"price_aaa":149,"price_a":152,"price_b":156,"price_c":160,"price_d":164},{"code":"C3515CLS","description":"3500PSI, 5.5SK, NA, 1in LS Only, 100% Cem","type":"Commercial","psi":3500,"aggregate":"1in LS Only","air":"NA","cementitious":"100% Cem","agg_mix":"LS","sack":5.5,"price_aaa":153,"price_a":157,"price_b":161,"price_c":165,"price_d":169},{"code":"C4015CLS","description":"4000PSI, 6SK, NA, 1in LS Only, 100% Cem","type":"Commercial","psi":4000,"aggregate":"1in LS Only","air":"NA","cementitious":"100% Cem","agg_mix":"LS","sack":6,"price_aaa":157,"price_a":161,"price_b":165,"price_c":169,"price_d":173},{"code":"C4515CLS","description":"4500PSI, 6.5SK, NA, 1in LS Only, 100% Cem","type":"Commercial","psi":4500,"aggregate":"1in LS Only","air":"NA","cementitious":"100% Cem","agg_mix":"LS","sack":6.5,"price_aaa":159,"price_a":163,"price_b":167,"price_c":171,"price_d":175},{"code":"C3025ALS","description":"3000PSI, 5SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":3000,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":5,"price_aaa":146,"price_a":149,"price_b":152,"price_c":156,"price_d":160},{"code":"C3525ALS","description":"3500PSI, 5.5SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":3500,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":5.5,"price_aaa":148,"price_a":151,"price_b":155,"price_c":159,"price_d":163},{"code":"C3625ALS","description":"3600PSI, 5.7SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":3600,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":5.7,"price_aaa":150,"price_a":153,"price_b":157,"price_c":161,"price_d":165},{"code":"C4025ALS","description":"4000PSI, 6SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":4000,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":6,"price_aaa":152,"price_a":156,"price_b":160,"price_c":164,"price_d":168},{"code":"C4525ALS","description":"4500PSI, 6.5SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":4500,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":6.5,"price_aaa":155,"price_a":159,"price_b":163,"price_c":167,"price_d":171},{"code":"C5025ALS","description":"5000PSI, 7SK, AEA, 1in LS Only, 20%FA","type":"Commercial","psi":5000,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":7,"price_aaa":158,"price_a":162,"price_b":166,"price_c":170,"price_d":174},{"code":"C3025CLS","description":"3000PSI, 5SK, AEA, 1in LS Only, 100% Cem","type":"Commercial","psi":3000,"aggregate":"1in LS Only","air":"AEA","cementitious":"100% Cem","agg_mix":"LS","sack":5,"price_aaa":149,"price_a":152,"price_b":156,"price_c":160,"price_d":164},{"code":"C3525CLS","description":"3500PSI, 5.5SK, AEA, 1in LS Only, 100% Cem","type":"Commercial","psi":3500,"aggregate":"1in LS Only","air":"AEA","cementitious":"100% Cem","agg_mix":"LS","sack":5.5,"price_aaa":152,"price_a":156,"price_b":160,"price_c":164,"price_d":168},{"code":"C4025CLS","description":"4000PSI, 6SK, AEA, 1in LS Only, 100% Cem","type":"Commercial","psi":4000,"aggregate":"1in LS Only","air":"AEA","cementitious":"100% Cem","agg_mix":"LS","sack":6,"price_aaa":156,"price_a":160,"price_b":164,"price_c":168,"price_d":172},{"code":"TXCl C","description":"TXDOT Class C, 3600psi, AEA, 25%FA","type":"TXDOT","psi":3600,"aggregate":"LS","air":"AEA","cementitious":"25%FA","agg_mix":"LS","sack":5.5,"price_aaa":149,"price_a":152,"price_b":156,"price_c":160,"price_d":164},{"code":"TXCL A","description":"TXDOT Class A, 3000psi","type":"TXDOT","psi":3000,"aggregate":"LS","air":"AEA","cementitious":"30%FA","agg_mix":"LS","sack":5,"price_aaa":143,"price_a":146,"price_b":149,"price_c":152,"price_d":156},{"code":"TXCL B","description":"TXDOT Class B, 2000psi","type":"TXDOT","psi":2000,"aggregate":"LS","air":"NA","cementitious":"25%FA","agg_mix":"LS","sack":4,"price_aaa":139,"price_a":142,"price_b":145,"price_c":148,"price_d":151},{"code":"TXCL S","description":"Txdot Class S, 4000psi","type":"TXDOT","psi":4000,"aggregate":"1INLS","air":"AEA","cementitious":"25%FA","agg_mix":"LS","sack":5.75,"price_aaa":151,"price_a":155,"price_b":159,"price_c":163,"price_d":167},{"code":"TXCL CDS","description":"TXDOT Class CDS, 3600psi","type":"TXDOT","psi":3600,"aggregate":"LS","air":"NA","cementitious":"30%FA","agg_mix":"LS","sack":6,"price_aaa":153,"price_a":157,"price_b":161,"price_c":165,"price_d":169},{"code":"C3015ALS HE","description":"High Early 3000psi, 5SK, NA, 1in LS, 20%FA","type":"Commercial HIGHEARLY","psi":3000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":5,"price_aaa":149,"price_a":152,"price_b":156,"price_c":160,"price_d":164},{"code":"C4015ALS HE","description":"High Early 4000psi, 6SK, NA, 1in LS, 20%FA","type":"Commercial HIGHEARLY","psi":4000,"aggregate":"1in LS Only","air":"NA","cementitious":"20%FA","agg_mix":"LS","sack":6,"price_aaa":155,"price_a":159,"price_b":163,"price_c":167,"price_d":171},{"code":"C4025ALS HE","description":"High Early 4000psi, 6SK, AEA, 1in LS, 20%FA","type":"Commercial HIGHEARLY","psi":4000,"aggregate":"1in LS Only","air":"AEA","cementitious":"20%FA","agg_mix":"LS","sack":6,"price_aaa":154,"price_a":158,"price_b":162,"price_c":166,"price_d":170}];
+
+const BACKEND_URL = 'https://zamara-backend-production.up.railway.app';
+let uploadedFiles = [], analysisData = null;
+
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag'); setFiles(Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith('.pdf'))); });
+function handleFileChange(input) {
+  if (input.files && input.files.length > 0) {
+    setFiles(Array.from(input.files));
+  }
+}
+fileInput.addEventListener('change', e => { handleFileChange(e.target); });
+document.getElementById('fuelSurcharge').addEventListener('input', () => {
+  const v = parseFloat(document.getElementById('fuelSurcharge').value) || 0;
+  document.getElementById('fuelDisplay').textContent = v > 0 ? v.toFixed(2) : '—';
+});
+
+function setFiles(files) {
+  if (!files.length) return;
+  uploadedFiles = files;
+  uploadZone.classList.add('loaded');
+  document.getElementById('uploadIconWrap').textContent = '✅';
+  const listEl = document.getElementById('fileList');
+  const itemsEl = document.getElementById('fileItems');
+  listEl.style.display = 'block';
+  itemsEl.innerHTML = files.map((f,i) => `<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:var(--dark-3);border-radius:5px;margin-bottom:4px;font-size:11px"><span style="color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px">📄 ${f.name}</span><span style="color:var(--muted);flex-shrink:0;margin-left:6px">${(f.size/1024).toFixed(0)}KB <span onclick="removeFile(${i})" style="cursor:pointer;color:var(--red);margin-left:4px;font-weight:700">✕</span></span></div>`).join('');
+  // Reset input so same files can be re-selected if needed
+  checkReady();
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  if (!uploadedFiles.length) {
+    uploadZone.classList.remove('loaded');
+    document.getElementById('uploadIconWrap').textContent = '📄';
+    document.getElementById('fileList').style.display = 'none';
+    try { fileInput.value = ''; } catch(e) {}
+  } else { setFiles(uploadedFiles); }
+  checkReady();
+}
+
+function checkReady() {
+  const ok = uploadedFiles.length > 0;
+  document.getElementById('analyzeBtn').disabled = !ok;
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  dot.className = ok ? 'status-dot active' : 'status-dot';
+  txt.textContent = ok ? uploadedFiles.length + ' file' + (uploadedFiles.length>1?'s':'') + ' ready' : 'Upload documents';
+}
+
+function setProgress(pct, msg) {
+  document.getElementById('progressSection').style.display = 'block';
+  document.getElementById('progressText').textContent = msg;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+function hideProgress() { document.getElementById('progressSection').style.display = 'none'; }
+function showError(msg) { const el = document.getElementById('errorMsg'); el.style.display = 'block'; el.textContent = '⚠ ' + msg; }
+function hideError() { document.getElementById('errorMsg').style.display = 'none'; }
+
+async function analyzeBid() {
+  hideError();
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('analyzeBtn').innerHTML = '<span class="spin">⟳</span> Analyzing...';
+  try {
+    setProgress(15, 'Uploading ' + uploadedFiles.length + ' file' + (uploadedFiles.length>1?'s':'') + '...');
+    const formData = new FormData();
+    uploadedFiles.forEach(f => formData.append('files', f));
+    setProgress(50, 'AI analyzing documents — large files may take a minute...');
+    const resp = await fetch(BACKEND_URL + '/analyze', { method: 'POST', body: formData });
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.detail || 'Backend error ' + resp.status); }
+    setProgress(85, 'Matching JCK mix codes...');
+    const parsed = await resp.json();
+    parsed._raw = JSON.stringify(parsed, null, 2);
+    analysisData = parsed;
+    setProgress(100, 'Complete ✓');
+    renderResults(parsed);
+    setTimeout(hideProgress, 1200);
+  } catch(err) { hideProgress(); showError(err.message); }
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('analyzeBtn').innerHTML = 'Analyze Bid';
+  checkReady();
+}
+
+const ADDON_RATES = {
+  'Fibermesh 300 (Shrinkage Fiber)': { rate: 5, unit: 'CY' },
+  'Fibermesh 650 (Structural Fiber)': { rate: 20, unit: 'CY' },
+  'Superplasticizer': { rate: 7, unit: 'CY' },
+  'Stabilizer (Premium Retarder) 1%': { rate: 2.5, unit: 'CY' },
+  'NCL Stabilizer 1%': { rate: 5, unit: 'CY' },
+  'Accelerator 1%': { rate: 2.5, unit: 'CY' },
+  'NCL Accelerator 1%': { rate: 5, unit: 'CY' },
+  'Pump Primer': { rate: 300, unit: 'CY' },
+  'ICE - Temp Control 95°': { rate: 25, unit: 'CY' },
+  'ICE - Temp Control 85°': { rate: 35, unit: 'CY' },
+  'Full Sack Adjustment': { rate: 10, unit: 'CY' },
+  'Cement Substitution on Fly Ash Mixes': { rate: 4, unit: 'CY' },
+  'Fuel Surcharge': { rate: 0, unit: 'Load' },
+};
+
+let addonRowCount = 0;
+
+function renderAddons(addons, requirements) {
+  const tbody = document.getElementById('addonRows');
+  tbody.innerHTML = '';
+  addonRowCount = 0;
+  requirements = requirements || [];
+
+  // Always start with fuel surcharge
+  addAddonRow('Fuel Surcharge', 0, 'Load', '');
+
+  // Auto-detect flags across all requirements
+  const needsPump = requirements.some(r => r.pump_required);
+  const fiberReqs = requirements.filter(r => r.fiber_type || r.fiber_lbs_per_cy);
+  const needsHighEarly = requirements.some(r => r.early_strength_required);
+
+  if (needsPump) addAddonRow('Pump Primer', 300, 'CY', 1);
+
+  // Add fiber rows from extraction
+  fiberReqs.forEach(r => {
+    if (r.fiber_type && r.fiber_type.toLowerCase().includes('structural')) {
+      addAddonRow('Fibermesh 650 (Structural Fiber)', 20, 'CY', r.volume_cy || '');
+    } else if (r.fiber_type || r.fiber_lbs_per_cy) {
+      addAddonRow('Fibermesh 300 (Shrinkage Fiber)', 5, 'CY', r.volume_cy || '');
+    }
+  });
+
+  // Add AI-detected addons from backend
+  if (addons && addons.length) {
+    addons.forEach(a => {
+      // Don't duplicate fuel surcharge or pump primer
+      const name = (a.name || '').toLowerCase();
+      if (name.includes('fuel') || name.includes('pump primer')) return;
+      addAddonRow(a.name, a.rate, a.unit, a.qty);
+    });
+  }
+
+  recalcAddons();
+}
+
+function addAddonRow(name='', rate='', unit='CY', qty='') {
+  const i = addonRowCount++;
+  const tbody = document.getElementById('addonRows');
+  const tr = document.createElement('tr');
+  const known = ADDON_RATES[name];
+  const defaultRate = rate !== '' ? rate : (known ? known.rate : '');
+  const defaultUnit = unit || (known ? known.unit : 'CY');
+  tr.id = 'addon_row_' + i;
+  tr.innerHTML = `
+    <td><input class="addon-name-input" type="text" id="aname_${i}" value="${name}" placeholder="Add-on description" /></td>
+    <td><select class="row-select" id="aunit_${i}" onchange="recalcAddonRow(${i})">${['CY','Load','Order','LF','SF'].map(u => `<option value="${u}" ${u===defaultUnit?'selected':''}>${u}</option>`).join('')}</select></td>
+    <td><input class="addon-input" type="number" id="arate_${i}" value="${defaultRate}" placeholder="0.00" step="0.01" onchange="recalcAddonRow(${i})" style="text-align:right" /></td>
+    <td><input class="addon-input" type="number" id="aqty_${i}" value="${qty}" placeholder="—" onchange="recalcAddonRow(${i})" style="text-align:right" /></td>
+    <td><span class="ext-text" id="aext_${i}">—</span></td>
+    <td><button class="del-btn" onclick="removeAddonRow('addon_row_${i}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  recalcAddonRow(i);
+}
+
+function removeAddonRow(rowId) { const el = document.getElementById(rowId); if (el) el.remove(); recalcAddons(); }
+
+function recalcAddonRow(i) {
+  const rate = parseFloat(document.getElementById('arate_'+i)?.value) || 0;
+  const qty = parseFloat(document.getElementById('aqty_'+i)?.value) || 0;
+  const ext = rate && qty ? rate * qty : null;
+  const extEl = document.getElementById('aext_'+i);
+  if (extEl) extEl.textContent = ext ? '$' + Math.round(ext).toLocaleString() : '—';
+  recalcAddons();
+}
+
+function recalcAddons() {
+  let total = 0;
+  document.querySelectorAll('[id^="aext_"]').forEach(el => {
+    const v = el.textContent.replace(/[$,]/g,'');
+    if (v && v !== '—') total += parseFloat(v) || 0;
+  });
+  document.getElementById('addonTotal').textContent = total > 0 ? '$' + Math.round(total).toLocaleString() : '—';
+}
+
+function getMixOptions(type, selectedCode) {
+  const typeMap = {
+    'Commercial': m => m.type === 'Commercial',
+    'Residential': m => m.type === 'Residential',
+    'TXDOT': m => m.type === 'TXDOT',
+    'High Early': m => m.type === 'Commercial HIGHEARLY',
+    'Special': m => m.type.includes('Grout') || m.type.includes('Flow') || m.type.includes('PPU')
+  };
+  const filter = typeMap[type] || typeMap['Commercial'];
+  return MIXES.filter(filter).map(m => `<option value="${m.code}" ${m.code===selectedCode?'selected':''}>${m.code}</option>`).join('');
+}
+
+function onTypeChange(i) {
+  const type = document.getElementById('type_'+i).value;
+  const codeEl = document.getElementById('code_'+i);
+  codeEl.innerHTML = getMixOptions(type, codeEl.value);
+  onCodeChange(i);
+}
+
+function onCodeChange(i) {
+  const tier = document.getElementById('globalTier').value;
+  const code = document.getElementById('code_'+i).value;
+  const mix = MIXES.find(m => m.code === code);
+  if (!mix) return;
+  const price = mix[tier] || 0;
+  document.getElementById('desc_'+i).textContent = mix.description || '—';
+  document.getElementById('base_'+i).textContent = '$' + price;
+  document.getElementById('base_'+i).dataset.price = price;
+  recalcRow(document.getElementById('vol_'+i), price, i);
+}
+
+function getBasePrice(i) {
+  const tier = document.getElementById('globalTier').value;
+  const code = document.getElementById('code_'+i) ? document.getElementById('code_'+i).value : '';
+  const mix = MIXES.find(m => m.code === code);
+  return mix ? (mix[tier] || 0) : 0;
+}
+
+function findBestMix(psi, airEntrained, cementitious, projType, flags) {
+  flags = flags || {};
+  const isComm = projType !== 'Residential';
+  // Force TXDOT type if flagged
+  const isTxdot = flags.txdot_class || (projType && projType.toUpperCase().includes('TXDOT'));
+  // Force High Early if early strength required
+  const isHighEarly = flags.early_strength || false;
+  
+  let candidates = MIXES.filter(m => {
+    if (isTxdot) return m.type === 'TXDOT';
+    if (isHighEarly) return m.type === 'Commercial HIGHEARLY';
+    const typeOk = isComm ? (m.type === 'Commercial' || m.type === 'Commercial HIGHEARLY') : m.type === 'Residential';
+    const psiOk = m.psi >= psi && m.psi <= psi + 200;
+    const airOk = airEntrained ? m.air === 'AEA' : m.air === 'NA';
+    // Prefer 100% cement if fly ash prohibited
+    const cementOk = flags.no_fly_ash ? m.cementitious === '100% Cem' : true;
+    return typeOk && psiOk && airOk && cementOk;
+  });
+  if (!candidates.length) candidates = MIXES.filter(m => {
+    const psiOk = m.psi >= psi && m.psi <= psi + 300;
+    return isTxdot ? m.type === 'TXDOT' : psiOk;
+  });
+  if (!candidates.length) candidates = MIXES.filter(m => Math.abs(m.psi - psi) < 500);
+  return candidates[0] || null;
+}
+
+function renderResults(d) {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  const tier = document.getElementById('globalTier').value;
+  // Stat cards update live as fields are edited
+  document.getElementById('sumProject').textContent = (getFieldVal('fi_project_name',d.project_name)||'—').substring(0,22);
+  document.getElementById('sumClient').textContent = getFieldVal('fi_client',d.client_name) || '—';
+  // Re-sync on any field edit
+  ['fi_project_name','fi_client'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', () => {
+      document.getElementById('sumProject').textContent = (document.getElementById('fi_project_name')?.value || d.project_name || '—').substring(0,22);
+      document.getElementById('sumClient').textContent = document.getElementById('fi_client')?.value || d.client_name || '—';
+    });
+  });
+  let totalYards = d.total_yards_stated;
+  let yardsEstimated = false;
+  if (!totalYards) {
+    totalYards = d.concrete_requirements.reduce((s,r) => s + (r.volume_cy||0), 0) || null;
+    yardsEstimated = d.concrete_requirements.some(r => r.volume_estimated);
+  }
+  document.getElementById('sumYards').textContent = totalYards ? totalYards.toLocaleString() + ' CY' : 'TBD';
+  document.getElementById('sumYardsSub').textContent = yardsEstimated ? '~ estimated from plans' : totalYards ? 'stated in documents' : 'volume not specified';
+  document.getElementById('sumMixes').textContent = d.concrete_requirements.length;
+  let rev = 0;
+  d.concrete_requirements.forEach((r,i) => {
+    const mix = findBestMix(r.psi, r.air_entrained, r.cementitious, d.project_type);
+    const vol = parseFloat(document.getElementById('vol_'+i) ? document.getElementById('vol_'+i).value : '') || r.volume_cy || 0;
+    if (mix && vol) rev += mix[tier] * vol;
+  });
+  document.getElementById('sumRevenue').textContent = rev > 0 ? '$' + Math.round(rev).toLocaleString() : 'TBD';
+  const tierLabels = {price_aaa:'Tier AAA',price_a:'Tier A',price_b:'Tier B',price_c:'Tier C',price_d:'Tier D'};
+  document.getElementById('sumTier').textContent = tierLabels[tier] + ' pricing';
+  // Render editable project info fields
+  // ai-filled class shows gold border on AI-populated fields
+  const aiVal = (v) => (v && v !== '—') ? v : '';
+  const aiClass = (v) => (v && v !== '—') ? ' ai-filled' : '';
+  document.getElementById('projectInfo').innerHTML = `
+    <div style="grid-column:1/-1">
+      <div class="quote-num-row">
+        <label>QUOTE #</label>
+        <input class="quote-num-input" id="fi_quote_num" type="text" placeholder="Enter quote number..." />
+      </div>
+    </div>
+    <div class="info-edit-field">
+      <label>Client / Company</label>
+      <input class="info-edit-input${aiClass(d.client_name)}" id="fi_client" type="text"
+        value="${aiVal(d.client_name)}" placeholder="Company name..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Attention To (Contact)</label>
+      <input class="info-edit-input${aiClass(d.client_contact)}" id="fi_contact" type="text"
+        value="${aiVal(d.client_contact)}" placeholder="Contact name..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Phone</label>
+      <input class="info-edit-input${aiClass(d.client_phone)}" id="fi_phone" type="text"
+        value="${aiVal(d.client_phone)}" placeholder="Phone number..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Email</label>
+      <input class="info-edit-input${aiClass(d.client_email)}" id="fi_email" type="email"
+        value="${aiVal(d.client_email)}" placeholder="Email address..." />
+    </div>
+    <div class="info-edit-field" style="grid-column:1/-1">
+      <label>Legal Address</label>
+      <input class="info-edit-input" id="fi_legal_address" type="text" placeholder="Client legal address..." />
+    </div>
+    <div class="info-edit-field" style="grid-column:1/-1">
+      <label>Project Name</label>
+      <input class="info-edit-input${aiClass(d.project_name)}" id="fi_project_name" type="text"
+        value="${aiVal(d.project_name)}" placeholder="Project name..." />
+    </div>
+    <div class="info-edit-field" style="grid-column:1/-1">
+      <label>Project Address</label>
+      <input class="info-edit-input${aiClass(d.project_address)}" id="fi_project_address" type="text"
+        value="${aiVal(d.project_address)}" placeholder="Project address..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Projected Start Date</label>
+      <input class="info-edit-input${aiClass(d.projected_start)}" id="fi_start_date" type="text"
+        value="${aiVal(d.projected_start)}" placeholder="Start date..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Project Type</label>
+      <input class="info-edit-input${aiClass(d.project_type)}" id="fi_project_type" type="text"
+        value="${aiVal(d.project_type)}" placeholder="Commercial / Residential / TXDOT..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Payment Terms</label>
+      <input class="info-edit-input" id="fi_payment_terms" type="text"
+        value="${d.payment_terms||'Net 30'}" placeholder="Net 30..." />
+    </div>
+    <div class="info-edit-field">
+      <label>Bond / Surety</label>
+      <input class="info-edit-input" id="fi_bond" type="text"
+        value="${aiVal(d.bond_surety)}" placeholder="Bond # or None..." />
+    </div>
+  `;
+  const tbody = document.getElementById('mixRows');
+  tbody.innerHTML = '';
+  let grandYards = 0, grandRev = 0;
+  d.concrete_requirements.forEach((req, i) => {
+    const reqFlags = { txdot_class: !!(req.txdot_class), early_strength: !!(req.early_strength_required), no_fly_ash: !!(req.no_fly_ash), pump_required: !!(req.pump_required) };
+    const mix = findBestMix(req.psi, req.air_entrained, req.cementitious, d.project_type, reqFlags);
+    const price = mix ? mix[tier] : null;
+    const vol = req.volume_cy || '';
+    const ext = price && vol ? price * vol : null;
+    if (vol) grandYards += parseFloat(vol);
+    if (ext) grandRev += ext;
+    let initType = 'Commercial';
+    if (mix) {
+      if (mix.type === 'Residential') initType = 'Residential';
+      else if (mix.type === 'TXDOT') initType = 'TXDOT';
+      else if (mix.type.includes('HIGHEARLY')) initType = 'High Early';
+      else initType = 'Commercial';
+    }
+    const estBadge = req.volume_estimated ? '<span class="est-badge">EST</span>' : '';
+    const txdotBadge = req.txdot_class ? '<span class="est-badge" style="background:rgba(142,68,173,0.15);border-color:rgba(142,68,173,0.4);color:#C39BD3;margin-left:4px">TXDOT</span>' : '';
+    const earlyBadge = req.early_strength_required ? '<span class="est-badge" style="background:rgba(231,76,60,0.12);border-color:rgba(231,76,60,0.4);color:#E74C3C;margin-left:4px">HE</span>' : '';
+    const pumpBadge = req.pump_required ? '<span class="est-badge" style="background:rgba(41,128,185,0.12);border-color:rgba(41,128,185,0.4);color:#5DADE2;margin-left:4px">PUMP</span>' : '';
+    const noFlyAshBadge = req.no_fly_ash ? '<span class="est-badge" style="background:rgba(192,57,43,0.12);border-color:rgba(192,57,43,0.4);color:#E74C3C;margin-left:4px">NO FA</span>' : '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input class="app-input" type="text" id="app_${i}" value="${(req.application||'').replace(/"/g,'&quot;')}" /></td>
+      <td><select class="row-select" id="type_${i}" onchange="onTypeChange(${i})">
+        <option value="Commercial" ${initType==='Commercial'?'selected':''}>Commercial</option>
+        <option value="Residential" ${initType==='Residential'?'selected':''}>Residential</option>
+        <option value="TXDOT" ${initType==='TXDOT'?'selected':''}>TXDOT</option>
+        <option value="High Early" ${initType==='High Early'?'selected':''}>High Early</option>
+        <option value="Special" ${initType==='Special'?'selected':''}>Grout/Flow Fill</option>
+      </select></td>
+      <td><select class="mix-code-select" id="code_${i}" onchange="onCodeChange(${i})">${getMixOptions(initType, mix?mix.code:'')}</select></td>
+      <td><span class="desc-text" id="desc_${i}">${mix?mix.description:'—'}</span></td>
+      <td style="white-space:nowrap"><input class="vol-input" type="number" id="vol_${i}" value="${vol}" placeholder="—" onchange="recalcRow(this,getBasePrice(${i}),${i})" />${estBadge}${txdotBadge}${earlyBadge}${pumpBadge}${noFlyAshBadge}</td>
+      <td><span class="price-text" id="base_${i}">${price?'$'+price:'—'}</span></td>
+      <td><input class="vol-input" type="number" id="adj_${i}" value="0" style="width:56px;text-align:center" onchange="recalcRow(document.getElementById('vol_${i}'),getBasePrice(${i}),${i})" /></td>
+      <td><span class="ext-text" id="ext_${i}">${ext?'$'+Math.round(ext).toLocaleString():'—'}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('totalYards').textContent = grandYards > 0 ? Math.round(grandYards).toLocaleString() : '—';
+  document.getElementById('totalRevenue').textContent = grandRev > 0 ? '$' + Math.round(grandRev).toLocaleString() : '—';
+  renderAddons(d.addons || [], d.concrete_requirements || []);
+  const flagsCard = document.getElementById('flagsCard');
+  const flagsBody = document.getElementById('flagsBody');
+  // Build flags list - include TXDOT warning if any row has txdot_class
+  const allFlags = [...(d.flags || [])];
+  const txdotRows = (d.concrete_requirements || []).filter(r => r.txdot_class);
+  if (txdotRows.length) {
+    const classes = [...new Set(txdotRows.map(r => r.txdot_class))].join(', ');
+    allFlags.unshift(`TXDOT Class detected (${classes}). Mix requirements governed by TXDOT Standard Specs — verify with your QC team before quoting. Plans may not contain full mix details.`);
+  }
+  if (allFlags.length) {
+    flagsBody.innerHTML = allFlags.map((f,idx) => {
+      const isTxdot = idx === 0 && txdotRows.length;
+      const color = isTxdot ? 'rgba(142,68,173,0.4)' : 'var(--gold-dim)';
+      const bg = isTxdot ? 'rgba(142,68,173,0.06)' : 'rgba(212,145,10,0.06)';
+      const icon = isTxdot ? '🟣' : '▲';
+      return '<div class="flag-item" style="border-left-color:'+color+';background:'+bg+'"><span class="flag-icon">'+icon+'</span><span>'+f+'</span></div>';
+    }).join('');
+    flagsCard.style.display = 'block';
+  } else { flagsCard.style.display = 'none'; }
+  document.getElementById('crmDate').textContent = new Date().toLocaleDateString();
+  const _projType = getFieldVal('fi_project_type', d.project_type) || 'Commercial';
+  const typeClass = {Commercial:'badge-commercial',Residential:'badge-residential',TXDOT:'badge-txdot',Mixed:'badge-commercial'}[_projType] || 'badge-commercial';
+  const followUp = new Date(); followUp.setDate(followUp.getDate()+3);
+  document.getElementById('crmBody').innerHTML = `
+    <div class="crm-header">
+      <div class="crm-project-name">${getFieldVal('fi_project_name',d.project_name)||'Unnamed Project'}</div>
+      <div style="display:flex;gap:6px">
+        <span class="badge ${typeClass}">${_projType}</span>
+        <span class="badge badge-pending">Pending</span>
+      </div>
+    </div>
+    <div class="crm-grid">
+      <div class="crm-field"><label>Client Company</label><value>${getFieldVal('fi_client',d.client_name)||'—'}</value></div>
+      <div class="crm-field"><label>Contact</label><value>${getFieldVal('fi_contact',d.client_contact)||'—'}</value></div>
+      <div class="crm-field"><label>Phone</label><value>${getFieldVal('fi_phone',d.client_phone)||'—'}</value></div>
+      <div class="crm-field"><label>Email</label><value>${getFieldVal('fi_email',d.client_email)||'—'}</value></div>
+      <div class="crm-field"><label>Project Address</label><value>${getFieldVal('fi_project_address',d.project_address)||'—'}</value></div>
+      <div class="crm-field"><label>Est. Yardage</label><value>${totalYards?totalYards.toLocaleString()+' CY':'TBD'}</value></div>
+      <div class="crm-field"><label>Bid Date</label><value>${d.bid_date||new Date().toLocaleDateString()}</value></div>
+      <div class="crm-field"><label>Expiration Date</label><value>${getBidExpiry(d.bid_date)}</value></div>
+      <div class="crm-field"><label>Sales Rep</label><value>William Emmett</value></div>
+      <div class="crm-field"><label>Est. Revenue</label><value>${rev>0?'$'+Math.round(rev).toLocaleString():'TBD'}</value></div>
+    </div>
+    <div class="crm-summary">${d.summary||'No summary available.'}</div>
+    <div class="followup-row">
+      <span class="followup-label">📅 Follow-up reminder set</span>
+      <span class="followup-date">${followUp.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}</span>
+    </div>
+  `;
+  document.getElementById('rawPre').textContent = d._raw || JSON.stringify(d, null, 2);
+}
+
+function getBidExpiry(bidDate) {
+  if (!bidDate) { const d=new Date(); d.setDate(d.getDate()+60); return d.toLocaleDateString(); }
+  try { const d=new Date(bidDate); d.setDate(d.getDate()+60); return d.toLocaleDateString(); } catch(e) { return '—'; }
+}
+
+function recalcRow(input, price, idx) {
+  const vol = parseFloat(input.value) || 0;
+  const adjEl = document.getElementById('adj_'+idx);
+  const adj = adjEl ? parseFloat(adjEl.value) || 0 : 0;
+  const adjPrice = price + adj;
+  const ext = vol && adjPrice ? vol * adjPrice : null;
+  const baseEl = document.getElementById('base_'+idx);
+  if (baseEl && adj !== 0) baseEl.innerHTML = '$' + adjPrice + ' <span style="font-size:10px;color:' + (adj>0?'var(--gold)':'#e74c3c') + '">' + (adj>0?'+':'') + adj + '</span>';
+  document.getElementById('ext_'+idx).textContent = ext ? '$'+Math.round(ext).toLocaleString() : '—';
+  recalcTotals();
+}
+
+function recalcTotals() {
+  let yards = 0, rev = 0;
+  document.querySelectorAll('[id^="vol_"]').forEach((el,i) => {
+    const v = parseFloat(el.value)||0;
+    yards += v;
+    const ext = document.getElementById('ext_'+i);
+    if (ext && ext.textContent !== '—') rev += parseFloat(ext.textContent.replace(/[$,]/g,''))||0;
+  });
+  document.getElementById('totalYards').textContent = yards > 0 ? Math.round(yards).toLocaleString() : '—';
+  document.getElementById('totalRevenue').textContent = rev > 0 ? '$'+Math.round(rev).toLocaleString() : '—';
+  document.getElementById('sumRevenue').textContent = rev > 0 ? '$'+Math.round(rev).toLocaleString() : 'TBD';
+}
+
+function updatePrices() {
+  if (!analysisData) return;
+  const rows = document.querySelectorAll('[id^="code_"]');
+  if (rows.length > 0) { rows.forEach(el => { const i = el.id.split('_')[1]; onCodeChange(parseInt(i)); }); recalcTotals(); }
+  else renderResults(analysisData);
+}
+
+function switchTab(name, btn) {
+  ['tabQuote','tabCrm','tabFees','tabRaw'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1)).style.display = 'block';
+  if (btn) btn.classList.add('active');
+}
+
+function resetTool() {
+  uploadedFiles = []; analysisData = null;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('uploadIconWrap').textContent = '📄';
+  document.getElementById('fileList').style.display = 'none';
+  document.getElementById('fileItems').innerHTML = '';
+  uploadZone.classList.remove('loaded');
+  fileInput.value = '';
+  checkReady();
+}
+
+function getFieldVal(id, fallback) {
+  const el = document.getElementById(id);
+  return el ? (el.value.trim() || fallback || '') : (fallback || '');
+}
+
+function exportQuote() {
+  if (!analysisData) return;
+  const d = analysisData;
+  const tier = document.getElementById('globalTier').value;
+  const today = new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+  const expiry = new Date(); expiry.setDate(expiry.getDate()+60);
+  const expiryStr = expiry.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+  const fuel = parseFloat(document.getElementById('fuelSurcharge').value)||0;
+
+  let mixRows = '';
+  let totalCY = 0;
+  d.concrete_requirements.forEach((req,i) => {
+    const codeEl = document.getElementById('code_'+i);
+    const volEl = document.getElementById('vol_'+i);
+    const adjEl = document.getElementById('adj_'+i);
+    const appEl = document.getElementById('app_'+i);
+    const code = codeEl ? codeEl.value : (req.suggested_jck_code||'');
+    const mix = MIXES.find(m=>m.code===code) || findBestMix(req.psi,req.air_entrained,req.cementitious,d.project_type);
+    const basePrice = mix ? mix[tier] : null;
+    const adj = adjEl ? (parseFloat(adjEl.value)||0) : 0;
+    const netPrice = basePrice ? basePrice + adj : null;
+    const vol = volEl ? (parseFloat(volEl.value)||null) : (req.volume_cy||null);
+    const app = appEl ? appEl.value : (req.application||'');
+    const desc = mix ? mix.description : (req.spec_from_plans||'');
+    if (vol) totalCY += vol;
+    mixRows += '<tr>'
+      + '<td style="font-weight:700;font-size:8.5pt;white-space:nowrap;border:1px solid #ccc;padding:3.5px 7px">'+code+'</td>'
+      + '<td style="font-size:7.5pt;border:1px solid #ccc;padding:3.5px 7px">'+desc+'</td>'
+      + '<td style="font-size:7.5pt;border:1px solid #ccc;padding:3.5px 7px">'+app+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+(vol||'')+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+(netPrice?'$'+netPrice:'')+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$ -</td>'
+      + '</tr>';
+  });
+  const blankNeeded = Math.max(0, 7 - d.concrete_requirements.length);
+  for (let b=0; b<blankNeeded; b++) {
+    mixRows += '<tr><td style="font-weight:700;border:1px solid #ccc;padding:3.5px 7px">&nbsp;</td><td style="border:1px solid #ccc;padding:3.5px 7px"></td><td style="border:1px solid #ccc;padding:3.5px 7px"></td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px"></td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px"></td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$ -</td></tr>';
+  }
+
+  let addonRows = '';
+  document.querySelectorAll('[id^="addon_row_"]').forEach(row => {
+    const i = row.id.replace('addon_row_','');
+    const name = document.getElementById('aname_'+i)?.value||'';
+    const unit = document.getElementById('aunit_'+i)?.value||'CY';
+    const rate = parseFloat(document.getElementById('arate_'+i)?.value)||0;
+    const qty = parseFloat(document.getElementById('aqty_'+i)?.value)||0;
+    if (name) addonRows += '<tr>'
+      + '<td colspan="3" style="font-size:7.5pt;border:1px solid #ccc;padding:3.5px 7px">'+name+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+unit+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+(rate?'$'+rate.toFixed(2):'')+'</td>'
+      + '<td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+(qty||'')+'</td>'
+      + '</tr>';
+  });
+
+  const LOGO_SRC = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAxAHkDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAIDAQcEBQYI/8QALhAAAgICAAMGBgEFAAAAAAAAAAECAwQRBTGBBhIhMkFxBxMzUWGRIqGx0eHw/8QAGgEBAAIDAQAAAAAAAAAAAAAAAAEEAwUGAv/EACQRAAIBBAEEAgMAAAAAAAAAAAABAgMEESExBQYSQRNxMrHB/9oADAMBAAIRAxEAPwD4yBmC3JL7lrqWubBGSkEoQcn+C35UfyBkoBZOvS2n4CuClHbbAyVgnOHdaS9STqilttgZKgbF7NfD3E4hwPFzs3Myabr4d/uQjHSi3/Hn+NPqeL7SYeLw/jmXg4V07qaLPlqc9bbXPl+dmCncQqScI8o3F70S8sbeFxXSUZ4xtZ2s8HXAAzmoAAAAAAJV/Uj7l75P2KK/qR9y98n7Eo8shT5Oosb+ZAzT5OpG56lFoD2WPkyFPk6kPmT/AOROnydQMaJNbmn9jmcIwZ8T4ticPr3vItUG16R9X0W2cU7/AOH2VHE7U02OEZTnVOFbkvLJr/G11MdaTjTbXJd6bRp17ylTqvEXJJ/WTbXFsurhPBcnLSUa8WhuEfZaiv3pHz9ZOVlkrJycpyblJv1bNq/ELKzMzsrkVR7qjGUJzUV4uKfL96fQ1QUOm0/GDk+Wdf33ffPc0qUfxjHK+29/pAAGyOFAAAAAAJVede5e+T9iqqcYp7JTsWmlvZJ5Yp8nUWfUgQrn3X48mWd+H3A9knyZCnydTFlia1EVTjGOnvmBjRNvU0vui3Gvni5NOVDzU2RmujONOacotehN2Qa14/oh4eiYycGpLlG3JxpzMRxepU31694yX+zUOZRPFy7caxanVNwfume17O9qOHY3BsfGzbLY3VJw/jW2mk/D+h5vtZlYObxieXgzlKFsU596OtS5P+yKFrCdObi1o7DuC5tr22pVoTXmuVne1/GdSAC+cgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//Z';
+
+  const css = `* {box-sizing:border-box;margin:0;padding:0}
+@page {margin:0.45in;size:letter}
+@media print {.no-print{display:none!important}}
+body {font-family:Arial,sans-serif;font-size:8.5pt;color:#000;background:#fff;padding:20px;max-width:790px;margin:0 auto}
+.print-btn {background:#c8a000;color:#000;border:none;padding:9px 22px;font-size:10pt;font-weight:700;cursor:pointer;border-radius:5px;margin-bottom:14px;display:inline-block}
+.q-header {display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:4px}
+.q-contact {text-align:right;font-size:7pt;color:#333;line-height:1.7}
+.banner {background:#1a1a18;color:#fff;font-weight:700;font-size:9pt;text-align:center;padding:5px 8px}
+.disclaimer-strip {background:#f5f4f0;border:1px solid #ccc;border-top:none;padding:5px 10px;font-size:7.5pt;text-align:center;color:#333;line-height:1.4}
+.info-grid {display:flex;border:1px solid #999;border-top:none}
+.info-col {flex:1;padding:4px 10px;font-size:8pt}
+.info-col.left {border-right:1px solid #999}
+.info-row {display:flex;margin-bottom:1.5px;line-height:1.5}
+.info-lbl {font-weight:700;min-width:138px;flex-shrink:0}
+.disclaimer2 {border:1px solid #999;border-top:none;padding:5px 12px;font-size:7.5pt;font-style:italic;font-weight:700;text-align:center;color:#222;line-height:1.4}
+table {width:100%;border-collapse:collapse}
+.tbl-hdr th {background:#1a1a18;color:#fff;font-weight:700;font-size:8.5pt;padding:4px 7px;text-align:left;border:1px solid #555;letter-spacing:0.3px}
+.col-hdr th {background:#d0cfc8;font-weight:700;font-size:8pt;padding:4px 7px;border:1px solid #999;text-align:left}
+.col-hdr th.r {text-align:right}
+.section-lbl {font-style:italic;font-weight:700;font-size:8.5pt;padding:5px 0 2px 2px;color:#000;display:block}
+.esc-block {font-size:7.5pt;color:#222;line-height:1.55;margin-top:4px}
+.esc-block p {margin-bottom:2px}
+.esc-block ul {margin-left:16px;margin-bottom:2px}
+.terms-bar {background:#1a1a18;color:#fff;font-weight:700;font-size:9pt;text-align:center;padding:5px 8px;margin-top:6px}
+.page-break {page-break-before:always;padding-top:20px}
+.terms-body {font-size:7.5pt;color:#222;line-height:1.55}
+.terms-body h4 {font-size:8pt;font-weight:700;margin:6px 0 2px 0}
+.terms-body p,.terms-body ul {margin-bottom:3px}
+.terms-body ul {margin-left:16px}
+.terms-body li {margin-bottom:1px}
+.acceptance-bar {background:#1a1a18;color:#fff;font-weight:700;font-size:9pt;text-align:center;padding:5px 8px;margin-top:10px;letter-spacing:0.5px}
+.acceptance-sub {font-size:7.5pt;text-align:center;margin:6px 0 10px 0;color:#222;line-height:1.5}
+.sig-grid {display:flex;gap:40px;margin-top:4px}
+.sig-col {flex:1}
+.sig-col h5 {font-size:9pt;font-weight:700;text-align:center;margin-bottom:18px}
+.sig-line {border-top:1px solid #000;margin-bottom:5px}
+.sig-lbl {font-size:7.5pt;margin-bottom:7px}`;
+
+  const page1 = '<div class="q-header"><div><img src="'+LOGO_SRC+'" style="height:52px"/></div><div class="q-contact">Dispatch (P): 469.707.6056 | (C): 469.653.1702<br>Main Office (P): 469.707.6053 | (E): info@jckbatch.net<br>Billing: (P): 469.707.6080 | (E): jckreceivables@jckcorporate.net</div></div>'
+    + '<div class="banner">Customer Information/ Project Information</div>'
+    + '<div class="disclaimer-strip">As a vertically integrated provider we align our capabilities, to ensure superior quality, service, and cost control throughout the project lifecycle. This proposal outlines our pricing, terms, and value-added services for your upcoming projects.</div>'
+    + '<div class="info-grid">'
+    + '<div class="info-col left">'
+    + '<div class="info-row"><span class="info-lbl">Quote #:</span><span>'+getFieldVal('fi_quote_num')+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Bid Date:</span><span>'+today+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Bid Expiration Date:</span><span>'+expiryStr+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Client Name</span><span>'+getFieldVal('fi_client',d.client_name)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Legal address:</span><span>'+getFieldVal('fi_legal_address')+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Phone:</span><span>'+getFieldVal('fi_phone',d.client_phone)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Email:</span><span>'+getFieldVal('fi_email',d.client_email)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Bond#</span><span>'+getFieldVal('fi_bond',d.bond_surety)+'</span></div>'
+    + '</div>'
+    + '<div class="info-col">'
+    + '<div class="info-row"><span class="info-lbl">Bid Prepared by (Name):</span><span>William Emmett</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Attn:</span><span>'+getFieldVal('fi_contact',d.client_contact)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Project Name:</span><span>'+getFieldVal('fi_project_name',d.project_name)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Project Address:</span><span>'+getFieldVal('fi_project_address',d.project_address)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Projected Start Date:</span><span>'+getFieldVal('fi_start_date',d.projected_start)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Project Type:</span><span>'+getFieldVal('fi_project_type',d.project_type)+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Aprx Cubic Yards:</span><span>'+(totalCY>0?Math.round(totalCY).toLocaleString():'')+'</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Surety Info:</span><span></span></div>'
+    + '</div></div>'
+    + '<div class="disclaimer2">JCK Batch, LLC shall not be held responsible for errors, omissions, or delays arising from the client\'s failure to secure approvals, confirm mix design selections, or validate deliveries upon arrival.</div>'
+    + '<table><thead><tr class="tbl-hdr"><th colspan="6">Mix Code</th></tr><tr class="col-hdr"><th style="width:90px">Mix Code</th><th>Description</th><th style="width:130px">Application</th><th class="r" style="width:75px">Apx Volume</th><th class="r" style="width:75px">Discount</th><th class="r" style="width:75px">Net Price</th></tr></thead><tbody>'+mixRows+'</tbody></table>'
+    + (addonRows ? '<span class="section-lbl">ADD-ONS (Specified)</span><table><thead><tr class="col-hdr"><th colspan="3">Item</th><th class="r">Unit</th><th class="r">Rate</th><th class="r">Qty</th></tr></thead><tbody>'+addonRows+'</tbody></table>' : '')
+    + '<span class="section-lbl">FEES</span>'
+    + '<table><tbody>'
+    + '<tr><td style="width:340px;border:1px solid #ccc;padding:3.5px 7px">Environmental Fee</td><td style="width:55px;text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;width:80px;border:1px solid #ccc;padding:3.5px 7px">$0.00</td><td style="text-align:right;width:30px;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;width:70px;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Fuel Surchage Fee</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">Load</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">'+(fuel>0?'$'+fuel.toFixed(2):'$0.00')+'</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Wait time at the job site after 40 min (each Hour)</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">Load</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$120.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Truck Wash Color</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">Load</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$150.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Short Load Fee</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">load</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$200.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Cancellations (less than 12 hrs)</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">Order</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$900.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Additional tags after a + 1 tag for each order</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">Load</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$150.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '</tbody></table>'
+    + '<span class="section-lbl">ADD-ONS</span>'
+    + '<table><tbody>'
+    + '<tr><td style="width:340px;border:1px solid #ccc;padding:3.5px 7px">Full Sack Adjustment</td><td style="width:55px;text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;width:80px;border:1px solid #ccc;padding:3.5px 7px">$10.00</td><td style="text-align:right;width:30px;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;width:70px;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Cement Substitution on Fly Ash Mixes</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$4.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Stabilizer - Premium Retarder per 1%</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$2.50</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">NCl Stabilizer - NCL Retarder per 1%</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$5.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Accelerator per 1%</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$2.50</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">NCl Accelerator per 1%</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$5.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Pump Primer (1 cu yrd)</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$300.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">ICE - Temperature Control 95 Degrees</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$25.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">ICE - Temperature Control 85 Degrees</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$35.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Superplaticizer Mix designs</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$7.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Shrinkage fiber (Fibermesh 300- 1.5lbs/ CY)</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$5.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '<tr><td style="border:1px solid #ccc;padding:3.5px 7px">Structural fiber (Fibermesh 650 - 4lbs/Cy)</td><td style="text-align:center;border:1px solid #ccc;padding:3.5px 7px">CY</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$20.00</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">-</td><td style="text-align:right;border:1px solid #ccc;padding:3.5px 7px">$</td></tr>'
+    + '</tbody></table>'
+    + '<div class="esc-block"><p><strong><em>POSSIBLE ESCALATIONS</em></strong></p><p>Escalations are based on increases in raw material costs. If raw material price increases take effect, JCK Batch reserves the right to apply escalations accordingly. Due to ongoing market volatility, the industry has experienced an average of 2&ndash;3 price escalations per year over the past three years.</p><p><u>Forecasted Escalations</u></p><ul><li><strong>$10.00 per CY</strong> escalation on April 1st and October 1st each year, unless otherwise specified in writing.</li><li>Additional escalations may be applied if raw material increases exceed forecasted levels.</li></ul></div>'
+    + '<div class="esc-block"><p><strong><em>Payment Terms</em></strong></p><table style="margin-top:3px"><tr><td style="border:1px solid #ccc;padding:3px 7px;width:340px;font-size:7.5pt">All dues are based on days from service date, Your payment terms are:</td><td style="border:1px solid #ccc;padding:3px 7px;text-align:center;width:55px;font-size:7.5pt">CY</td><td style="border:1px solid #ccc;padding:3px 7px;text-align:right;font-size:7.5pt">Net 30</td></tr><tr><td style="border:1px solid #ccc;padding:3px 7px;font-size:7.5pt">Bounce check fee: $100.</td><td style="border:1px solid #ccc;padding:3px 7px;text-align:center;font-size:7.5pt">Check</td><td style="border:1px solid #ccc;padding:3px 7px;text-align:right;font-size:7.5pt">$100.00</td></tr></table></div>'
+    + '<div class="esc-block"><p><strong>Late Payment Price Adjustment</strong></p><p>Payments made after the agreed terms will incur a <strong>$2.00 per cubic yard</strong> (CY) increase for every 30 days past due. Escalations are compound, so the increase continues to build with each additional 30-day period until payment is completed.</p></div>'
+    + '<div class="terms-bar">Terms and Conditions</div>';
+
+  const page2 = '<div class="page-break"><div class="q-header"><div><img src="'+LOGO_SRC+'" style="height:52px"/></div><div class="q-contact">Dispatch (P): 469.707.6056 | (C): 469.653.1702<br>Main Office (P): 469.707.6053 | (E): info@jckbatch.net<br>Billing: (P): 469.707.6080 | (E): jckreceivables@jckcorporate.net</div></div>'
+    + '<div class="terms-body">'
+    + '<h4>1. Quotation &amp; Acceptance</h4><p>This quotation is valid only after the Vendor receives this quotation signed by the customer and is valid for 60 days from the bid date listed above, and supersedes all prior quotations for the project, products, and delivery points detailed herein. Acceptance must be made by an authorized representative of the Buyer by the validity date. This quotation, including all prices, terms, and conditions, becomes a binding contract upon written acceptance by the Buyer.</p>'
+    + '<h4>2. Delivery &amp; Scheduling</h4><ul><li><u>Scheduling:</u> The Buyer must schedule deliveries during Seller\'s normal working hours. The Seller is authorized to accept delivery requests from the Buyer\'s personnel, including project managers, superintendents, foremen, and subcontractors.</li><li><u>Efforts to Deliver:</u> The Seller will make reasonable efforts to meet requested delivery times and quantities but assumes no liability for delays, regardless of the cause.</li><li><u>Cancellation:</u> The Buyer will be charged a cancellation fee to cover the costs incurred by the Vendor for cancelations without notice. Orders may only be canceled without charge if the cancellation is communicated to the Seller with 24 hours in advance.</li><li><u>Standard Hours:</u> Deliveries are available Monday through Friday during normal working hours.</li><li><u>Premium Deliveries:</u> Deliveries requested on Saturdays, Sundays, holidays, or outside normal hours will incur a surcharge for plant opening and truck time at the Vendor\'s discretion.</li><li><u>Advance Notice:</u> All orders must be placed a minimum of 48 hours in advance. Deliveries are subject to production and logistics availability.</li></ul><ul><li>Delivery Location: JCK Batch delivers to the nearest accessible curbside or designated staging area.</li><li>Site Responsibility: The client is responsible for maintaining clear, safe, and properly prepared access to the job site.</li><li>Risk &amp; Liability: Once the delivery truck leaves the public roadway and enters the property at the client\'s request, all risks become the client\'s sole responsibility.</li><li>Coordination: JCK Batch will coordinate with the site superintendent to optimize scheduling. JCK Batch is not responsible for project delays caused by site conditions or client readiness.</li></ul>'
+    + '<h4>3. Buyer\'s Site &amp; Unloading Responsibilities</h4><p>The Buyer is responsible for: providing suitable roadways and access for delivery trucks; providing contained areas for truck washout; complying with all environmental laws; any costs associated with extricating delivery trucks from the site.</p>'
+    + '<h4>4. Inspection &amp; Acceptance</h4><p>The Buyer is responsible for inspecting the concrete at the time of delivery. Failure to identify and notify the Seller of any suspected defects or nonconformities, in addition to noting the issue on the delivery ticket, will constitute final and unqualified acceptance of the product.</p>'
+    + '<h4>5. Product Warranty &amp; Limitation of Liability</h4><ul><li><u>Express Warranty:</u> The Seller warrants that its standard concrete mixtures will meet their specified 28-day strengths, provided they are sampled and tested in accordance with ASTM C172, ASTM C3, and Grout ASTM C1019 by an ACI-certified Grade 1 Field Testing Technician.</li><li><u>Exclusive Remedy:</u> This warranty is given in lieu of all other warranties, express or implied, including the implied warranties of MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.</li><li><u>Liability Cap:</u> The Seller\'s total liability shall not exceed the purchase price of the non-conforming concrete. Under no circumstances shall the Seller be liable for any loss of profits or consequential damages.</li><li><u>Buyer Responsibilities:</u> The Seller assumes no liability for any product that has <strong>materials or water added by the Buyer\'s personnel</strong>.</li></ul>'
+    + '<h4>7. Indemnification</h4><p>To the fullest extent permitted by law, the Buyer shall defend, indemnify, and hold harmless the Seller, its affiliates, officers, directors, employees, and agents from any and all claims, damages, losses, costs, and expenses (including reasonable attorneys\' fees) arising from or related to the use of the concrete and/or grout, except to the extent directly caused by the Seller\'s gross negligence or willful misconduct.</p>'
+    + '<h4>8. Special Mix &amp; Project Notices</h4><ul><li><u>Sulfate Exposure:</u> Unless otherwise requested in writing, the quoted mix designs are NOT designed to conform with ACI 201, ACI 318, IBC standards for concrete exposed to sulfate-containing solutions.</li><li><u>Aesthetic Concrete:</u> For architectural, integral color, or exposed aggregate concrete, the product is subject to the specific limitations of the Seller\'s Warranty. Variations must be agreed upon in writing.</li></ul>'
+    + '<h4>9. Pricing &amp; Payment Terms</h4><ul><li><u>Price Basis:</u> Prices are based on current costs and project plans available at the time of quote, during normal operating hours (Monday-Friday, excluding holidays). All prices are exclusive of applicable taxes.</li><li><u>Tax Exemption:</u> The Buyer is responsible for providing a valid tax exemption certificate prior to first delivery. Failure to do so will result in applicable taxes being applied to invoices.</li></ul>'
+    + '</div>'
+    + '<div class="acceptance-bar">ACCEPTANCE OF QUOTATION</div>'
+    + '<p class="acceptance-sub">The undersigned certifies that they are an authorized representative of the Buyer and hereby accepts this quotation, including all prices, terms, and conditions contained herein, on behalf of the company.</p>'
+    + '<div class="sig-grid"><div class="sig-col"><h5>CLIENT</h5><div class="sig-line"></div><div class="sig-lbl">Authorized Representative: _______________________</div><div class="sig-lbl">Title: _________________&nbsp;&nbsp;&nbsp;Date: _________________</div></div>'
+    + '<div class="sig-col"><h5>VENDOR</h5><div class="sig-line"></div><div class="sig-lbl">Authorized Representative: _______________________</div><div class="sig-lbl">Title: _________________&nbsp;&nbsp;&nbsp;Date: _________________</div></div></div>'
+    + '</div>';
+
+  const fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>JCK Quote - '+(d.project_name||'Draft')+'<\/title><style>'+css+'<\/style><\/head><body><button class="print-btn no-print" onclick="window.print()">&#128424; Print / Save as PDF</button>'+page1+page2+'<\/body><\/html>';
+  const w = window.open('', '_blank');
+  w.document.write(fullHtml);
+  w.document.close();
+}
+
+</script>
+</body>
+</html>
