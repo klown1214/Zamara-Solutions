@@ -7,80 +7,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold: #D4910A;
-  --gold-light: #F0A820;
-  --gold-dim: #7A5200;
-  --dark: #0E0E0C;
-  --dark-2: #161614;
-  --dark-3: #1E1E1B;
-  --dark-4: #272724;
-  --dark-5: #323230;
-  --mid: #4A4A46;
-  --muted: #7A7A74;
-  --dim: #A8A8A0;
-  --light: #D8D8D0;
-  --white: #F4F4EE;
-  --green: #27AE60;
-  --green-dim: #1A6B3C;
-  --red: #C0392B;
-  --blue: #2980B9;
-  --purple: #8E44AD;
-  --radius: 8px;
-  --radius-lg: 12px;
+  --gold: #D4910A; --gold-light: #F0A820; --gold-dim: #7A5200;
+  --dark: #0E0E0C; --dark-2: #161614; --dark-3: #1E1E1B;
+  --dark-4: #272724; --dark-5: #323230;
+  --mid: #4A4A46; --muted: #7A7A74; --dim: #A8A8A0;
+  --light: #D8D8D0; --white: #F4F4EE;
+  --green: #27AE60; --green-dim: #1A6B3C;
+  --red: #C0392B; --blue: #2980B9; --purple: #8E44AD;
+  --radius: 8px; --radius-lg: 12px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Barlow', sans-serif;
-  background: var(--dark);
-  color: var(--light);
-  min-height: 100vh;
-  font-size: 14px;
-}
+body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--light); min-height: 100vh; font-size: 14px; }
 
 /* HEADER */
-.header {
-  background: var(--dark-2);
-  border-bottom: 1px solid var(--dark-5);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-}
+.header { background: var(--dark-2); border-bottom: 1px solid var(--dark-5); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
 .header-left { display: flex; align-items: center; gap: 16px; }
-.logo-wrap { height: 40px; display: flex; align-items: center; }
-.logo-wrap img { height: 38px; width: auto; border-radius: 4px; }
 .header-divider { width: 1px; height: 28px; background: var(--dark-5); }
-.header-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700; font-size: 16px;
-  color: var(--white); letter-spacing: 0.5px; text-transform: uppercase;
-}
+.header-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--white); letter-spacing: 0.5px; text-transform: uppercase; }
 .header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.header-right { display: flex; align-items: center; gap: 12px; }
-.nav-link {
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.8px; color: var(--muted); text-decoration: none;
-  padding: 5px 12px; border-radius: 4px; transition: all 0.2s;
-  border: 1px solid var(--dark-5);
-}
-.nav-link:hover { color: var(--gold-light); border-color: var(--gold-dim); }
-.powered-tag {
-  font-size: 10px; font-weight: 600; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--gold-dim);
-  border: 1px solid var(--gold-dim); padding: 4px 10px; border-radius: 4px;
-}
+.header-right { display: flex; align-items: center; gap: 10px; }
+.nav-btn { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.nav-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+.nav-btn.active { background: rgba(212,145,10,0.1); border-color: var(--gold); color: var(--gold-light); }
+.powered-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gold-dim); border: 1px solid var(--gold-dim); padding: 4px 10px; border-radius: 4px; }
+
+/* PAGE TABS */
+.page-tabs { background: var(--dark-2); border-bottom: 1px solid var(--dark-5); padding: 0 32px; display: flex; gap: 0; }
+.page-tab { padding: 12px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; margin-bottom: -1px; font-family: 'Barlow', sans-serif; }
+.page-tab:hover { color: var(--light); }
+.page-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
 
 /* STAT CARDS */
-.stats-wrap { padding: 24px 32px 0; display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
-.stat-card {
-  background: var(--dark-2); border: 1px solid var(--dark-5);
-  border-radius: var(--radius-lg); padding: 16px 18px; position: relative; overflow: hidden;
-}
-.stat-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px; background: var(--dark-5);
-}
+.stats-wrap { padding: 20px 32px 0; display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.stat-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 16px 18px; position: relative; overflow: hidden; }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--dark-5); }
 .stat-card.gold::before { background: var(--gold); }
 .stat-card.green::before { background: var(--green); }
 .stat-card.blue::before { background: var(--blue); }
@@ -92,213 +52,175 @@ body {
 .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
 /* TOOLBAR */
-.toolbar {
-  padding: 20px 32px 16px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-}
+.toolbar { padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .toolbar-left { display: flex; align-items: center; gap: 10px; }
 .toolbar-right { display: flex; align-items: center; gap: 10px; }
-.filter-btn {
-  background: var(--dark-3); border: 1px solid var(--dark-5);
-  border-radius: var(--radius); padding: 8px 14px;
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s;
-  font-family: 'Barlow', sans-serif;
-}
+.filter-btn { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; }
 .filter-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
 .filter-btn.active { background: rgba(212,145,10,0.12); border-color: var(--gold); color: var(--gold-light); }
-.view-toggle {
-  display: flex; background: var(--dark-3); border: 1px solid var(--dark-5);
-  border-radius: var(--radius); overflow: hidden;
-}
-.view-btn {
-  padding: 8px 14px; font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted);
-  cursor: pointer; transition: all 0.2s; border: none;
-  background: transparent; font-family: 'Barlow', sans-serif;
-}
+.btn-add { background: var(--gold); border: none; border-radius: var(--radius); padding: 8px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--dark); cursor: pointer; font-family: 'Barlow Condensed', sans-serif; transition: all 0.2s; }
+.btn-add:hover { background: var(--gold-light); }
+.view-toggle { display: flex; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); overflow: hidden; }
+.view-btn { padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; border: none; background: transparent; font-family: 'Barlow', sans-serif; }
 .view-btn.active { background: var(--dark-5); color: var(--white); }
-.section-label {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 18px;
-  font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.5px;
-}
 
-/* PIPELINE BOARD */
+/* PIPELINE */
 .pipeline { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; align-items: start; }
-.pipeline-col { }
-.col-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px; border-radius: var(--radius) var(--radius) 0 0;
-  margin-bottom: 8px; border-bottom: 2px solid transparent;
-}
+.col-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 8px; border-bottom: 2px solid transparent; }
 .col-header.pending { background: rgba(74,74,70,0.3); border-color: var(--mid); }
 .col-header.quoted { background: rgba(41,128,185,0.1); border-color: var(--blue); }
 .col-header.followup { background: rgba(212,145,10,0.1); border-color: var(--gold); }
 .col-header.won { background: rgba(39,174,96,0.1); border-color: var(--green); }
 .col-header.lost { background: rgba(192,57,43,0.08); border-color: var(--red); }
-.col-title {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--dim);
-}
-.col-count {
-  font-size: 11px; font-weight: 700; padding: 2px 7px;
-  border-radius: 10px; background: var(--dark-4); color: var(--muted);
-}
+.col-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); }
+.col-count { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px; background: var(--dark-4); color: var(--muted); }
 .col-cards { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+.empty-col { padding: 16px; text-align: center; font-size: 11px; color: var(--mid); border: 1px dashed var(--dark-5); border-radius: var(--radius); }
 
 /* BID CARD */
-.bid-card {
-  background: var(--dark-2); border: 1px solid var(--dark-5);
-  border-radius: var(--radius-lg); padding: 14px 16px;
-  cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-}
-.bid-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px;
-}
+.bid-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+.bid-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
 .bid-card.william::before { background: var(--gold); }
 .bid-card.robby::before { background: var(--blue); }
 .bid-card.alex::before { background: var(--purple); }
 .bid-card.live::before { background: var(--green); }
 .bid-card:hover { border-color: var(--dark-4); background: var(--dark-3); transform: translateY(-1px); }
-.bid-project { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 4px; line-height: 1.3; }
+.bid-project { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.3; }
 .bid-client { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
 .bid-meta { display: flex; align-items: center; justify-content: space-between; }
 .bid-yards { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-light); }
 .bid-rev { font-size: 11px; color: var(--dim); }
-.rep-tag {
-  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-  padding: 2px 6px; border-radius: 3px;
-}
+.rep-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 6px; border-radius: 3px; }
 .rep-tag.william { background: rgba(212,145,10,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
 .rep-tag.robby { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.4); }
 .rep-tag.alex { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.4); }
 .rep-tag.live { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.4); }
 .bid-date { font-size: 10px; color: var(--mid); margin-top: 6px; }
-.followup-flag {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; color: var(--gold); margin-top: 6px;
-}
-.live-badge {
-  position: absolute; top: 10px; right: 10px;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-  background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4);
-  color: #58D68D; padding: 2px 6px; border-radius: 3px; text-transform: uppercase;
-}
+.followup-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; margin-top: 6px; }
+.followup-flag.overdue { color: var(--red); }
+.followup-flag.today { color: var(--gold); }
+.followup-flag.upcoming { color: var(--dim); }
+.live-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4); color: #58D68D; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
 
-/* MODAL */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000; padding: 24px; opacity: 0; pointer-events: none;
-  transition: opacity 0.2s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--dark-2); border: 1px solid var(--dark-5);
-  border-radius: var(--radius-lg); width: 100%; max-width: 640px;
-  max-height: 85vh; overflow-y: auto;
-  transform: translateY(20px); transition: transform 0.2s;
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-head {
-  padding: 20px 24px; border-bottom: 1px solid var(--dark-5);
-  display: flex; align-items: flex-start; justify-content: space-between;
-}
-.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); text-transform: uppercase; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; line-height: 1; }
-.modal-close:hover { color: var(--white); }
-.modal-body { padding: 20px 24px; }
-.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-.modal-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
-.modal-field value { font-size: 13px; color: var(--white); font-weight: 500; display: block; }
-.modal-mixes { margin-top: 16px; }
-.mix-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 12px; background: var(--dark-3); border-radius: 6px; margin-bottom: 6px;
-}
-.mix-code { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-light); }
-.mix-app { font-size: 12px; color: var(--dim); }
-.mix-vol { font-size: 12px; font-weight: 600; color: var(--white); }
-.status-select {
-  width: 100%; background: var(--dark-3); border: 1px solid var(--dark-5);
-  border-radius: var(--radius); padding: 9px 12px; font-size: 13px;
-  color: var(--white); font-family: 'Barlow', sans-serif; cursor: pointer;
-  margin-top: 16px;
-}
-.status-select:focus { outline: none; border-color: var(--gold); }
-.modal-actions { display: flex; gap: 10px; margin-top: 16px; }
-.btn-outline {
-  flex: 1; background: transparent; border: 1px solid var(--dark-5);
-  border-radius: var(--radius); padding: 10px; font-size: 12px;
-  font-weight: 600; color: var(--dim); cursor: pointer; transition: all 0.2s;
-  font-family: 'Barlow', sans-serif;
-}
-.btn-outline:hover { border-color: var(--gold-dim); color: var(--gold-light); }
-.btn-gold {
-  flex: 1; background: var(--gold); border: none; border-radius: var(--radius);
-  padding: 10px; font-size: 12px; font-weight: 700; color: var(--dark);
-  cursor: pointer; transition: all 0.2s;
-  font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; text-transform: uppercase;
-}
-.btn-gold:hover { background: var(--gold-light); }
+/* CUSTOMER VIEW */
+.customer-grid { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.customer-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: all 0.2s; }
+.customer-card:hover { border-color: var(--dark-4); transform: translateY(-1px); }
+.customer-head { padding: 14px 18px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: center; justify-content: space-between; }
+.customer-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); text-transform: uppercase; }
+.customer-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; }
+.customer-type.commercial { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.3); }
+.customer-type.residential { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.3); }
+.customer-type.txdot { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.3); }
+.customer-contacts { padding: 12px 18px; border-bottom: 1px solid var(--dark-5); }
+.contact-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--dark-4); }
+.contact-row:last-child { border-bottom: none; }
+.contact-name { font-size: 12px; font-weight: 500; color: var(--white); }
+.contact-role { font-size: 10px; color: var(--muted); }
+.contact-actions { display: flex; gap: 6px; }
+.icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 3px; transition: color 0.2s; }
+.icon-btn:hover { color: var(--gold-light); }
+.customer-stats { padding: 10px 18px; display: flex; gap: 16px; }
+.cust-stat label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; }
+.cust-stat value { font-size: 13px; font-weight: 600; color: var(--white); display: block; }
+.cust-stat value.gold { color: var(--gold-light); }
 
 /* MANAGER VIEW */
 .manager-grid { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.rep-card {
-  background: var(--dark-2); border: 1px solid var(--dark-5);
-  border-radius: var(--radius-lg); overflow: hidden;
-}
-.rep-card-head {
-  padding: 16px 20px; border-bottom: 1px solid var(--dark-5);
-  display: flex; align-items: center; gap: 12px;
-}
-.rep-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700;
-}
+.rep-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); overflow: hidden; }
+.rep-card-head { padding: 16px 20px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: center; gap: 12px; }
+.rep-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; }
 .rep-avatar.william { background: rgba(212,145,10,0.2); color: var(--gold); border: 1px solid var(--gold-dim); }
 .rep-avatar.robby { background: rgba(41,128,185,0.2); color: #5DADE2; border: 1px solid rgba(41,128,185,0.4); }
 .rep-avatar.alex { background: rgba(142,68,173,0.2); color: #C39BD3; border: 1px solid rgba(142,68,173,0.4); }
 .rep-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); text-transform: uppercase; }
 .rep-title { font-size: 11px; color: var(--muted); }
-.rep-stats { padding: 16px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rep-stats { padding: 14px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid var(--dark-5); }
 .rep-stat label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
 .rep-stat value { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); display: block; }
 .rep-stat value.gold { color: var(--gold-light); }
 .rep-stat value.green { color: #58D68D; }
-.rep-bids { padding: 0 20px 16px; }
-.rep-bid-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 10px; background: var(--dark-3); border-radius: 6px; margin-bottom: 5px;
-  font-size: 11px;
-}
+.rep-bids { padding: 12px 20px; }
+.rep-bid-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--dark-3); border-radius: 6px; margin-bottom: 5px; font-size: 11px; }
 .rep-bid-name { color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
-.status-dot-label { display: flex; align-items: center; gap: 5px; }
-.sdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-right: 4px; }
 .sdot.pending { background: var(--mid); }
 .sdot.quoted { background: var(--blue); }
 .sdot.followup { background: var(--gold); }
 .sdot.won { background: var(--green); }
 .sdot.lost { background: var(--red); }
 
-/* EMPTY PIPELINE COL */
-.empty-col { padding: 20px; text-align: center; font-size: 11px; color: var(--mid); border: 1px dashed var(--dark-5); border-radius: var(--radius); }
+/* MODALS */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); width: 100%; max-width: 680px; max-height: 88vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.2s; }
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-sm { max-width: 480px; }
+.modal-head { padding: 18px 24px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: flex-start; justify-content: space-between; }
+.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); text-transform: uppercase; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+.modal-close:hover { color: var(--white); }
+.modal-body { padding: 20px 24px; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.modal-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
+.modal-field value { font-size: 13px; color: var(--white); font-weight: 500; display: block; }
+.modal-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--dark-5); }
+.mix-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--dark-3); border-radius: 6px; margin-bottom: 6px; }
+.mix-code { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-light); }
+.mix-app { font-size: 12px; color: var(--dim); }
+.mix-vol { font-size: 12px; font-weight: 600; color: var(--white); }
 
-.separator { height: 1px; background: var(--dark-5); margin: 0 32px 20px; }
+/* FORM INPUTS */
+.form-field { margin-bottom: 14px; }
+.form-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 5px; }
+.form-input { width: 100%; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 9px 12px; font-size: 13px; color: var(--white); font-family: 'Barlow', sans-serif; transition: border-color 0.2s; }
+.form-input:focus { outline: none; border-color: var(--gold); }
+.form-input::placeholder { color: var(--mid); }
+.form-select { width: 100%; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 9px 12px; font-size: 13px; color: var(--white); font-family: 'Barlow', sans-serif; cursor: pointer; }
+.form-select:focus { outline: none; border-color: var(--gold); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-cancel { flex: 1; background: transparent; border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 10px; font-size: 12px; font-weight: 600; color: var(--dim); cursor: pointer; font-family: 'Barlow', sans-serif; transition: all 0.2s; }
+.btn-cancel:hover { border-color: var(--red); color: var(--red); }
+.btn-save { flex: 2; background: var(--gold); border: none; border-radius: var(--radius); padding: 10px; font-size: 13px; font-weight: 700; color: var(--dark); cursor: pointer; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; transition: all 0.2s; }
+.btn-save:hover { background: var(--gold-light); }
+
+/* FOLLOWUP BADGE */
+.followup-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+.followup-badge.overdue { background: rgba(192,57,43,0.12); color: #E74C3C; border: 1px solid rgba(192,57,43,0.3); }
+.followup-badge.today { background: rgba(212,145,10,0.12); color: var(--gold); border: 1px solid var(--gold-dim); }
+.followup-badge.upcoming { background: var(--dark-4); color: var(--dim); border: 1px solid var(--dark-5); }
+
+/* CONTACT BADGE */
+.role-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; padding: 2px 6px; border-radius: 3px; }
+.role-badge.estimator { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.3); }
+.role-badge.superintendent { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.3); }
+.role-badge.pm { background: rgba(212,145,10,0.12); color: var(--gold); border: 1px solid var(--gold-dim); }
+.role-badge.executive { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.3); }
+.role-badge.other { background: var(--dark-4); color: var(--muted); border: 1px solid var(--dark-5); }
+
+/* FOLLOWUPS PAGE */
+.followup-list { padding: 0 32px 32px; display: flex; flex-direction: column; gap: 8px; }
+.followup-item { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: all 0.2s; }
+.followup-item:hover { border-color: var(--dark-4); background: var(--dark-3); }
+.followup-item.overdue { border-left: 3px solid var(--red); }
+.followup-item.today { border-left: 3px solid var(--gold); }
+.followup-item.upcoming { border-left: 3px solid var(--dark-5); }
+.fu-date { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); min-width: 60px; text-align: center; line-height: 1; }
+.fu-date small { font-size: 10px; display: block; color: var(--muted); font-family: 'Barlow', sans-serif; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; }
+.fu-divider { width: 1px; height: 40px; background: var(--dark-5); }
+.fu-info { flex: 1; }
+.fu-project { font-size: 13px; font-weight: 600; color: var(--white); }
+.fu-client { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.fu-note { font-size: 11px; color: var(--dim); margin-top: 4px; font-style: italic; }
+.fu-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 </style>
 </head>
 <body>
 
 <header class="header">
   <div class="header-left">
-    <div class="logo-wrap">
-      <img src="https://klown1214.github.io/Zamara-Solutions/index.html" 
-           onerror="this.style.display='none'" 
-           style="display:none" />
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:1px">JCK<span style="color:var(--gold)">◀</span></div>
-    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:1px">JCK<span style="color:var(--gold)">◀</span></div>
     <div class="header-divider"></div>
     <div>
       <div class="header-title">Sales CRM</div>
@@ -306,46 +228,33 @@ body {
     </div>
   </div>
   <div class="header-right">
-    <a href="index.html" class="nav-link">← Bid Analyzer</a>
+    <a href="index.html" class="nav-btn">← Bid Analyzer</a>
     <div class="powered-tag">Zamara Solutions</div>
-    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v1.0</div>
+    <div style="font-size:10px;color:var(--muted)">v1.0</div>
   </div>
 </header>
 
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="page-tab active" onclick="switchPage('pipeline',this)">Pipeline</button>
+  <button class="page-tab" onclick="switchPage('followups',this)">Follow-Ups <span id="fuBadge" style="display:none;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;margin-left:4px"></span></button>
+  <button class="page-tab" onclick="switchPage('customers',this)">Customers</button>
+  <button class="page-tab" onclick="switchPage('manager',this)">Manager View</button>
+</div>
+
 <!-- STAT CARDS -->
 <div class="stats-wrap">
-  <div class="stat-card gold">
-    <div class="stat-label">Open Bids</div>
-    <div class="stat-value" id="statOpen">—</div>
-    <div class="stat-sub">active quotes</div>
-  </div>
-  <div class="stat-card blue">
-    <div class="stat-label">Pipeline Value</div>
-    <div class="stat-value gold" id="statPipeline">—</div>
-    <div class="stat-sub">est. revenue</div>
-  </div>
-  <div class="stat-card green">
-    <div class="stat-label">Won This Month</div>
-    <div class="stat-value green" id="statWon">—</div>
-    <div class="stat-sub" id="statWonYards">—</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Total Yardage</div>
-    <div class="stat-value gold" id="statYards">—</div>
-    <div class="stat-sub">CY in pipeline</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Close Rate</div>
-    <div class="stat-value" id="statClose">—</div>
-    <div class="stat-sub">won vs. closed</div>
-  </div>
+  <div class="stat-card gold"><div class="stat-label">Open Bids</div><div class="stat-value" id="statOpen">—</div><div class="stat-sub">active quotes</div></div>
+  <div class="stat-card blue"><div class="stat-label">Pipeline Value</div><div class="stat-value gold" id="statPipeline">—</div><div class="stat-sub">est. revenue</div></div>
+  <div class="stat-card green"><div class="stat-label">Won This Month</div><div class="stat-value green" id="statWon">—</div><div class="stat-sub" id="statWonYards">—</div></div>
+  <div class="stat-card"><div class="stat-label">Total Yardage</div><div class="stat-value gold" id="statYards">—</div><div class="stat-sub">CY in pipeline</div></div>
+  <div class="stat-card"><div class="stat-label">Close Rate</div><div class="stat-value" id="statClose">—</div><div class="stat-sub">won vs. closed</div></div>
 </div>
 
 <!-- TOOLBAR -->
 <div class="toolbar">
   <div class="toolbar-left">
-    <span class="section-label" id="viewLabel">Pipeline Board</span>
-    <div style="display:flex;gap:6px;margin-left:16px">
+    <div style="display:flex;gap:6px" id="repFilters">
       <button class="filter-btn active" onclick="filterRep('all',this)">All Reps</button>
       <button class="filter-btn" onclick="filterRep('William',this)">William</button>
       <button class="filter-btn" onclick="filterRep('Robby',this)">Robby</button>
@@ -353,422 +262,813 @@ body {
     </div>
   </div>
   <div class="toolbar-right">
-    <div class="view-toggle">
-      <button class="view-btn active" onclick="switchView('pipeline',this)">Pipeline</button>
-      <button class="view-btn" onclick="switchView('manager',this)">Manager View</button>
-    </div>
+    <button class="btn-add" onclick="openAddBidModal()" id="btnAddBid">+ New Bid</button>
+    <button class="btn-add" onclick="openAddCustomerModal()" id="btnAddCustomer" style="display:none">+ New Customer</button>
   </div>
 </div>
 
-<!-- PIPELINE VIEW -->
-<div id="viewPipeline">
+<!-- PIPELINE PAGE -->
+<div id="pagePipeline">
   <div class="pipeline">
-    <div class="pipeline-col">
-      <div class="col-header pending">
-        <span class="col-title">Pending</span>
-        <span class="col-count" id="cnt-pending">0</span>
-      </div>
-      <div class="col-cards" id="col-pending"></div>
-    </div>
-    <div class="pipeline-col">
-      <div class="col-header quoted">
-        <span class="col-title">Quoted</span>
-        <span class="col-count" id="cnt-quoted">0</span>
-      </div>
-      <div class="col-cards" id="col-quoted"></div>
-    </div>
-    <div class="pipeline-col">
-      <div class="col-header followup">
-        <span class="col-title">Follow Up</span>
-        <span class="col-count" id="cnt-followup">0</span>
-      </div>
-      <div class="col-cards" id="col-followup"></div>
-    </div>
-    <div class="pipeline-col">
-      <div class="col-header won">
-        <span class="col-title">Won</span>
-        <span class="col-count" id="cnt-won">0</span>
-      </div>
-      <div class="col-cards" id="col-won"></div>
-    </div>
-    <div class="pipeline-col">
-      <div class="col-header lost">
-        <span class="col-title">Lost</span>
-        <span class="col-count" id="cnt-lost">0</span>
-      </div>
-      <div class="col-cards" id="col-lost"></div>
-    </div>
+    <div><div class="col-header pending"><span class="col-title">Pending</span><span class="col-count" id="cnt-pending">0</span></div><div class="col-cards" id="col-pending"></div></div>
+    <div><div class="col-header quoted"><span class="col-title">Quoted</span><span class="col-count" id="cnt-quoted">0</span></div><div class="col-cards" id="col-quoted"></div></div>
+    <div><div class="col-header followup"><span class="col-title">Follow Up</span><span class="col-count" id="cnt-followup">0</span></div><div class="col-cards" id="col-followup"></div></div>
+    <div><div class="col-header won"><span class="col-title">Won</span><span class="col-count" id="cnt-won">0</span></div><div class="col-cards" id="col-won"></div></div>
+    <div><div class="col-header lost"><span class="col-title">Lost</span><span class="col-count" id="cnt-lost">0</span></div><div class="col-cards" id="col-lost"></div></div>
   </div>
 </div>
 
-<!-- MANAGER VIEW -->
-<div id="viewManager" style="display:none">
+<!-- FOLLOW-UPS PAGE -->
+<div id="pageFollowups" style="display:none">
+  <div style="padding:0 32px 16px;display:flex;gap:10px">
+    <button class="filter-btn active" onclick="filterFU('all',this)">All</button>
+    <button class="filter-btn" onclick="filterFU('overdue',this)">🔴 Overdue</button>
+    <button class="filter-btn" onclick="filterFU('today',this)">🟡 Today</button>
+    <button class="filter-btn" onclick="filterFU('upcoming',this)">Upcoming</button>
+  </div>
+  <div class="followup-list" id="followupList"></div>
+</div>
+
+<!-- CUSTOMERS PAGE -->
+<div id="pageCustomers" style="display:none">
+  <div class="customer-grid" id="customerGrid"></div>
+</div>
+
+<!-- MANAGER PAGE -->
+<div id="pageManager" style="display:none">
   <div class="manager-grid" id="managerGrid"></div>
 </div>
 
 <!-- BID DETAIL MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
+<div class="modal-overlay" id="bidModal" onclick="closeOnOverlay(event,'bidModal')">
+  <div class="modal">
     <div class="modal-head">
       <div>
-        <div class="modal-title" id="modalTitle">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px" id="modalClient">—</div>
+        <div class="modal-title" id="bmTitle">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px" id="bmClient">—</div>
       </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <button class="modal-close" onclick="closeModal('bidModal')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="modal-grid" id="modalGrid"></div>
-      <div class="modal-mixes" id="modalMixes"></div>
-      <select class="status-select" id="modalStatus" onchange="updateStatus()">
-        <option value="pending">Pending</option>
-        <option value="quoted">Quoted</option>
-        <option value="followup">Follow Up</option>
-        <option value="won">Won</option>
-        <option value="lost">Lost</option>
-      </select>
+      <div class="modal-grid" id="bmGrid"></div>
+      <div id="bmMixes"></div>
+      <div class="modal-section-label">Status & Follow-Up</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Status</label>
+          <select class="form-select" id="bmStatus" onchange="updateBidStatus()">
+            <option value="pending">Pending</option>
+            <option value="quoted">Quoted</option>
+            <option value="followup">Follow Up</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Follow-Up Date</label>
+          <input type="date" class="form-input" id="bmFollowupDate" onchange="updateBidFollowup()" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Follow-Up Note</label>
+        <input type="text" class="form-input" id="bmFollowupNote" placeholder="e.g. Call to confirm start date..." onchange="updateBidFollowupNote()" />
+      </div>
       <div class="modal-actions">
-        <button class="btn-outline" onclick="closeModalDirect()">Close</button>
-        <button class="btn-gold" onclick="closeModalDirect()">Save & Close</button>
+        <button class="btn-cancel" onclick="closeModal('bidModal')">Close</button>
+        <button class="btn-save" onclick="closeModal('bidModal')">Save & Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ADD BID MODAL -->
+<div class="modal-overlay" id="addBidModal" onclick="closeOnOverlay(event,'addBidModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">New Bid Entry</div>
+      <button class="modal-close" onclick="closeModal('addBidModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Project Name</label>
+          <input type="text" class="form-input" id="nb_project" placeholder="Project name..." />
+        </div>
+        <div class="form-field">
+          <label>Customer (Company)</label>
+          <select class="form-select" id="nb_customer" onchange="populateContactsFromCustomer('nb_customer','nb_contact')">
+            <option value="">Select company...</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Contact</label>
+          <select class="form-select" id="nb_contact">
+            <option value="">Select contact...</option>
+          </select>
+        </div>
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Project Address</label>
+          <input type="text" class="form-input" id="nb_address" placeholder="Project address..." />
+        </div>
+        <div class="form-field">
+          <label>Sales Rep</label>
+          <select class="form-select" id="nb_rep">
+            <option value="William">William</option>
+            <option value="Robby">Robby</option>
+            <option value="Alex">Alex</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Project Type</label>
+          <select class="form-select" id="nb_type">
+            <option value="Commercial">Commercial</option>
+            <option value="Residential">Residential</option>
+            <option value="TXDOT">TXDOT</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Est. Yardage (CY)</label>
+          <input type="number" class="form-input" id="nb_yards" placeholder="0" />
+        </div>
+        <div class="form-field">
+          <label>Est. Revenue ($)</label>
+          <input type="number" class="form-input" id="nb_revenue" placeholder="0" />
+        </div>
+        <div class="form-field">
+          <label>Follow-Up Date</label>
+          <input type="date" class="form-input" id="nb_followup" />
+        </div>
+        <div class="form-field">
+          <label>Status</label>
+          <select class="form-select" id="nb_status">
+            <option value="pending">Pending</option>
+            <option value="quoted">Quoted</option>
+            <option value="followup">Follow Up</option>
+          </select>
+        </div>
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Notes</label>
+          <input type="text" class="form-input" id="nb_notes" placeholder="Any notes..." />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('addBidModal')">Cancel</button>
+        <button class="btn-save" onclick="saveNewBid()">Add Bid</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT CUSTOMER MODAL -->
+<div class="modal-overlay" id="customerModal" onclick="closeOnOverlay(event,'customerModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="cmTitle">New Customer</div>
+      <button class="modal-close" onclick="closeModal('customerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Company Name</label>
+          <input type="text" class="form-input" id="cm_name" placeholder="Company name..." />
+        </div>
+        <div class="form-field">
+          <label>Type</label>
+          <select class="form-select" id="cm_type">
+            <option value="Commercial">Commercial</option>
+            <option value="Residential">Residential</option>
+            <option value="TXDOT">TXDOT</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Phone</label>
+          <input type="text" class="form-input" id="cm_phone" placeholder="Company phone..." />
+        </div>
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Address</label>
+          <input type="text" class="form-input" id="cm_address" placeholder="Company address..." />
+        </div>
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Notes</label>
+          <input type="text" class="form-input" id="cm_notes" placeholder="Notes..." />
+        </div>
+      </div>
+
+      <div class="modal-section-label">Contacts</div>
+      <div id="cmContactsList"></div>
+      <button class="filter-btn" onclick="addContactRow()" style="margin-top:8px;width:100%;text-align:center">+ Add Contact</button>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('customerModal')">Cancel</button>
+        <button class="btn-save" onclick="saveCustomer()">Save Customer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMER DETAIL MODAL -->
+<div class="modal-overlay" id="customerDetailModal" onclick="closeOnOverlay(event,'customerDetailModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="cdTitle">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px" id="cdSub">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('customerDetailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="cdBody"></div>
+  </div>
+</div>
+
 <script>
-// ── DUMMY DATA ──
-const DUMMY_BIDS = [
-  // WILLIAM — 3 bids
-  {
-    id: 'w1', rep: 'William', status: 'pending',
-    project: 'Lafayette Crossing Lot 5', client: 'Beam Concrete',
-    address: 'NWC FM 551 & I-30, Fate, TX 75189',
-    phone: '469-742-0094', email: 'rsmith@beamconcrete.com', contact: 'Ryan Smith',
-    yards: 12200, revenue: 1891600, bid_date: '3/30/2026', expiry: '5/29/2026',
-    followup: 'Thu, May 28',
-    mixes: [
-      { code: 'C3515ALS', app: 'All Other', vol: null },
-      { code: 'C3525ALS', app: 'Footings', vol: null },
-      { code: 'C4015ALS', app: 'Slab on Grade', vol: null },
-      { code: 'C4025ALS', app: 'Grade Beams', vol: null },
-      { code: 'TXCl C', app: 'TXDOT Firelane', vol: null },
-    ],
-    notes: 'Commercial retail shell. TXDOT firelane spec confirmed.',
-    type: 'Commercial',
+// ─────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────
+
+const DUMMY_CUSTOMERS = [
+  { id: 'c1', name: 'Beam Concrete', type: 'Commercial', phone: '469-742-0094', address: '640 Central Expressway, Melissa, TX', notes: 'Primary commercial GC — North Texas region',
+    contacts: [
+      { id: 'ct1', name: 'Ryan Smith', role: 'estimator', phone: '469-742-0094', email: 'rsmith@beamconcrete.com' },
+      { id: 'ct2', name: 'David Lee', role: 'superintendent', phone: '469-742-0101', email: 'dlee@beamconcrete.com' },
+    ]
   },
-  {
-    id: 'w2', rep: 'William', status: 'won',
-    project: 'Sprouts - Anna, TX', client: 'Standridge Concrete',
-    address: 'Standridge Pkwy, Anna, TX',
-    phone: '972-555-0182', email: 'jstandridge@standridgeconcrete.com', contact: 'Jake Standridge',
-    yards: 847, revenue: 138379, bid_date: '4/7/2026', expiry: '6/6/2026',
-    followup: null,
-    mixes: [
-      { code: 'C3515ALS', app: 'Footings', vol: 180 },
-      { code: 'C4015ALS', app: 'Slab on Grade', vol: 520 },
-      { code: 'C4015ALS', app: 'Grade Beams', vol: 147 },
-    ],
-    notes: 'Grocery retail. Dot-matrix concrete schedule confirmed.',
-    type: 'Commercial',
+  { id: 'c2', name: 'Standridge Concrete', type: 'Commercial', phone: '972-555-0182', address: 'Anna, TX', notes: 'Grocery and retail specialist',
+    contacts: [
+      { id: 'ct3', name: 'Jake Standridge', role: 'executive', phone: '972-555-0182', email: 'jstandridge@standridgeconcrete.com' },
+    ]
   },
-  {
-    id: 'w3', rep: 'William', status: 'quoted',
-    project: 'Rockwall Medical Office', client: 'Turner Construction',
-    address: '1450 Ridge Rd, Rockwall, TX 75087',
-    phone: '972-555-0234', email: 'bturner@turnerconstruction.com', contact: 'Brad Turner',
-    yards: 2100, revenue: 336000, bid_date: '5/18/2026', expiry: '7/17/2026',
-    followup: 'Fri, May 29',
-    mixes: [
-      { code: 'C4015ALS', app: 'Foundation', vol: 800 },
-      { code: 'C4025ALS', app: 'Elevated Slab', vol: 1300 },
-    ],
-    notes: '3-story medical office. Pump mix required for elevated slab.',
-    type: 'Commercial',
+  { id: 'c3', name: 'Turner Construction', type: 'Commercial', phone: '972-555-0234', address: '1450 Ridge Rd, Rockwall, TX', notes: 'Medical and office builds',
+    contacts: [
+      { id: 'ct4', name: 'Brad Turner', role: 'pm', phone: '972-555-0234', email: 'bturner@turnerconstruction.com' },
+      { id: 'ct5', name: 'Sara Kim', role: 'estimator', phone: '972-555-0235', email: 'skim@turnerconstruction.com' },
+    ]
   },
-  // ROBBY — 3 bids
-  {
-    id: 'r1', rep: 'Robby', status: 'pending',
-    project: 'Forney Industrial Park Ph2', client: 'Forney Industrial LLC',
-    address: 'US-80, Forney, TX 75126',
-    phone: '972-555-0311', email: 'mgmt@forneyind.com', contact: 'Mike Garrett',
-    yards: 4500, revenue: 702000, bid_date: '5/20/2026', expiry: '7/19/2026',
-    followup: 'Mon, Jun 1',
-    mixes: [
-      { code: 'C3515ALS', app: 'Tilt Wall Panels', vol: 1800 },
-      { code: 'C4015ALS', app: 'Slab on Grade', vol: 2700 },
-    ],
-    notes: 'Large industrial tilt-wall. High volume — AAA tier pricing.',
-    type: 'Commercial',
+  { id: 'c4', name: 'Forney Industrial LLC', type: 'Commercial', phone: '972-555-0311', address: 'US-80, Forney, TX', notes: 'Industrial tilt-wall projects',
+    contacts: [
+      { id: 'ct6', name: 'Mike Garrett', role: 'pm', phone: '972-555-0311', email: 'mgmt@forneyind.com' },
+    ]
   },
-  {
-    id: 'r2', rep: 'Robby', status: 'pending',
-    project: 'Kaufman County Courthouse Annex', client: 'Benchmark Civil',
-    address: '100 W Mulberry, Kaufman, TX 75142',
-    phone: '903-555-0198', email: 'rdiaz@benchmarkcivil.com', contact: 'Ricardo Diaz',
-    yards: 680, revenue: 109480, bid_date: '5/22/2026', expiry: '7/21/2026',
-    followup: 'Wed, May 28',
-    mixes: [
-      { code: 'C4015ALS', app: 'Foundation', vol: 320 },
-      { code: 'C4515ALS', app: 'Columns', vol: 210 },
-      { code: 'C3515ALS', app: 'Flatwork', vol: 150 },
-    ],
-    notes: 'Municipal project. Bond required. Confirm surety before quoting.',
-    type: 'Commercial',
+  { id: 'c5', name: 'Benchmark Civil', type: 'Commercial', phone: '903-555-0198', address: 'Kaufman, TX', notes: 'Municipal and civil contractor',
+    contacts: [
+      { id: 'ct7', name: 'Ricardo Diaz', role: 'estimator', phone: '903-555-0198', email: 'rdiaz@benchmarkcivil.com' },
+    ]
   },
-  {
-    id: 'r3', rep: 'Robby', status: 'followup',
-    project: 'Sunridge Estates Ph3', client: 'DR Horton',
-    address: 'Sunridge Dr, Royse City, TX 75189',
-    phone: '469-555-0277', email: 'drh.tx@drhorton.com', contact: 'Lisa Park',
-    yards: 3200, revenue: 467200, bid_date: '5/10/2026', expiry: '7/9/2026',
-    followup: 'Thu, May 28',
-    mixes: [
-      { code: 'R3515ABL', app: 'House Slabs', vol: 2400 },
-      { code: 'R3015ABL', app: 'Driveways', vol: 800 },
-    ],
-    notes: 'DR Horton subdivision. 45 lots Ph3. Preferred pricing negotiated.',
-    type: 'Residential',
+  { id: 'c6', name: 'DR Horton', type: 'Residential', phone: '469-555-0277', address: 'Royse City, TX', notes: 'National homebuilder — high volume residential',
+    contacts: [
+      { id: 'ct8', name: 'Lisa Park', role: 'pm', phone: '469-555-0277', email: 'drh.tx@drhorton.com' },
+      { id: 'ct9', name: 'Tom Reed', role: 'superintendent', phone: '469-555-0278', email: 'treed@drhorton.com' },
+    ]
   },
-  // ALEX — 2 bids
-  {
-    id: 'a1', rep: 'Alex', status: 'quoted',
-    project: 'Seagoville Distribution Center', client: 'Prologis',
-    address: '2800 E Ledbetter Dr, Seagoville, TX 75159',
-    phone: '214-555-0422', email: 'txops@prologis.com', contact: 'Tom Wheeler',
-    yards: 8900, revenue: 1424000, bid_date: '5/15/2026', expiry: '7/14/2026',
-    followup: 'Tue, Jun 2',
-    mixes: [
-      { code: 'C4015ALS', app: 'Slab on Grade', vol: 6200 },
-      { code: 'C3515ALS', app: 'Dock Aprons', vol: 1400 },
-      { code: 'C4025ALS', app: 'Tilt Panels', vol: 1300 },
-    ],
-    notes: 'Major distribution center near Seagoville plant. High priority.',
-    type: 'Commercial',
+  { id: 'c7', name: 'Prologis', type: 'Commercial', phone: '214-555-0422', address: 'Seagoville, TX', notes: 'Large distribution and warehouse developer',
+    contacts: [
+      { id: 'ct10', name: 'Tom Wheeler', role: 'pm', phone: '214-555-0422', email: 'txops@prologis.com' },
+    ]
   },
-  {
-    id: 'a2', rep: 'Alex', status: 'lost',
-    project: 'Mesquite Self Storage', client: 'StorRight LLC',
-    address: '4100 Gus Thomasson Rd, Mesquite, TX 75150',
-    phone: '972-555-0511', email: 'dev@storright.com', contact: 'Phil Cruz',
-    yards: 420, revenue: 67200, bid_date: '4/28/2026', expiry: '6/27/2026',
-    followup: null,
-    mixes: [
-      { code: 'C3515ALS', app: 'Slabs', vol: 420 },
-    ],
-    notes: 'Lost to competitor — pricing. Follow up for future phases.',
-    type: 'Commercial',
+  { id: 'c8', name: 'StorRight LLC', type: 'Commercial', phone: '972-555-0511', address: 'Mesquite, TX', notes: '',
+    contacts: [
+      { id: 'ct11', name: 'Phil Cruz', role: 'executive', phone: '972-555-0511', email: 'dev@storright.com' },
+    ]
   },
 ];
 
-let allBids = [...DUMMY_BIDS];
-let currentRep = 'all';
-let currentView = 'pipeline';
-let selectedBidId = null;
+const today = new Date();
+today.setHours(0,0,0,0);
+function daysFromNow(d) { const dt = new Date(d); dt.setHours(0,0,0,0); return Math.round((dt-today)/(1000*60*60*24)); }
+function fuClass(d) { if (!d) return ''; const n = daysFromNow(d); if (n < 0) return 'overdue'; if (n === 0) return 'today'; return 'upcoming'; }
+function fuLabel(d) { if (!d) return ''; const n = daysFromNow(d); if (n < 0) return `${Math.abs(n)}d overdue`; if (n === 0) return 'Today'; if (n === 1) return 'Tomorrow'; return `In ${n} days`; }
 
-// Load live bids from localStorage (from Bid Analyzer)
+const DUMMY_BIDS = [
+  { id:'w1', rep:'William', status:'pending', customerId:'c1', contactId:'ct1',
+    project:'Lafayette Crossing Lot 5', client:'Beam Concrete', contact:'Ryan Smith', phone:'469-742-0094', email:'rsmith@beamconcrete.com',
+    address:'NWC FM 551 & I-30, Fate, TX 75189', yards:12200, revenue:1891600,
+    bid_date:'3/30/2026', expiry:'5/29/2026', followup_date:'2026-05-28', followup_note:'Confirm mix codes and start date with Ryan',
+    mixes:[{code:'C3515ALS',app:'All Other',vol:null},{code:'C3525ALS',app:'Footings',vol:null},{code:'C4015ALS',app:'Slab on Grade',vol:null},{code:'TXCl C',app:'TXDOT Firelane',vol:null}],
+    notes:'Commercial retail shell. TXDOT firelane spec confirmed.', type:'Commercial' },
+  { id:'w2', rep:'William', status:'won', customerId:'c2', contactId:'ct3',
+    project:'Sprouts - Anna, TX', client:'Standridge Concrete', contact:'Jake Standridge', phone:'972-555-0182', email:'jstandridge@standridgeconcrete.com',
+    address:'Standridge Pkwy, Anna, TX', yards:847, revenue:138379,
+    bid_date:'4/7/2026', expiry:'6/6/2026', followup_date:null, followup_note:'',
+    mixes:[{code:'C3515ALS',app:'Footings',vol:180},{code:'C4015ALS',app:'Slab on Grade',vol:520},{code:'C4015ALS',app:'Grade Beams',vol:147}],
+    notes:'Grocery retail. Won — scheduling in progress.', type:'Commercial' },
+  { id:'w3', rep:'William', status:'quoted', customerId:'c3', contactId:'ct4',
+    project:'Rockwall Medical Office', client:'Turner Construction', contact:'Brad Turner', phone:'972-555-0234', email:'bturner@turnerconstruction.com',
+    address:'1450 Ridge Rd, Rockwall, TX 75087', yards:2100, revenue:336000,
+    bid_date:'5/18/2026', expiry:'7/17/2026', followup_date:'2026-05-29', followup_note:'Follow up with Brad on pump mix confirmation',
+    mixes:[{code:'C4015ALS',app:'Foundation',vol:800},{code:'C4025ALS',app:'Elevated Slab',vol:1300}],
+    notes:'3-story medical office. Pump mix required.', type:'Commercial' },
+  { id:'r1', rep:'Robby', status:'pending', customerId:'c4', contactId:'ct6',
+    project:'Forney Industrial Park Ph2', client:'Forney Industrial LLC', contact:'Mike Garrett', phone:'972-555-0311', email:'mgmt@forneyind.com',
+    address:'US-80, Forney, TX 75126', yards:4500, revenue:702000,
+    bid_date:'5/20/2026', expiry:'7/19/2026', followup_date:'2026-06-01', followup_note:'Check on permit status',
+    mixes:[{code:'C3515ALS',app:'Tilt Wall Panels',vol:1800},{code:'C4015ALS',app:'Slab on Grade',vol:2700}],
+    notes:'Large industrial tilt-wall. High volume — AAA tier pricing.', type:'Commercial' },
+  { id:'r2', rep:'Robby', status:'pending', customerId:'c5', contactId:'ct7',
+    project:'Kaufman County Courthouse Annex', client:'Benchmark Civil', contact:'Ricardo Diaz', phone:'903-555-0198', email:'rdiaz@benchmarkcivil.com',
+    address:'100 W Mulberry, Kaufman, TX 75142', yards:680, revenue:109480,
+    bid_date:'5/22/2026', expiry:'7/21/2026', followup_date:'2026-05-28', followup_note:'Confirm bond requirements',
+    mixes:[{code:'C4015ALS',app:'Foundation',vol:320},{code:'C4515ALS',app:'Columns',vol:210},{code:'C3515ALS',app:'Flatwork',vol:150}],
+    notes:'Municipal project. Bond required.', type:'Commercial' },
+  { id:'r3', rep:'Robby', status:'followup', customerId:'c6', contactId:'ct8',
+    project:'Sunridge Estates Ph3', client:'DR Horton', contact:'Lisa Park', phone:'469-555-0277', email:'drh.tx@drhorton.com',
+    address:'Sunridge Dr, Royse City, TX 75189', yards:3200, revenue:467200,
+    bid_date:'5/10/2026', expiry:'7/9/2026', followup_date:'2026-05-28', followup_note:'Lisa requested revised pricing — send updated quote',
+    mixes:[{code:'R3515ABL',app:'House Slabs',vol:2400},{code:'R3015ABL',app:'Driveways',vol:800}],
+    notes:'DR Horton subdivision. 45 lots Ph3.', type:'Residential' },
+  { id:'a1', rep:'Alex', status:'quoted', customerId:'c7', contactId:'ct10',
+    project:'Seagoville Distribution Center', client:'Prologis', contact:'Tom Wheeler', phone:'214-555-0422', email:'txops@prologis.com',
+    address:'2800 E Ledbetter Dr, Seagoville, TX 75159', yards:8900, revenue:1424000,
+    bid_date:'5/15/2026', expiry:'7/14/2026', followup_date:'2026-06-02', followup_note:'Large project — confirm delivery schedule',
+    mixes:[{code:'C4015ALS',app:'Slab on Grade',vol:6200},{code:'C3515ALS',app:'Dock Aprons',vol:1400},{code:'C4025ALS',app:'Tilt Panels',vol:1300}],
+    notes:'Major distribution center near Seagoville plant. High priority.', type:'Commercial' },
+  { id:'a2', rep:'Alex', status:'lost', customerId:'c8', contactId:'ct11',
+    project:'Mesquite Self Storage', client:'StorRight LLC', contact:'Phil Cruz', phone:'972-555-0511', email:'dev@storright.com',
+    address:'4100 Gus Thomasson Rd, Mesquite, TX 75150', yards:420, revenue:67200,
+    bid_date:'4/28/2026', expiry:'6/27/2026', followup_date:null, followup_note:'',
+    mixes:[{code:'C3515ALS',app:'Slabs',vol:420}],
+    notes:'Lost to competitor on pricing. Follow up for future phases.', type:'Commercial' },
+];
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let allBids = [...DUMMY_BIDS];
+let allCustomers = [...DUMMY_CUSTOMERS];
+let currentRep = 'all';
+let currentPage = 'pipeline';
+let currentFUFilter = 'all';
+let selectedBidId = null;
+let editingCustomerId = null;
+let contactRowCount = 0;
+let editingCustomerContacts = [];
+
+// Load live bids from localStorage
 function loadLiveBids() {
   try {
     const live = localStorage.getItem('zamara_crm_entries');
     if (live) {
       const entries = JSON.parse(live);
-      entries.forEach(e => {
-        if (!allBids.find(b => b.id === e.id)) {
-          allBids.unshift({ ...e, rep: e.rep || 'William', status: e.status || 'pending' });
-        }
-      });
+      entries.forEach(e => { if (!allBids.find(b => b.id === e.id)) allBids.unshift({...e, rep: e.rep||'William', status: e.status||'pending'}); });
     }
-  } catch(err) { console.log('No live bids in localStorage'); }
+  } catch(err) {}
 }
 
-function getFilteredBids() {
-  if (currentRep === 'all') return allBids;
-  return allBids.filter(b => b.rep === currentRep);
-}
-
-function filterRep(rep, btn) {
-  currentRep = rep;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
-}
-
-function switchView(view, btn) {
-  currentView = view;
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('viewPipeline').style.display = view === 'pipeline' ? 'block' : 'none';
-  document.getElementById('viewManager').style.display = view === 'manager' ? 'block' : 'none';
-  document.getElementById('viewLabel').textContent = view === 'pipeline' ? 'Pipeline Board' : 'Manager View';
-  render();
-}
-
+// ─────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────
 function fmtRev(n) {
   if (!n) return 'TBD';
   if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
   if (n >= 1000) return '$' + Math.round(n/1000) + 'K';
   return '$' + n.toLocaleString();
 }
+function statusLabel(s) { return {pending:'Pending',quoted:'Quoted',followup:'Follow Up',won:'Won',lost:'Lost'}[s]||s; }
+function repCls(rep) { return (rep||'').toLowerCase(); }
+function roleClass(r) { return {estimator:'estimator',superintendent:'superintendent','project manager':'pm',pm:'pm',executive:'executive'}[r?.toLowerCase()]||'other'; }
+function roleLabel(r) { return {estimator:'Estimator',superintendent:'Superintendent','project manager':'PM',pm:'PM',executive:'Executive'}[r?.toLowerCase()]||r||'Other'; }
 
-function statusLabel(s) {
-  return { pending: 'Pending', quoted: 'Quoted', followup: 'Follow Up', won: 'Won', lost: 'Lost' }[s] || s;
+function getFiltered() {
+  if (currentRep === 'all') return allBids;
+  return allBids.filter(b => b.rep === currentRep);
 }
 
-function repClass(rep) {
-  return rep.toLowerCase();
+// ─────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────
+function switchPage(page, btn) {
+  currentPage = page;
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pagePipeline','pageFollowups','pageCustomers','pageManager'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('page' + page.charAt(0).toUpperCase() + page.slice(1)).style.display = 'block';
+  document.getElementById('btnAddBid').style.display = page === 'pipeline' ? 'block' : 'none';
+  document.getElementById('btnAddCustomer').style.display = page === 'customers' ? 'block' : 'none';
+  render();
 }
 
-function makeCard(bid) {
+function filterRep(rep, btn) {
+  currentRep = rep;
+  document.querySelectorAll('#repFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function filterFU(f, btn) {
+  currentFUFilter = f;
+  document.querySelectorAll('#pageFollowups .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFollowups();
+}
+
+// ─────────────────────────────────────────
+// RENDER — STATS
+// ─────────────────────────────────────────
+function renderStats() {
+  const filtered = getFiltered();
+  const open = filtered.filter(b => !['won','lost'].includes(b.status));
+  const won = filtered.filter(b => b.status === 'won');
+  const lost = filtered.filter(b => b.status === 'lost');
+  const closed = won.length + lost.length;
+  document.getElementById('statOpen').textContent = open.length;
+  document.getElementById('statPipeline').textContent = fmtRev(open.reduce((s,b)=>s+(b.revenue||0),0));
+  document.getElementById('statWon').textContent = fmtRev(won.reduce((s,b)=>s+(b.revenue||0),0));
+  document.getElementById('statWonYards').textContent = won.reduce((s,b)=>s+(b.yards||0),0).toLocaleString() + ' CY won';
+  document.getElementById('statYards').textContent = filtered.reduce((s,b)=>s+(b.yards||0),0).toLocaleString();
+  document.getElementById('statClose').textContent = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '—';
+  // FU badge
+  const overdueCount = allBids.filter(b => b.followup_date && fuClass(b.followup_date) === 'overdue' && !['won','lost'].includes(b.status)).length;
+  const fuBadge = document.getElementById('fuBadge');
+  if (overdueCount > 0) { fuBadge.style.display = 'inline'; fuBadge.textContent = overdueCount; }
+  else { fuBadge.style.display = 'none'; }
+}
+
+// ─────────────────────────────────────────
+// RENDER — PIPELINE
+// ─────────────────────────────────────────
+function makeBidCard(bid) {
+  const rc = repCls(bid.rep);
   const isLive = bid.live;
-  const repCls = repClass(bid.rep);
-  return `<div class="bid-card ${repCls}${isLive?' live':''}" onclick="openModal('${bid.id}')">
+  const fuc = bid.followup_date ? fuClass(bid.followup_date) : '';
+  const ful = bid.followup_date ? fuLabel(bid.followup_date) : '';
+  const fuIcon = fuc === 'overdue' ? '🔴' : fuc === 'today' ? '🟡' : '📅';
+  return `<div class="bid-card ${rc}${isLive?' live':''}" onclick="openBidModal('${bid.id}')">
     ${isLive ? '<div class="live-badge">● Live</div>' : ''}
     <div class="bid-project">${bid.project}</div>
     <div class="bid-client">${bid.client}</div>
     <div class="bid-meta">
-      <div>
-        <div class="bid-yards">${bid.yards ? bid.yards.toLocaleString() + ' CY' : 'TBD'}</div>
-        <div class="bid-rev">${fmtRev(bid.revenue)}</div>
-      </div>
-      <span class="rep-tag ${repCls}">${bid.rep}</span>
+      <div><div class="bid-yards">${bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD'}</div><div class="bid-rev">${fmtRev(bid.revenue)}</div></div>
+      <span class="rep-tag ${rc}">${bid.rep}</span>
     </div>
-    ${bid.followup ? `<div class="followup-flag">📅 Follow up: ${bid.followup}</div>` : ''}
-    <div class="bid-date">Bid: ${bid.bid_date || '—'} · Exp: ${bid.expiry || '—'}</div>
+    ${bid.followup_date ? `<div class="followup-flag ${fuc}">${fuIcon} ${ful}${bid.followup_note ? ' — '+bid.followup_note.substring(0,30) : ''}</div>` : ''}
+    <div class="bid-date">Bid: ${bid.bid_date||'—'} · Exp: ${bid.expiry||'—'}</div>
   </div>`;
 }
 
 function renderPipeline() {
-  const statuses = ['pending', 'quoted', 'followup', 'won', 'lost'];
-  const filtered = getFilteredBids();
-
-  statuses.forEach(s => {
-    const col = document.getElementById('col-' + s);
-    const cnt = document.getElementById('cnt-' + s);
+  const filtered = getFiltered();
+  ['pending','quoted','followup','won','lost'].forEach(s => {
     const bids = filtered.filter(b => b.status === s);
-    cnt.textContent = bids.length;
-    if (bids.length === 0) {
-      col.innerHTML = `<div class="empty-col">No bids</div>`;
-    } else {
-      col.innerHTML = bids.map(makeCard).join('');
-    }
+    document.getElementById('cnt-'+s).textContent = bids.length;
+    document.getElementById('col-'+s).innerHTML = bids.length
+      ? bids.map(makeBidCard).join('')
+      : '<div class="empty-col">No bids</div>';
   });
 }
 
+// ─────────────────────────────────────────
+// RENDER — FOLLOW-UPS
+// ─────────────────────────────────────────
+function renderFollowups() {
+  const bids = allBids.filter(b => b.followup_date && !['won','lost'].includes(b.status));
+  let filtered = bids;
+  if (currentFUFilter !== 'all') filtered = bids.filter(b => fuClass(b.followup_date) === currentFUFilter);
+  filtered.sort((a,b) => new Date(a.followup_date) - new Date(b.followup_date));
+
+  const list = document.getElementById('followupList');
+  if (!filtered.length) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">No follow-ups scheduled</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(bid => {
+    const fuc = fuClass(bid.followup_date);
+    const d = new Date(bid.followup_date);
+    const day = d.getDate();
+    const mon = d.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
+    const rc = repCls(bid.rep);
+    return `<div class="followup-item ${fuc}" onclick="openBidModal('${bid.id}')">
+      <div class="fu-date">${day}<small>${mon}</small></div>
+      <div class="fu-divider"></div>
+      <div class="fu-info">
+        <div class="fu-project">${bid.project}</div>
+        <div class="fu-client">${bid.client} · ${bid.contact||'—'}</div>
+        ${bid.followup_note ? `<div class="fu-note">"${bid.followup_note}"</div>` : ''}
+      </div>
+      <div class="fu-meta">
+        <span class="followup-badge ${fuc}">${fuLabel(bid.followup_date)}</span>
+        <span class="rep-tag ${rc}">${bid.rep}</span>
+        <span style="font-size:10px;color:var(--muted)">${statusLabel(bid.status)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────
+// RENDER — CUSTOMERS
+// ─────────────────────────────────────────
+function renderCustomers() {
+  const grid = document.getElementById('customerGrid');
+  if (!allCustomers.length) {
+    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No customers yet — add your first customer.</div>';
+    return;
+  }
+  grid.innerHTML = allCustomers.map(c => {
+    const custBids = allBids.filter(b => b.customerId === c.id);
+    const open = custBids.filter(b => !['won','lost'].includes(b.status));
+    const totalRev = custBids.reduce((s,b)=>s+(b.revenue||0),0);
+    const typeCls = c.type?.toLowerCase()||'commercial';
+    return `<div class="customer-card" onclick="openCustomerDetail('${c.id}')">
+      <div class="customer-head">
+        <div class="customer-name">${c.name}</div>
+        <span class="customer-type ${typeCls}">${c.type||'Commercial'}</span>
+      </div>
+      <div class="customer-contacts">
+        ${c.contacts.slice(0,3).map(ct => `
+          <div class="contact-row">
+            <div>
+              <div class="contact-name">${ct.name}</div>
+              <div class="contact-role">${ct.email||ct.phone||''}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="role-badge ${roleClass(ct.role)}">${roleLabel(ct.role)}</span>
+              <div class="contact-actions">
+                <button class="icon-btn" onclick="event.stopPropagation();window.location='mailto:${ct.email}'" title="Email">✉</button>
+                <button class="icon-btn" onclick="event.stopPropagation();window.location='tel:${ct.phone}'" title="Call">📞</button>
+              </div>
+            </div>
+          </div>`).join('')}
+        ${c.contacts.length > 3 ? `<div style="font-size:10px;color:var(--muted);padding-top:4px">+${c.contacts.length-3} more contacts</div>` : ''}
+      </div>
+      <div class="customer-stats">
+        <div class="cust-stat"><label>Open Bids</label><value>${open.length}</value></div>
+        <div class="cust-stat"><label>Total Revenue</label><value class="gold">${fmtRev(totalRev)}</value></div>
+        <div class="cust-stat"><label>Contacts</label><value>${c.contacts.length}</value></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────
+// RENDER — MANAGER
+// ─────────────────────────────────────────
 function renderManager() {
-  const reps = ['William', 'Robby', 'Alex'];
-  const grid = document.getElementById('managerGrid');
-  grid.innerHTML = reps.map(rep => {
+  const reps = ['William','Robby','Alex'];
+  document.getElementById('managerGrid').innerHTML = reps.map(rep => {
     const bids = allBids.filter(b => b.rep === rep);
     const open = bids.filter(b => !['won','lost'].includes(b.status));
     const won = bids.filter(b => b.status === 'won');
     const lost = bids.filter(b => b.status === 'lost');
     const closed = won.length + lost.length;
-    const closeRate = closed > 0 ? Math.round((won.length / closed) * 100) + '%' : '—';
-    const totalYards = bids.reduce((s,b) => s + (b.yards||0), 0);
-    const pipelineRev = open.reduce((s,b) => s + (b.revenue||0), 0);
-    const repCls = repClass(rep);
-
-    const bidRows = bids.slice(0,5).map(b => `
-      <div class="rep-bid-row">
-        <span class="rep-bid-name">${b.project}</span>
-        <span class="status-dot-label">
-          <span class="sdot ${b.status}"></span>
-          <span style="font-size:10px;color:var(--muted)">${statusLabel(b.status)}</span>
-        </span>
-      </div>`).join('');
-
+    const closeRate = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '—';
+    const pipelineRev = open.reduce((s,b)=>s+(b.revenue||0),0);
+    const totalYards = bids.reduce((s,b)=>s+(b.yards||0),0);
+    const rc = rep.toLowerCase();
     return `<div class="rep-card">
       <div class="rep-card-head">
-        <div class="rep-avatar ${repCls}">${rep[0]}</div>
-        <div>
-          <div class="rep-name">${rep}</div>
-          <div class="rep-title">Sales Representative</div>
-        </div>
+        <div class="rep-avatar ${rc}">${rep[0]}</div>
+        <div><div class="rep-name">${rep}</div><div class="rep-title">Sales Representative</div></div>
       </div>
       <div class="rep-stats">
         <div class="rep-stat"><label>Open Bids</label><value>${open.length}</value></div>
         <div class="rep-stat"><label>Pipeline</label><value class="gold">${fmtRev(pipelineRev)}</value></div>
         <div class="rep-stat"><label>Total CY</label><value>${totalYards.toLocaleString()}</value></div>
-        <div class="rep-stat"><label>Close Rate</label><value class="${won.length > 0 ? 'green' : ''}">${closeRate}</value></div>
+        <div class="rep-stat"><label>Close Rate</label><value class="${won.length>0?'green':''}">${closeRate}</value></div>
       </div>
-      <div class="rep-bids">${bidRows}</div>
+      <div class="rep-bids">
+        ${bids.slice(0,5).map(b=>`<div class="rep-bid-row">
+          <span class="rep-bid-name">${b.project}</span>
+          <span><span class="sdot ${b.status}"></span><span style="font-size:10px;color:var(--muted)">${statusLabel(b.status)}</span></span>
+        </div>`).join('')}
+      </div>
     </div>`;
   }).join('');
 }
 
-function renderStats() {
-  const filtered = getFilteredBids();
-  const open = filtered.filter(b => !['won','lost'].includes(b.status));
-  const won = filtered.filter(b => b.status === 'won');
-  const lost = filtered.filter(b => b.status === 'lost');
-  const closed = won.length + lost.length;
-
-  document.getElementById('statOpen').textContent = open.length;
-  document.getElementById('statPipeline').textContent = fmtRev(open.reduce((s,b) => s+(b.revenue||0),0));
-  document.getElementById('statWon').textContent = fmtRev(won.reduce((s,b) => s+(b.revenue||0),0));
-  document.getElementById('statWonYards').textContent = won.reduce((s,b)=>s+(b.yards||0),0).toLocaleString() + ' CY won';
-  document.getElementById('statYards').textContent = filtered.reduce((s,b)=>s+(b.yards||0),0).toLocaleString();
-  document.getElementById('statClose').textContent = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '—';
-}
-
 function render() {
   renderStats();
-  if (currentView === 'pipeline') renderPipeline();
-  else renderManager();
+  if (currentPage === 'pipeline') renderPipeline();
+  else if (currentPage === 'followups') renderFollowups();
+  else if (currentPage === 'customers') renderCustomers();
+  else if (currentPage === 'manager') renderManager();
 }
 
-function openModal(id) {
+// ─────────────────────────────────────────
+// BID MODAL
+// ─────────────────────────────────────────
+function openBidModal(id) {
   const bid = allBids.find(b => b.id === id);
   if (!bid) return;
   selectedBidId = id;
-
-  document.getElementById('modalTitle').textContent = bid.project;
-  document.getElementById('modalClient').textContent = bid.client + (bid.type ? ' · ' + bid.type : '');
-  document.getElementById('modalStatus').value = bid.status;
-
-  document.getElementById('modalGrid').innerHTML = `
+  document.getElementById('bmTitle').textContent = bid.project;
+  document.getElementById('bmClient').textContent = (bid.client||'') + (bid.type ? ' · ' + bid.type : '');
+  document.getElementById('bmStatus').value = bid.status;
+  document.getElementById('bmFollowupDate').value = bid.followup_date || '';
+  document.getElementById('bmFollowupNote').value = bid.followup_note || '';
+  document.getElementById('bmGrid').innerHTML = `
     <div class="modal-field"><label>Contact</label><value>${bid.contact||'—'}</value></div>
     <div class="modal-field"><label>Phone</label><value>${bid.phone||'—'}</value></div>
-    <div class="modal-field"><label>Email</label><value>${bid.email||'—'}</value></div>
+    <div class="modal-field"><label>Email</label><value><a href="mailto:${bid.email||''}" style="color:var(--gold-light)">${bid.email||'—'}</a></value></div>
     <div class="modal-field"><label>Project Address</label><value>${bid.address||'—'}</value></div>
     <div class="modal-field"><label>Est. Yardage</label><value>${bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD'}</value></div>
     <div class="modal-field"><label>Est. Revenue</label><value>${fmtRev(bid.revenue)}</value></div>
     <div class="modal-field"><label>Bid Date</label><value>${bid.bid_date||'—'}</value></div>
     <div class="modal-field"><label>Expiration</label><value>${bid.expiry||'—'}</value></div>
     <div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>${bid.notes||'—'}</value></div>
-  `;
-
-  if (bid.mixes && bid.mixes.length) {
-    document.getElementById('modalMixes').innerHTML = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:8px">Mix Codes</div>'
-      + bid.mixes.map(m => `<div class="mix-row">
-          <span class="mix-code">${m.code}</span>
-          <span class="mix-app">${m.app}</span>
-          <span class="mix-vol">${m.vol ? m.vol.toLocaleString()+' CY' : 'TBD'}</span>
-        </div>`).join('');
-  } else {
-    document.getElementById('modalMixes').innerHTML = '';
-  }
-
-  document.getElementById('modalOverlay').classList.add('open');
+    <div class="modal-field"><label>Sales Rep</label><value>${bid.rep||'—'}</value></div>`;
+  document.getElementById('bmMixes').innerHTML = bid.mixes?.length
+    ? '<div class="modal-section-label">Mix Codes</div>' + bid.mixes.map(m=>`<div class="mix-row"><span class="mix-code">${m.code}</span><span class="mix-app">${m.app}</span><span class="mix-vol">${m.vol?m.vol.toLocaleString()+' CY':'TBD'}</span></div>`).join('')
+    : '';
+  openModal('bidModal');
 }
 
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-}
-
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  selectedBidId = null;
-}
-
-function updateStatus() {
-  if (!selectedBidId) return;
+function updateBidStatus() {
   const bid = allBids.find(b => b.id === selectedBidId);
-  if (bid) {
-    bid.status = document.getElementById('modalStatus').value;
-    render();
-  }
+  if (bid) { bid.status = document.getElementById('bmStatus').value; render(); }
+}
+function updateBidFollowup() {
+  const bid = allBids.find(b => b.id === selectedBidId);
+  if (bid) { bid.followup_date = document.getElementById('bmFollowupDate').value; render(); }
+}
+function updateBidFollowupNote() {
+  const bid = allBids.find(b => b.id === selectedBidId);
+  if (bid) { bid.followup_note = document.getElementById('bmFollowupNote').value; }
 }
 
-// Init
+// ─────────────────────────────────────────
+// CUSTOMER DETAIL MODAL
+// ─────────────────────────────────────────
+function openCustomerDetail(id) {
+  const c = allCustomers.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('cdTitle').textContent = c.name;
+  document.getElementById('cdSub').textContent = (c.type||'') + (c.phone ? ' · ' + c.phone : '');
+  const custBids = allBids.filter(b => b.customerId === id);
+  document.getElementById('cdBody').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field"><label>Type</label><value>${c.type||'—'}</value></div>
+      <div class="modal-field"><label>Phone</label><value>${c.phone||'—'}</value></div>
+      <div class="modal-field" style="grid-column:1/-1"><label>Address</label><value>${c.address||'—'}</value></div>
+      ${c.notes ? `<div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>${c.notes}</value></div>` : ''}
+    </div>
+    <div class="modal-section-label">Contacts (${c.contacts.length})</div>
+    ${c.contacts.map(ct=>`<div class="mix-row" style="flex-wrap:wrap;gap:8px">
+      <div><div style="font-size:13px;font-weight:600;color:var(--white)">${ct.name}</div><div style="font-size:11px;color:var(--muted)">${ct.email||''}</div></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+        <span class="role-badge ${roleClass(ct.role)}">${roleLabel(ct.role)}</span>
+        <button class="icon-btn" onclick="window.location='mailto:${ct.email}'" title="Email">✉</button>
+        <button class="icon-btn" onclick="window.location='tel:${ct.phone}'" title="Call">📞</button>
+      </div>
+    </div>`).join('')}
+    <div class="modal-section-label">Bids (${custBids.length})</div>
+    ${custBids.length ? custBids.map(b=>`<div class="mix-row" style="cursor:pointer" onclick="closeModal('customerDetailModal');openBidModal('${b.id}')">
+      <span style="font-size:12px;font-weight:600;color:var(--white)">${b.project}</span>
+      <span><span class="sdot ${b.status}"></span><span style="font-size:11px;color:var(--muted)">${statusLabel(b.status)}</span></span>
+      <span style="font-size:12px;color:var(--gold-light)">${fmtRev(b.revenue)}</span>
+    </div>`).join('') : '<div style="font-size:12px;color:var(--muted);padding:8px">No bids yet</div>'}
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('customerDetailModal')">Close</button>
+      <button class="btn-save" onclick="closeModal('customerDetailModal');openEditCustomerModal('${id}')">Edit Customer</button>
+    </div>`;
+  openModal('customerDetailModal');
+}
+
+// ─────────────────────────────────────────
+// ADD / EDIT CUSTOMER MODAL
+// ─────────────────────────────────────────
+function openAddCustomerModal() {
+  editingCustomerId = null;
+  editingCustomerContacts = [];
+  contactRowCount = 0;
+  document.getElementById('cmTitle').textContent = 'New Customer';
+  document.getElementById('cm_name').value = '';
+  document.getElementById('cm_type').value = 'Commercial';
+  document.getElementById('cm_phone').value = '';
+  document.getElementById('cm_address').value = '';
+  document.getElementById('cm_notes').value = '';
+  document.getElementById('cmContactsList').innerHTML = '';
+  openModal('customerModal');
+}
+
+function openEditCustomerModal(id) {
+  const c = allCustomers.find(x => x.id === id);
+  if (!c) return;
+  editingCustomerId = id;
+  editingCustomerContacts = c.contacts.map(ct => ({...ct}));
+  contactRowCount = 0;
+  document.getElementById('cmTitle').textContent = 'Edit Customer';
+  document.getElementById('cm_name').value = c.name || '';
+  document.getElementById('cm_type').value = c.type || 'Commercial';
+  document.getElementById('cm_phone').value = c.phone || '';
+  document.getElementById('cm_address').value = c.address || '';
+  document.getElementById('cm_notes').value = c.notes || '';
+  document.getElementById('cmContactsList').innerHTML = '';
+  c.contacts.forEach(ct => addContactRow(ct));
+  openModal('customerModal');
+}
+
+function addContactRow(ct) {
+  const i = contactRowCount++;
+  const roles = ['Estimator','Superintendent','Project Manager','Executive','Other'];
+  const div = document.createElement('div');
+  div.id = 'cr_' + i;
+  div.style.cssText = 'background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:12px;margin-bottom:8px';
+  div.innerHTML = `
+    <div class="form-grid" style="margin-bottom:8px">
+      <div class="form-field" style="margin-bottom:0"><label>Name</label><input type="text" class="form-input" id="crn_${i}" value="${ct?.name||''}" placeholder="Contact name..." /></div>
+      <div class="form-field" style="margin-bottom:0"><label>Role</label>
+        <select class="form-select" id="crr_${i}">
+          ${roles.map(r=>`<option value="${r.toLowerCase().replace(' ','_')}" ${(ct?.role||'').toLowerCase()===r.toLowerCase()||ct?.role?.toLowerCase()===r.toLowerCase().replace(' manager','').replace(' ','_')?'selected':''}>${r}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-field" style="margin-bottom:0"><label>Email</label><input type="email" class="form-input" id="cre_${i}" value="${ct?.email||''}" placeholder="email@company.com" /></div>
+      <div class="form-field" style="margin-bottom:0"><label>Phone</label><input type="text" class="form-input" id="crp_${i}" value="${ct?.phone||''}" placeholder="555-000-0000" /></div>
+    </div>
+    <button onclick="document.getElementById('cr_${i}').remove()" style="background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;margin-top:8px">✕ Remove contact</button>`;
+  document.getElementById('cmContactsList').appendChild(div);
+}
+
+function saveCustomer() {
+  const name = document.getElementById('cm_name').value.trim();
+  if (!name) { alert('Company name required'); return; }
+  const contacts = [];
+  document.querySelectorAll('[id^="cr_"]').forEach(row => {
+    const i = row.id.replace('cr_','');
+    const n = document.getElementById('crn_'+i)?.value?.trim();
+    if (n) contacts.push({
+      id: 'ct_' + Date.now() + '_' + i,
+      name: n,
+      role: document.getElementById('crr_'+i)?.value || 'other',
+      email: document.getElementById('cre_'+i)?.value?.trim() || '',
+      phone: document.getElementById('crp_'+i)?.value?.trim() || '',
+    });
+  });
+  if (editingCustomerId) {
+    const c = allCustomers.find(x => x.id === editingCustomerId);
+    if (c) { c.name = name; c.type = document.getElementById('cm_type').value; c.phone = document.getElementById('cm_phone').value; c.address = document.getElementById('cm_address').value; c.notes = document.getElementById('cm_notes').value; c.contacts = contacts; }
+  } else {
+    allCustomers.push({ id: 'c_' + Date.now(), name, type: document.getElementById('cm_type').value, phone: document.getElementById('cm_phone').value, address: document.getElementById('cm_address').value, notes: document.getElementById('cm_notes').value, contacts });
+  }
+  closeModal('customerModal');
+  render();
+}
+
+// ─────────────────────────────────────────
+// ADD BID MODAL
+// ─────────────────────────────────────────
+function openAddBidModal() {
+  // Populate customer dropdown
+  const sel = document.getElementById('nb_customer');
+  sel.innerHTML = '<option value="">Select company...</option>' + allCustomers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('nb_contact').innerHTML = '<option value="">Select contact...</option>';
+  // Set default followup to 3 days from now
+  const fu = new Date(); fu.setDate(fu.getDate()+3);
+  document.getElementById('nb_followup').value = fu.toISOString().split('T')[0];
+  ['nb_project','nb_address','nb_yards','nb_revenue','nb_notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('nb_rep').value = 'William';
+  document.getElementById('nb_status').value = 'pending';
+  openModal('addBidModal');
+}
+
+function populateContactsFromCustomer(custSelId, contactSelId) {
+  const custId = document.getElementById(custSelId).value;
+  const c = allCustomers.find(x => x.id === custId);
+  const sel = document.getElementById(contactSelId);
+  sel.innerHTML = '<option value="">Select contact...</option>';
+  if (c) c.contacts.forEach(ct => { const opt = document.createElement('option'); opt.value = ct.id; opt.textContent = ct.name + ' (' + roleLabel(ct.role) + ')'; sel.appendChild(opt); });
+}
+
+function saveNewBid() {
+  const project = document.getElementById('nb_project').value.trim();
+  if (!project) { alert('Project name required'); return; }
+  const custId = document.getElementById('nb_customer').value;
+  const contactId = document.getElementById('nb_contact').value;
+  const c = allCustomers.find(x => x.id === custId);
+  const ct = c?.contacts.find(x => x.id === contactId);
+  const bid = {
+    id: 'bid_' + Date.now(),
+    rep: document.getElementById('nb_rep').value,
+    status: document.getElementById('nb_status').value,
+    customerId: custId, contactId,
+    project,
+    client: c?.name || '',
+    contact: ct?.name || '',
+    phone: ct?.phone || '',
+    email: ct?.email || '',
+    address: document.getElementById('nb_address').value,
+    yards: parseFloat(document.getElementById('nb_yards').value) || null,
+    revenue: parseFloat(document.getElementById('nb_revenue').value) || null,
+    bid_date: new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}),
+    expiry: (() => { const e = new Date(); e.setDate(e.getDate()+60); return e.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}); })(),
+    followup_date: document.getElementById('nb_followup').value,
+    followup_note: document.getElementById('nb_notes').value,
+    mixes: [], notes: document.getElementById('nb_notes').value,
+    type: document.getElementById('nb_type').value,
+  };
+  allBids.unshift(bid);
+  closeModal('addBidModal');
+  render();
+}
+
+// ─────────────────────────────────────────
+// MODAL UTILS
+// ─────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); if (id==='bidModal') selectedBidId=null; }
+function closeOnOverlay(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
 loadLiveBids();
 render();
 </script>
