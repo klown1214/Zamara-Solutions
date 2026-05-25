@@ -898,27 +898,44 @@ function getBasePrice(i) {
 function findBestMix(psi, airEntrained, cementitious, projType, flags) {
   flags = flags || {};
   const isComm = projType !== 'Residential';
-  // Force TXDOT type if flagged
   const isTxdot = flags.txdot_class || (projType && projType.toUpperCase().includes('TXDOT'));
-  // Force High Early if early strength required
   const isHighEarly = flags.early_strength || false;
-  
-  let candidates = MIXES.filter(m => {
+  const noFlyAsh = flags.no_fly_ash || false;
+
+  // Type filter
+  function typeOk(m) {
     if (isTxdot) return m.type === 'TXDOT';
     if (isHighEarly) return m.type === 'Commercial HIGHEARLY';
-    const typeOk = isComm ? (m.type === 'Commercial' || m.type === 'Commercial HIGHEARLY') : m.type === 'Residential';
-    const psiOk = m.psi >= psi && m.psi <= psi + 200;
-    const airOk = airEntrained ? m.air === 'AEA' : m.air === 'NA';
-    // Prefer 100% cement if fly ash prohibited
-    const cementOk = flags.no_fly_ash ? m.cementitious === '100% Cem' : true;
-    return typeOk && psiOk && airOk && cementOk;
-  });
-  if (!candidates.length) candidates = MIXES.filter(m => {
-    const psiOk = m.psi >= psi && m.psi <= psi + 300;
-    return isTxdot ? m.type === 'TXDOT' : psiOk;
-  });
-  if (!candidates.length) candidates = MIXES.filter(m => Math.abs(m.psi - psi) < 500);
-  return candidates[0] || null;
+    if (!isComm) return m.type === 'Residential';
+    return m.type === 'Commercial' || m.type === 'Commercial HIGHEARLY';
+  }
+  function cementOk(m) { return noFlyAsh ? m.cementitious === '100% Cem' : true; }
+
+  // PASS 1: Exact PSI + correct air + correct type + cement
+  let candidates = MIXES.filter(m => typeOk(m) && m.psi === psi && (airEntrained ? m.air === 'AEA' : m.air === 'NA') && cementOk(m));
+  if (candidates.length) return candidates[0];
+
+  // PASS 2: Exact PSI + correct type (relax air — plans may not specify)
+  candidates = MIXES.filter(m => typeOk(m) && m.psi === psi && cementOk(m));
+  if (candidates.length) return candidates[0];
+
+  // PASS 3: PSI within +100 (e.g. 3500 matches 3600) + correct type + air
+  candidates = MIXES.filter(m => typeOk(m) && m.psi >= psi && m.psi <= psi + 100 && (airEntrained ? m.air === 'AEA' : m.air === 'NA') && cementOk(m));
+  if (candidates.length) return candidates[0];
+
+  // PASS 4: PSI within +100 + correct type (relax air)
+  candidates = MIXES.filter(m => typeOk(m) && m.psi >= psi && m.psi <= psi + 100 && cementOk(m));
+  if (candidates.length) return candidates[0];
+
+  // PASS 5: Any type, exact PSI (last resort before giving up on type)
+  candidates = MIXES.filter(m => m.psi === psi);
+  if (candidates.length) return candidates[0];
+
+  // PASS 6: Closest PSI match (absolute last resort — never go lower than requested)
+  candidates = MIXES.filter(m => m.psi >= psi).sort((a,b) => a.psi - b.psi);
+  if (candidates.length) return candidates[0];
+
+  return null;
 }
 
 function renderResults(d) {
