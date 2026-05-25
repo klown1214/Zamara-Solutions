@@ -586,6 +586,7 @@ input[type=file] { display: none; }
 
         <div class="action-row">
           <button class="btn-outline" onclick="resetTool()">↺ New Analysis</button>
+          <a href="crm.html" class="btn-outline" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">📊 View CRM</a>
           <button class="btn-gold" onclick="exportQuote()">↓ Export Quote Draft</button>
         </div>
 
@@ -1114,6 +1115,39 @@ function renderResults(d) {
     </div>
   `;
   document.getElementById('rawPre').textContent = d._raw || JSON.stringify(d, null, 2);
+
+  // Auto-write to CRM localStorage so live bids appear in CRM dashboard
+  try {
+    const crmEntry = {
+      id: 'live_' + Date.now(),
+      live: true,
+      rep: 'William',
+      status: 'pending',
+      project: getFieldVal('fi_project_name', d.project_name) || 'Unnamed Project',
+      client: getFieldVal('fi_client', d.client_name) || '—',
+      contact: getFieldVal('fi_contact', d.client_contact) || '—',
+      phone: getFieldVal('fi_phone', d.client_phone) || '—',
+      email: getFieldVal('fi_email', d.client_email) || '—',
+      address: getFieldVal('fi_project_address', d.project_address) || '—',
+      yards: totalYards || null,
+      revenue: rev || null,
+      bid_date: new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}),
+      expiry: (() => { const e = new Date(); e.setDate(e.getDate()+60); return e.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}); })(),
+      followup: (() => { const f = new Date(); f.setDate(f.getDate()+3); return f.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); })(),
+      mixes: d.concrete_requirements.map((r,i) => ({
+        code: document.getElementById('code_'+i) ? document.getElementById('code_'+i).value : (r.suggested_jck_code||''),
+        app: document.getElementById('app_'+i) ? document.getElementById('app_'+i).value : (r.application||''),
+        vol: document.getElementById('vol_'+i) ? (parseFloat(document.getElementById('vol_'+i).value)||null) : (r.volume_cy||null)
+      })),
+      notes: d.summary || '',
+      type: getFieldVal('fi_project_type', d.project_type) || 'Commercial',
+    };
+    const existing = JSON.parse(localStorage.getItem('zamara_crm_entries') || '[]');
+    existing.unshift(crmEntry);
+    // Keep last 20 live entries
+    localStorage.setItem('zamara_crm_entries', JSON.stringify(existing.slice(0,20)));
+    console.log('CRM entry saved:', crmEntry.project);
+  } catch(e) { console.log('CRM write skipped:', e.message); }
 }
 
 function getBidExpiry(bidDate) {
@@ -1354,5 +1388,3 @@ table {width:100%;border-collapse:collapse}
 </script>
 </body>
 </html>
- 
- 
