@@ -998,11 +998,12 @@ function renderContacts() {
   const myCustomers = getMyCustomers();
   const filterBar = document.getElementById('contactCompanyFilters');
   if (filterBar) {
-    filterBar.innerHTML = '<button class="filter-btn ' + (currentContactFilter==='all'?'active':'') + '" onclick="filterContacts('all',this)">All Companies</button>'
-      + myCustomers.map(c =>
-          '<button class="filter-btn ' + (currentContactFilter===c.id?'active':'') + '" onclick="filterContacts('' + c.id + '',this)">' + c.name + '</button>'
-        ).join('');
-  }
+    let btns = '<button class="filter-btn' + (currentContactFilter==="all" ? " active" : "") + '" onclick="filterContacts(\'all\',this)">All Companies</button>';
+    myCustomers.forEach(c => {
+      btns += '<button class="filter-btn' + (currentContactFilter===c.id ? " active" : "") + '" onclick="filterContacts(\''+c.id+'\',this)">'+c.name+'</button>';
+    });
+    filterBar.innerHTML = btns;
+  } }
 
   // Build contacts list
   const tbody = document.getElementById('contactsBody');
@@ -1378,7 +1379,11 @@ function closeOnOverlay(e, id) { if (e.target === document.getElementById(id)) c
 // ─────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────
+// Always re-seed from dummy data so demo data is always present
+allBids = [...DUMMY_BIDS];
+allCustomers = [...DUMMY_CUSTOMERS];
 loadLiveBids();
+syncCustomers();
 render();
 </script>
 </body>
