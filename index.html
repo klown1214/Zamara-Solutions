@@ -370,7 +370,7 @@ input[type=file] { display: none; }
       <span id="statusText">Upload documents</span>
     </div>
     <div class="powered-tag">Zamara Solutions</div>
-    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.11</div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.13</div>
   </div>
 </header>
 
@@ -945,14 +945,6 @@ function renderResults(d) {
   // Stat cards update live as fields are edited
   document.getElementById('sumProject').textContent = (getFieldVal('fi_project_name',d.project_name)||'—').substring(0,22);
   document.getElementById('sumClient').textContent = getFieldVal('fi_client',d.client_name) || '—';
-  // Re-sync on any field edit
-  ['fi_project_name','fi_client'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', () => {
-      document.getElementById('sumProject').textContent = (document.getElementById('fi_project_name')?.value || d.project_name || '—').substring(0,22);
-      document.getElementById('sumClient').textContent = document.getElementById('fi_client')?.value || d.client_name || '—';
-    });
-  });
   let totalYards = d.total_yards_stated;
   let yardsEstimated = false;
   if (!totalYards) {
@@ -971,10 +963,19 @@ function renderResults(d) {
   document.getElementById('sumRevenue').textContent = rev > 0 ? '$' + Math.round(rev).toLocaleString() : 'TBD';
   const tierLabels = {price_aaa:'Tier AAA',price_a:'Tier A',price_b:'Tier B',price_c:'Tier C',price_d:'Tier D'};
   document.getElementById('sumTier').textContent = tierLabels[tier] + ' pricing';
-  // Render editable project info fields
-  // ai-filled class shows gold border on AI-populated fields
+  // Render editable project info fields with CRM-linked dropdowns
   const aiVal = (v) => (v && v !== '—') ? v : '';
   const aiClass = (v) => (v && v !== '—') ? ' ai-filled' : '';
+
+  // Load customers from CRM localStorage
+  let crmCustomers = [];
+  try { crmCustomers = JSON.parse(localStorage.getItem('zamara_customers') || '[]'); } catch(e) {}
+
+  // Build customer options
+  const custOptions = crmCustomers.map(c =>
+    `<option value="${c.id}" data-name="${c.name.replace(/"/g,'&quot;')}">${c.name}</option>`
+  ).join('');
+
   document.getElementById('projectInfo').innerHTML = `
     <div style="grid-column:1/-1">
       <div class="quote-num-row">
@@ -983,24 +984,39 @@ function renderResults(d) {
       </div>
     </div>
     <div class="info-edit-field">
-      <label>Client / Company</label>
-      <input class="info-edit-input${aiClass(d.client_name)}" id="fi_client" type="text"
-        value="${aiVal(d.client_name)}" placeholder="Company name..." />
+      <label>Customer / Company <span style="color:var(--gold);font-size:9px;margin-left:4px">← SELECT FROM CRM</span></label>
+      <div style="display:flex;gap:6px">
+        <select class="info-edit-input" id="fi_customer_id" onchange="onCustomerSelect()" style="flex:1;cursor:pointer">
+          <option value="">-- Select company --</option>
+          ${custOptions}
+          <option value="__new__">+ Add New Customer...</option>
+        </select>
+      </div>
+      <input class="info-edit-input" id="fi_client" type="text"
+        value="${aiVal(d.client_name)}" placeholder="Or type company name..."
+        style="margin-top:6px;${aiVal(d.client_name)?'border-color:var(--gold-dim)':''}" />
     </div>
     <div class="info-edit-field">
-      <label>Attention To (Contact)</label>
-      <input class="info-edit-input${aiClass(d.client_contact)}" id="fi_contact" type="text"
-        value="${aiVal(d.client_contact)}" placeholder="Contact name..." />
+      <label>Contact <span style="color:var(--gold);font-size:9px;margin-left:4px">← SELECT FROM CRM</span></label>
+      <div style="display:flex;gap:6px">
+        <select class="info-edit-input" id="fi_contact_id" onchange="onContactSelect()" style="flex:1;cursor:pointer">
+          <option value="">-- Select contact --</option>
+          <option value="__new__">+ Add New Contact...</option>
+        </select>
+      </div>
+      <input class="info-edit-input" id="fi_contact" type="text"
+        value="${aiVal(d.client_contact)}" placeholder="Or type contact name..."
+        style="margin-top:6px" />
     </div>
     <div class="info-edit-field">
       <label>Phone</label>
       <input class="info-edit-input${aiClass(d.client_phone)}" id="fi_phone" type="text"
-        value="${aiVal(d.client_phone)}" placeholder="Phone number..." />
+        value="${aiVal(d.client_phone)}" placeholder="Auto-fills from contact..." />
     </div>
     <div class="info-edit-field">
       <label>Email</label>
       <input class="info-edit-input${aiClass(d.client_email)}" id="fi_email" type="email"
-        value="${aiVal(d.client_email)}" placeholder="Email address..." />
+        value="${aiVal(d.client_email)}" placeholder="Auto-fills from contact..." />
     </div>
     <div class="info-edit-field" style="grid-column:1/-1">
       <label>Legal Address</label>
@@ -1023,8 +1039,12 @@ function renderResults(d) {
     </div>
     <div class="info-edit-field">
       <label>Project Type</label>
-      <input class="info-edit-input${aiClass(d.project_type)}" id="fi_project_type" type="text"
-        value="${aiVal(d.project_type)}" placeholder="Commercial / Residential / TXDOT..." />
+      <select class="info-edit-input" id="fi_project_type" style="cursor:pointer">
+        <option value="Commercial" ${(d.project_type||'Commercial')==='Commercial'?'selected':''}>Commercial</option>
+        <option value="Residential" ${d.project_type==='Residential'?'selected':''}>Residential</option>
+        <option value="TXDOT" ${d.project_type==='TXDOT'?'selected':''}>TXDOT</option>
+        <option value="Mixed" ${d.project_type==='Mixed'?'selected':''}>Mixed</option>
+      </select>
     </div>
     <div class="info-edit-field">
       <label>Payment Terms</label>
@@ -1037,6 +1057,15 @@ function renderResults(d) {
         value="${aiVal(d.bond_surety)}" placeholder="Bond # or None..." />
     </div>
   `;
+
+  // Stat card live sync
+  ['fi_project_name','fi_client'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', () => {
+      document.getElementById('sumProject').textContent = (document.getElementById('fi_project_name')?.value || d.project_name || '—').substring(0,22);
+      document.getElementById('sumClient').textContent = document.getElementById('fi_client')?.value || d.client_name || '—';
+    });
+  });
   const tbody = document.getElementById('mixRows');
   tbody.innerHTML = '';
   let grandYards = 0, grandRev = 0;
@@ -1211,6 +1240,9 @@ function switchTab(name, btn) {
   if (btn) btn.classList.add('active');
 }
 
+// Init CRM customers on load
+try { initCRMCustomers(); } catch(e) {}
+
 function resetTool() {
   uploadedFiles = []; analysisData = null;
   document.getElementById('results').style.display = 'none';
@@ -1221,6 +1253,156 @@ function resetTool() {
   uploadZone.classList.remove('loaded');
   fileInput.value = '';
   checkReady();
+}
+
+// ── CRM CUSTOMER/CONTACT HELPERS ──
+
+function onCustomerSelect() {
+  const sel = document.getElementById('fi_customer_id');
+  const val = sel.value;
+  if (val === '__new__') {
+    sel.value = '';
+    openAddCustomerInline();
+    return;
+  }
+  if (!val) return;
+  // Load customers from localStorage
+  let customers = [];
+  try { customers = JSON.parse(localStorage.getItem('zamara_customers') || '[]'); } catch(e) {}
+  const c = customers.find(x => x.id === val);
+  if (!c) return;
+  // Set company name text field
+  document.getElementById('fi_client').value = c.name;
+  document.getElementById('sumClient').textContent = c.name;
+  // Set legal address if available
+  if (c.address) document.getElementById('fi_legal_address').value = c.address;
+  // Populate contact dropdown
+  const contactSel = document.getElementById('fi_contact_id');
+  contactSel.innerHTML = '<option value="">-- Select contact --</option>';
+  (c.contacts || []).forEach(ct => {
+    const opt = document.createElement('option');
+    opt.value = ct.id;
+    opt.textContent = ct.name + ' (' + (ct.role||'') + ')';
+    opt.dataset.phone = ct.phone || '';
+    opt.dataset.email = ct.email || '';
+    contactSel.appendChild(opt);
+  });
+  const addOpt = document.createElement('option');
+  addOpt.value = '__new__';
+  addOpt.textContent = '+ Add New Contact...';
+  contactSel.appendChild(addOpt);
+}
+
+function onContactSelect() {
+  const sel = document.getElementById('fi_contact_id');
+  const val = sel.value;
+  if (val === '__new__') {
+    sel.value = '';
+    openAddContactInline();
+    return;
+  }
+  if (!val) return;
+  const opt = sel.options[sel.selectedIndex];
+  document.getElementById('fi_contact').value = opt.text.replace(/\s*\(.*\)$/, '');
+  if (opt.dataset.phone) document.getElementById('fi_phone').value = opt.dataset.phone;
+  if (opt.dataset.email) document.getElementById('fi_email').value = opt.dataset.email;
+}
+
+function openAddCustomerInline() {
+  const name = prompt('New company name:');
+  if (!name) return;
+  const phone = prompt('Company phone (optional):') || '';
+  const address = prompt('Company address (optional):') || '';
+  let customers = [];
+  try { customers = JSON.parse(localStorage.getItem('zamara_customers') || '[]'); } catch(e) {}
+  const newCust = { id: 'c_' + Date.now(), name: name.trim(), type: 'Commercial', phone, address, contacts: [], notes: '' };
+  customers.push(newCust);
+  localStorage.setItem('zamara_customers', JSON.stringify(customers));
+  // Refresh the dropdown
+  const sel = document.getElementById('fi_customer_id');
+  const opt = document.createElement('option');
+  opt.value = newCust.id;
+  opt.textContent = newCust.name;
+  sel.insertBefore(opt, sel.lastElementChild);
+  sel.value = newCust.id;
+  document.getElementById('fi_client').value = newCust.name;
+  syncCustomersToCRM(customers);
+  alert('Customer "' + newCust.name + '" added to CRM.');
+}
+
+function openAddContactInline() {
+  const custId = document.getElementById('fi_customer_id').value;
+  if (!custId) { alert('Select a company first'); return; }
+  const name = prompt('Contact name:');
+  if (!name) return;
+  const roles = ['Estimator', 'Superintendent', 'Project Manager', 'Executive', 'Other'];
+  const role = prompt('Role (Estimator/Superintendent/Project Manager/Executive/Other):') || 'Other';
+  const phone = prompt('Phone:') || '';
+  const email = prompt('Email:') || '';
+  let customers = [];
+  try { customers = JSON.parse(localStorage.getItem('zamara_customers') || '[]'); } catch(e) {}
+  const c = customers.find(x => x.id === custId);
+  if (!c) return;
+  const newContact = { id: 'ct_' + Date.now(), name: name.trim(), role: role.trim().toLowerCase(), phone, email };
+  c.contacts.push(newContact);
+  localStorage.setItem('zamara_customers', JSON.stringify(customers));
+  // Add to dropdown
+  const sel = document.getElementById('fi_contact_id');
+  const opt = document.createElement('option');
+  opt.value = newContact.id;
+  opt.textContent = newContact.name + ' (' + newContact.role + ')';
+  opt.dataset.phone = phone;
+  opt.dataset.email = email;
+  sel.insertBefore(opt, sel.lastElementChild);
+  sel.value = newContact.id;
+  document.getElementById('fi_contact').value = name.trim();
+  if (phone) document.getElementById('fi_phone').value = phone;
+  if (email) document.getElementById('fi_email').value = email;
+  syncCustomersToCRM(customers);
+  alert('Contact "' + name + '" added to ' + c.name);
+}
+
+function syncCustomersToCRM(customers) {
+  // Write customers to localStorage key that crm.html reads
+  localStorage.setItem('zamara_customers', JSON.stringify(customers));
+}
+
+// Load CRM customers into localStorage on page load if not present
+function initCRMCustomers() {
+  const existing = localStorage.getItem('zamara_customers');
+  if (!existing || existing === '[]') {
+    // Seed with the same dummy customers from CRM
+    const seed = [
+      { id:'c1', name:'Beam Concrete', type:'Commercial', phone:'469-742-0094', address:'640 Central Expressway, Melissa, TX', notes:'', contacts:[
+        {id:'ct1',name:'Ryan Smith',role:'estimator',phone:'469-742-0094',email:'rsmith@beamconcrete.com'},
+        {id:'ct2',name:'David Lee',role:'superintendent',phone:'469-742-0101',email:'dlee@beamconcrete.com'},
+      ]},
+      { id:'c2', name:'Standridge Concrete', type:'Commercial', phone:'972-555-0182', address:'Anna, TX', notes:'', contacts:[
+        {id:'ct3',name:'Jake Standridge',role:'executive',phone:'972-555-0182',email:'jstandridge@standridgeconcrete.com'},
+      ]},
+      { id:'c3', name:'Turner Construction', type:'Commercial', phone:'972-555-0234', address:'1450 Ridge Rd, Rockwall, TX', notes:'', contacts:[
+        {id:'ct4',name:'Brad Turner',role:'pm',phone:'972-555-0234',email:'bturner@turnerconstruction.com'},
+        {id:'ct5',name:'Sara Kim',role:'estimator',phone:'972-555-0235',email:'skim@turnerconstruction.com'},
+      ]},
+      { id:'c4', name:'Forney Industrial LLC', type:'Commercial', phone:'972-555-0311', address:'US-80, Forney, TX', notes:'', contacts:[
+        {id:'ct6',name:'Mike Garrett',role:'pm',phone:'972-555-0311',email:'mgmt@forneyind.com'},
+      ]},
+      { id:'c5', name:'Benchmark Civil', type:'Commercial', phone:'903-555-0198', address:'Kaufman, TX', notes:'', contacts:[
+        {id:'ct7',name:'Ricardo Diaz',role:'estimator',phone:'903-555-0198',email:'rdiaz@benchmarkcivil.com'},
+      ]},
+      { id:'c6', name:'DR Horton', type:'Residential', phone:'469-555-0277', address:'Royse City, TX', notes:'', contacts:[
+        {id:'ct8',name:'Lisa Park',role:'pm',phone:'469-555-0277',email:'drh.tx@drhorton.com'},
+        {id:'ct9',name:'Tom Reed',role:'superintendent',phone:'469-555-0278',email:'treed@drhorton.com'},
+      ]},
+      { id:'c7', name:'Prologis', type:'Commercial', phone:'214-555-0422', address:'Seagoville, TX', notes:'', contacts:[
+        {id:'ct10',name:'Tom Wheeler',role:'pm',phone:'214-555-0422',email:'txops@prologis.com'},
+      ]},
+      { id:'c8', name:'StorRight LLC', type:'Commercial', phone:'972-555-0511', address:'Mesquite, TX', notes:'', contacts:[
+        {id:'ct11',name:'Phil Cruz',role:'executive',phone:'972-555-0511',email:'dev@storright.com'},
+      ]},
+    ];
+    localStorage.setItem('zamara_customers', JSON.stringify(seed));
+  }
 }
 
 function getFieldVal(id, fallback) {

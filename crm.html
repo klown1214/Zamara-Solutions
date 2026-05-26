@@ -612,6 +612,36 @@ function loadLiveBids() {
   } catch(err) {}
 }
 
+// Sync customers from shared localStorage key (written by both CRM and Bid Analyzer)
+function syncCustomers() {
+  try {
+    const stored = localStorage.getItem('zamara_customers');
+    if (stored) {
+      const imported = JSON.parse(stored);
+      imported.forEach(c => {
+        if (!allCustomers.find(x => x.id === c.id)) {
+          allCustomers.push(c);
+        } else {
+          // Update existing with any new contacts
+          const existing = allCustomers.find(x => x.id === c.id);
+          c.contacts.forEach(ct => {
+            if (!existing.contacts.find(x => x.id === ct.id)) {
+              existing.contacts.push(ct);
+            }
+          });
+        }
+      });
+    }
+  } catch(err) {}
+}
+
+// Save customers back to shared localStorage
+function saveCustomersToStorage() {
+  try {
+    localStorage.setItem('zamara_customers', JSON.stringify(allCustomers));
+  } catch(err) {}
+}
+
 // ─────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────
@@ -999,6 +1029,7 @@ function saveCustomer() {
     allCustomers.push({ id: 'c_' + Date.now(), name, type: document.getElementById('cm_type').value, phone: document.getElementById('cm_phone').value, address: document.getElementById('cm_address').value, notes: document.getElementById('cm_notes').value, contacts });
   }
   closeModal('customerModal');
+  saveCustomersToStorage();
   render();
 }
 
