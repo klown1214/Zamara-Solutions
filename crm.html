@@ -6,234 +6,193 @@
 <title>JCK Batch Plant — Sales CRM | Zamara Solutions</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold: #D4910A; --gold-light: #F0A820; --gold-dim: #7A5200;
-  --dark: #0E0E0C; --dark-2: #161614; --dark-3: #1E1E1B;
-  --dark-4: #272724; --dark-5: #323230;
-  --mid: #4A4A46; --muted: #7A7A74; --dim: #A8A8A0;
-  --light: #D8D8D0; --white: #F4F4EE;
-  --green: #27AE60; --green-dim: #1A6B3C;
-  --red: #C0392B; --blue: #2980B9; --purple: #8E44AD;
-  --radius: 8px; --radius-lg: 12px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--light); min-height: 100vh; font-size: 14px; }
-
-/* HEADER */
-.header { background: var(--dark-2); border-bottom: 1px solid var(--dark-5); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-.header-left { display: flex; align-items: center; gap: 16px; }
-.header-divider { width: 1px; height: 28px; background: var(--dark-5); }
-.header-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--white); letter-spacing: 0.5px; text-transform: uppercase; }
-.header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.header-right { display: flex; align-items: center; gap: 10px; }
-.nav-btn { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-.nav-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
-.nav-btn.active { background: rgba(212,145,10,0.1); border-color: var(--gold); color: var(--gold-light); }
-.powered-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gold-dim); border: 1px solid var(--gold-dim); padding: 4px 10px; border-radius: 4px; }
-
-/* PAGE TABS */
-.page-tabs { background: var(--dark-2); border-bottom: 1px solid var(--dark-5); padding: 0 32px; display: flex; gap: 0; }
-.page-tab { padding: 12px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; margin-bottom: -1px; font-family: 'Barlow', sans-serif; }
-.page-tab:hover { color: var(--light); }
-.page-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
-
-/* STAT CARDS */
-.stats-wrap { padding: 20px 32px 0; display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
-.stat-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 16px 18px; position: relative; overflow: hidden; }
-.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--dark-5); }
-.stat-card.gold::before { background: var(--gold); }
-.stat-card.green::before { background: var(--green); }
-.stat-card.blue::before { background: var(--blue); }
-.stat-card.red::before { background: var(--red); }
-.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
-.stat-value { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; color: var(--white); line-height: 1; }
-.stat-value.gold { color: var(--gold-light); }
-.stat-value.green { color: #58D68D; }
-.stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
-
-/* TOOLBAR */
-.toolbar { padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.toolbar-left { display: flex; align-items: center; gap: 10px; }
-.toolbar-right { display: flex; align-items: center; gap: 10px; }
-.filter-btn { background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; }
-.filter-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
-.filter-btn.active { background: rgba(212,145,10,0.12); border-color: var(--gold); color: var(--gold-light); }
-.btn-add { background: var(--gold); border: none; border-radius: var(--radius); padding: 8px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--dark); cursor: pointer; font-family: 'Barlow Condensed', sans-serif; transition: all 0.2s; }
-.btn-add:hover { background: var(--gold-light); }
-.view-toggle { display: flex; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); overflow: hidden; }
-.view-btn { padding: 7px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); cursor: pointer; transition: all 0.2s; border: none; background: transparent; font-family: 'Barlow', sans-serif; }
-.view-btn.active { background: var(--dark-5); color: var(--white); }
-
-/* PIPELINE */
-.pipeline { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; align-items: start; }
-.col-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 8px; border-bottom: 2px solid transparent; }
-.col-header.pending { background: rgba(74,74,70,0.3); border-color: var(--mid); }
-.col-header.quoted { background: rgba(41,128,185,0.1); border-color: var(--blue); }
-.col-header.followup { background: rgba(212,145,10,0.1); border-color: var(--gold); }
-.col-header.won { background: rgba(39,174,96,0.1); border-color: var(--green); }
-.col-header.lost { background: rgba(192,57,43,0.08); border-color: var(--red); }
-.col-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); }
-.col-count { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px; background: var(--dark-4); color: var(--muted); }
-.col-cards { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
-.empty-col { padding: 16px; text-align: center; font-size: 11px; color: var(--mid); border: 1px dashed var(--dark-5); border-radius: var(--radius); }
-
-/* BID CARD */
-.bid-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
-.bid-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
-.bid-card.william::before { background: var(--gold); }
-.bid-card.robby::before { background: var(--blue); }
-.bid-card.alex::before { background: var(--purple); }
-.bid-card.live::before { background: var(--green); }
-.bid-card:hover { border-color: var(--dark-4); background: var(--dark-3); transform: translateY(-1px); }
-.bid-project { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.3; }
-.bid-client { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-.bid-meta { display: flex; align-items: center; justify-content: space-between; }
-.bid-yards { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-light); }
-.bid-rev { font-size: 11px; color: var(--dim); }
-.rep-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 6px; border-radius: 3px; }
-.rep-tag.william { background: rgba(212,145,10,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
-.rep-tag.robby { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.4); }
-.rep-tag.alex { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.4); }
-.rep-tag.live { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.4); }
-.bid-date { font-size: 10px; color: var(--mid); margin-top: 6px; }
-.followup-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; margin-top: 6px; }
-.followup-flag.overdue { color: var(--red); }
-.followup-flag.today { color: var(--gold); }
-.followup-flag.upcoming { color: var(--dim); }
-.live-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4); color: #58D68D; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
-
-/* CUSTOMER VIEW */
-.customer-grid { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.customer-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: all 0.2s; }
-.customer-card:hover { border-color: var(--dark-4); transform: translateY(-1px); }
-.customer-head { padding: 14px 18px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: center; justify-content: space-between; }
-.customer-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); text-transform: uppercase; }
-.customer-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; }
-.customer-type.commercial { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.3); }
-.customer-type.residential { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.3); }
-.customer-type.txdot { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.3); }
-.customer-contacts { padding: 12px 18px; border-bottom: 1px solid var(--dark-5); }
-.contact-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--dark-4); }
-.contact-row:last-child { border-bottom: none; }
-.contact-name { font-size: 12px; font-weight: 500; color: var(--white); }
-.contact-role { font-size: 10px; color: var(--muted); }
-.contact-actions { display: flex; gap: 6px; }
-.icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 3px; transition: color 0.2s; }
-.icon-btn:hover { color: var(--gold-light); }
-.customer-stats { padding: 10px 18px; display: flex; gap: 16px; }
-.cust-stat label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; }
-.cust-stat value { font-size: 13px; font-weight: 600; color: var(--white); display: block; }
-.cust-stat value.gold { color: var(--gold-light); }
-
-/* MANAGER VIEW */
-.manager-grid { padding: 0 32px 32px; display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.rep-card { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); overflow: hidden; }
-.rep-card-head { padding: 16px 20px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: center; gap: 12px; }
-.rep-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; }
-.rep-avatar.william { background: rgba(212,145,10,0.2); color: var(--gold); border: 1px solid var(--gold-dim); }
-.rep-avatar.robby { background: rgba(41,128,185,0.2); color: #5DADE2; border: 1px solid rgba(41,128,185,0.4); }
-.rep-avatar.alex { background: rgba(142,68,173,0.2); color: #C39BD3; border: 1px solid rgba(142,68,173,0.4); }
-.rep-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); text-transform: uppercase; }
-.rep-title { font-size: 11px; color: var(--muted); }
-.rep-stats { padding: 14px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid var(--dark-5); }
-.rep-stat label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
-.rep-stat value { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); display: block; }
-.rep-stat value.gold { color: var(--gold-light); }
-.rep-stat value.green { color: #58D68D; }
-.rep-bids { padding: 12px 20px; }
-.rep-bid-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--dark-3); border-radius: 6px; margin-bottom: 5px; font-size: 11px; }
-.rep-bid-name { color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
-.sdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-right: 4px; }
-.sdot.pending { background: var(--mid); }
-.sdot.quoted { background: var(--blue); }
-.sdot.followup { background: var(--gold); }
-.sdot.won { background: var(--green); }
-.sdot.lost { background: var(--red); }
-
-/* MODALS */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); width: 100%; max-width: 680px; max-height: 88vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.2s; }
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-sm { max-width: 480px; }
-.modal-head { padding: 18px 24px; border-bottom: 1px solid var(--dark-5); display: flex; align-items: flex-start; justify-content: space-between; }
-.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); text-transform: uppercase; }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
-.modal-close:hover { color: var(--white); }
-.modal-body { padding: 20px 24px; }
-.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-.modal-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 3px; }
-.modal-field value { font-size: 13px; color: var(--white); font-weight: 500; display: block; }
-.modal-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--dark-5); }
-.mix-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--dark-3); border-radius: 6px; margin-bottom: 6px; }
-.mix-code { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-light); }
-.mix-app { font-size: 12px; color: var(--dim); }
-.mix-vol { font-size: 12px; font-weight: 600; color: var(--white); }
-
-/* FORM INPUTS */
-.form-field { margin-bottom: 14px; }
-.form-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: block; margin-bottom: 5px; }
-.form-input { width: 100%; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 9px 12px; font-size: 13px; color: var(--white); font-family: 'Barlow', sans-serif; transition: border-color 0.2s; }
-.form-input:focus { outline: none; border-color: var(--gold); }
-.form-input::placeholder { color: var(--mid); }
-.form-select { width: 100%; background: var(--dark-3); border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 9px 12px; font-size: 13px; color: var(--white); font-family: 'Barlow', sans-serif; cursor: pointer; }
-.form-select:focus { outline: none; border-color: var(--gold); }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-.btn-cancel { flex: 1; background: transparent; border: 1px solid var(--dark-5); border-radius: var(--radius); padding: 10px; font-size: 12px; font-weight: 600; color: var(--dim); cursor: pointer; font-family: 'Barlow', sans-serif; transition: all 0.2s; }
-.btn-cancel:hover { border-color: var(--red); color: var(--red); }
-.btn-save { flex: 2; background: var(--gold); border: none; border-radius: var(--radius); padding: 10px; font-size: 13px; font-weight: 700; color: var(--dark); cursor: pointer; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; transition: all 0.2s; }
-.btn-save:hover { background: var(--gold-light); }
-
-/* FOLLOWUP BADGE */
-.followup-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
-.followup-badge.overdue { background: rgba(192,57,43,0.12); color: #E74C3C; border: 1px solid rgba(192,57,43,0.3); }
-.followup-badge.today { background: rgba(212,145,10,0.12); color: var(--gold); border: 1px solid var(--gold-dim); }
-.followup-badge.upcoming { background: var(--dark-4); color: var(--dim); border: 1px solid var(--dark-5); }
-
-/* CONTACT BADGE */
-.role-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; padding: 2px 6px; border-radius: 3px; }
-.role-badge.estimator { background: rgba(41,128,185,0.15); color: #5DADE2; border: 1px solid rgba(41,128,185,0.3); }
-.role-badge.superintendent { background: rgba(39,174,96,0.15); color: #58D68D; border: 1px solid rgba(39,174,96,0.3); }
-.role-badge.pm { background: rgba(212,145,10,0.12); color: var(--gold); border: 1px solid var(--gold-dim); }
-.role-badge.executive { background: rgba(142,68,173,0.15); color: #C39BD3; border: 1px solid rgba(142,68,173,0.3); }
-.role-badge.other { background: var(--dark-4); color: var(--muted); border: 1px solid var(--dark-5); }
-
-/* FOLLOWUPS PAGE */
-.followup-list { padding: 0 32px 32px; display: flex; flex-direction: column; gap: 8px; }
-.followup-item { background: var(--dark-2); border: 1px solid var(--dark-5); border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: all 0.2s; }
-.followup-item:hover { border-color: var(--dark-4); background: var(--dark-3); }
-.followup-item.overdue { border-left: 3px solid var(--red); }
-.followup-item.today { border-left: 3px solid var(--gold); }
-.followup-item.upcoming { border-left: 3px solid var(--dark-5); }
-.fu-date { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); min-width: 60px; text-align: center; line-height: 1; }
-.fu-date small { font-size: 10px; display: block; color: var(--muted); font-family: 'Barlow', sans-serif; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; }
-.fu-divider { width: 1px; height: 40px; background: var(--dark-5); }
-.fu-info { flex: 1; }
-.fu-project { font-size: 13px; font-weight: 600; color: var(--white); }
-.fu-client { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.fu-note { font-size: 11px; color: var(--dim); margin-top: 4px; font-style: italic; }
-.fu-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+:root{--gold:#D4910A;--gold-light:#F0A820;--gold-dim:#7A5200;--dark:#0E0E0C;--dark-2:#161614;--dark-3:#1E1E1B;--dark-4:#272724;--dark-5:#323230;--mid:#4A4A46;--muted:#7A7A74;--dim:#A8A8A0;--light:#D8D8D0;--white:#F4F4EE;--green:#27AE60;--red:#C0392B;--blue:#2980B9;--purple:#8E44AD;--radius:8px;--radius-lg:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:var(--light);min-height:100vh;font-size:14px}
+.header{background:var(--dark-2);border-bottom:1px solid var(--dark-5);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.header-left{display:flex;align-items:center;gap:16px}
+.header-divider{width:1px;height:28px;background:var(--dark-5)}
+.header-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);letter-spacing:.5px;text-transform:uppercase}
+.header-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px}
+.nav-btn{background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:7px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.nav-btn:hover{border-color:var(--gold-dim);color:var(--gold-light)}
+.powered-tag{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dim);border:1px solid var(--gold-dim);padding:4px 10px;border-radius:4px}
+.page-tabs{background:var(--dark-2);border-bottom:1px solid var(--dark-5);padding:0 32px;display:flex}
+.page-tab{padding:12px 20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;margin-bottom:-1px;font-family:'Barlow',sans-serif}
+.page-tab:hover{color:var(--light)}
+.page-tab.active{color:var(--gold-light);border-bottom-color:var(--gold)}
+.stats-wrap{padding:20px 32px 0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.stat-card{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);padding:16px 18px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--dark-5)}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.blue::before{background:var(--blue)}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.stat-value{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:var(--white);line-height:1}
+.stat-value.gold{color:var(--gold-light)}
+.stat-value.green{color:#58D68D}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.toolbar{padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.toolbar-left{display:flex;align-items:center;gap:10px}
+.filter-btn{background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:7px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif}
+.filter-btn:hover{border-color:var(--gold-dim);color:var(--gold-light)}
+.filter-btn.active{background:rgba(212,145,10,.12);border-color:var(--gold);color:var(--gold-light)}
+.btn-add{background:var(--gold);border:none;border-radius:var(--radius);padding:8px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dark);cursor:pointer;font-family:'Barlow Condensed',sans-serif;transition:all .2s}
+.btn-add:hover{background:var(--gold-light)}
+.pipeline{padding:0 32px 32px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
+.col-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:var(--radius) var(--radius) 0 0;margin-bottom:8px;border-bottom:2px solid transparent}
+.col-header.pending{background:rgba(74,74,70,.3);border-color:var(--mid)}
+.col-header.quoted{background:rgba(41,128,185,.1);border-color:var(--blue)}
+.col-header.followup{background:rgba(212,145,10,.1);border-color:var(--gold)}
+.col-header.won{background:rgba(39,174,96,.1);border-color:var(--green)}
+.col-header.lost{background:rgba(192,57,43,.08);border-color:var(--red)}
+.col-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--dim)}
+.col-count{font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--dark-4);color:var(--muted)}
+.col-cards{display:flex;flex-direction:column;gap:8px;min-height:60px}
+.empty-col{padding:16px;text-align:center;font-size:11px;color:var(--mid);border:1px dashed var(--dark-5);border-radius:var(--radius)}
+.bid-card{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.bid-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.bid-card.william::before{background:var(--gold)}
+.bid-card.robby::before{background:var(--blue)}
+.bid-card.alex::before{background:var(--purple)}
+.bid-card.live::before{background:var(--green)}
+.bid-card:hover{border-color:var(--dark-4);background:var(--dark-3);transform:translateY(-1px)}
+.bid-project{font-size:12px;font-weight:600;color:var(--white);margin-bottom:3px;line-height:1.3}
+.bid-client{font-size:11px;color:var(--muted);margin-bottom:8px}
+.bid-meta{display:flex;align-items:center;justify-content:space-between}
+.bid-yards{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--gold-light)}
+.bid-rev{font-size:11px;color:var(--dim)}
+.rep-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:3px}
+.rep-tag.william{background:rgba(212,145,10,.15);color:var(--gold);border:1px solid var(--gold-dim)}
+.rep-tag.robby{background:rgba(41,128,185,.15);color:#5DADE2;border:1px solid rgba(41,128,185,.4)}
+.rep-tag.alex{background:rgba(142,68,173,.15);color:#C39BD3;border:1px solid rgba(142,68,173,.4)}
+.rep-tag.live{background:rgba(39,174,96,.15);color:#58D68D;border:1px solid rgba(39,174,96,.4)}
+.bid-date{font-size:10px;color:var(--mid);margin-top:6px}
+.fu-flag{font-size:10px;margin-top:5px}
+.fu-flag.overdue{color:var(--red)}
+.fu-flag.today{color:var(--gold)}
+.fu-flag.upcoming{color:var(--dim)}
+.live-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.4);color:#58D68D;padding:2px 6px;border-radius:3px;text-transform:uppercase}
+.customer-grid{padding:0 32px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.customer-card{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:all .2s}
+.customer-card:hover{border-color:var(--dark-4);transform:translateY(-1px)}
+.customer-head{padding:14px 18px;border-bottom:1px solid var(--dark-5);display:flex;align-items:center;justify-content:space-between}
+.customer-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);text-transform:uppercase}
+.ctype{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:3px}
+.ctype.commercial{background:rgba(41,128,185,.15);color:#5DADE2;border:1px solid rgba(41,128,185,.3)}
+.ctype.residential{background:rgba(39,174,96,.15);color:#58D68D;border:1px solid rgba(39,174,96,.3)}
+.ctype.txdot{background:rgba(142,68,173,.15);color:#C39BD3;border:1px solid rgba(142,68,173,.3)}
+.cust-contacts{padding:10px 18px;border-bottom:1px solid var(--dark-5)}
+.cust-contact-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--dark-4)}
+.cust-contact-row:last-child{border-bottom:none}
+.cust-stats{padding:10px 18px;display:flex;gap:16px}
+.cust-stat label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block}
+.cust-stat value{font-size:13px;font-weight:600;color:var(--white);display:block}
+.cust-stat value.gold{color:var(--gold-light)}
+.role-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:3px}
+.role-badge.estimator{background:rgba(41,128,185,.15);color:#5DADE2;border:1px solid rgba(41,128,185,.3)}
+.role-badge.superintendent{background:rgba(39,174,96,.15);color:#58D68D;border:1px solid rgba(39,174,96,.3)}
+.role-badge.pm,.role-badge.project_manager{background:rgba(212,145,10,.12);color:var(--gold);border:1px solid var(--gold-dim)}
+.role-badge.executive{background:rgba(142,68,173,.15);color:#C39BD3;border:1px solid rgba(142,68,173,.3)}
+.role-badge.other{background:var(--dark-4);color:var(--muted);border:1px solid var(--dark-5)}
+.icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 5px;border-radius:3px;transition:color .2s}
+.icon-btn:hover{color:var(--gold-light)}
+.contacts-table{width:100%;border-collapse:collapse}
+.contacts-table th{text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);background:var(--dark-3);border-bottom:1px solid var(--dark-5)}
+.contacts-table td{padding:11px 14px;border-bottom:1px solid var(--dark-4);font-size:12px;vertical-align:middle}
+.contacts-table tr:hover td{background:var(--dark-3)}
+.followup-list{padding:0 32px 32px;display:flex;flex-direction:column;gap:8px}
+.fu-item{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);padding:14px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .2s}
+.fu-item:hover{background:var(--dark-3)}
+.fu-item.overdue{border-left:3px solid var(--red)}
+.fu-item.today{border-left:3px solid var(--gold)}
+.fu-item.upcoming{border-left:3px solid var(--dark-5)}
+.fu-date-box{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--white);min-width:55px;text-align:center;line-height:1}
+.fu-date-box small{font-size:10px;display:block;color:var(--muted);font-family:'Barlow',sans-serif;font-weight:400;text-transform:uppercase}
+.fu-divider{width:1px;height:40px;background:var(--dark-5)}
+.fu-info{flex:1}
+.fu-project{font-size:13px;font-weight:600;color:var(--white)}
+.fu-client{font-size:11px;color:var(--muted);margin-top:2px}
+.fu-note{font-size:11px;color:var(--dim);margin-top:4px;font-style:italic}
+.fu-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.fu-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px}
+.fu-badge.overdue{background:rgba(192,57,43,.12);color:#E74C3C;border:1px solid rgba(192,57,43,.3)}
+.fu-badge.today{background:rgba(212,145,10,.12);color:var(--gold);border:1px solid var(--gold-dim)}
+.fu-badge.upcoming{background:var(--dark-4);color:var(--dim);border:1px solid var(--dark-5)}
+.manager-grid{padding:0 32px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rep-card{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);overflow:hidden}
+.rep-card-head{padding:16px 20px;border-bottom:1px solid var(--dark-5);display:flex;align-items:center;gap:12px}
+.rep-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700}
+.rep-avatar.william{background:rgba(212,145,10,.2);color:var(--gold);border:1px solid var(--gold-dim)}
+.rep-avatar.robby{background:rgba(41,128,185,.2);color:#5DADE2;border:1px solid rgba(41,128,185,.4)}
+.rep-avatar.alex{background:rgba(142,68,173,.2);color:#C39BD3;border:1px solid rgba(142,68,173,.4)}
+.rep-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);text-transform:uppercase}
+.rep-title{font-size:11px;color:var(--muted)}
+.rep-stats{padding:14px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;border-bottom:1px solid var(--dark-5)}
+.rep-stat label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:3px}
+.rep-stat value{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);display:block}
+.rep-stat value.gold{color:var(--gold-light)}
+.rep-stat value.green{color:#58D68D}
+.rep-bids{padding:12px 20px}
+.rep-bid-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--dark-3);border-radius:6px;margin-bottom:5px;font-size:11px}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block;margin-right:4px}
+.sdot.pending{background:var(--mid)}
+.sdot.quoted{background:var(--blue)}
+.sdot.followup{background:var(--gold)}
+.sdot.won{background:var(--green)}
+.sdot.lost{background:var(--red)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:1000;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--dark-2);border:1px solid var(--dark-5);border-radius:var(--radius-lg);width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(20px);transition:transform .2s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-sm{max-width:480px}
+.modal-head{padding:18px 24px;border-bottom:1px solid var(--dark-5);display:flex;align-items:flex-start;justify-content:space-between}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--white);text-transform:uppercase}
+.modal-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer}
+.modal-close:hover{color:var(--white)}
+.modal-body{padding:20px 24px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.modal-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:3px}
+.modal-field value{font-size:13px;color:var(--white);font-weight:500;display:block}
+.modal-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--dark-5)}
+.mix-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--dark-3);border-radius:6px;margin-bottom:6px}
+.mix-code{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--gold-light)}
+.mix-app{font-size:12px;color:var(--dim)}
+.mix-vol{font-size:12px;font-weight:600;color:var(--white)}
+.form-field{margin-bottom:14px}
+.form-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:5px}
+.form-input{width:100%;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--white);font-family:'Barlow',sans-serif;transition:border-color .2s}
+.form-input:focus{outline:none;border-color:var(--gold)}
+.form-input::placeholder{color:var(--mid)}
+.form-select{width:100%;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--white);font-family:'Barlow',sans-serif;cursor:pointer}
+.form-select:focus{outline:none;border-color:var(--gold)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn-cancel{flex:1;background:transparent;border:1px solid var(--dark-5);border-radius:var(--radius);padding:10px;font-size:12px;font-weight:600;color:var(--dim);cursor:pointer;font-family:'Barlow',sans-serif;transition:all .2s}
+.btn-cancel:hover{border-color:var(--red);color:var(--red)}
+.btn-save{flex:2;background:var(--gold);border:none;border-radius:var(--radius);padding:10px;font-size:13px;font-weight:700;color:var(--dark);cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase;transition:all .2s}
+.btn-save:hover{background:var(--gold-light)}
+.contact-row-item{background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:12px;margin-bottom:8px}
 </style>
 </head>
 <body>
 
 <header class="header">
   <div class="header-left">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:1px">JCK<span style="color:var(--gold)">◀</span></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:1px">JCK<span style="color:var(--gold)">&#9664;</span></div>
     <div class="header-divider"></div>
     <div>
       <div class="header-title">Sales CRM</div>
-      <div class="header-sub">JCK Batch Plant &nbsp;·&nbsp; <span style="color:var(--gold)">Zamara Solutions</span></div>
+      <div class="header-sub">JCK Batch Plant &nbsp;&middot;&nbsp; <span style="color:var(--gold)">Zamara Solutions</span></div>
     </div>
   </div>
   <div class="header-right">
-    <a href="index.html" class="nav-btn">← Bid Analyzer</a>
+    <a href="index.html" class="nav-btn">&#8592; Bid Analyzer</a>
     <div style="display:flex;align-items:center;gap:6px;background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:5px 10px">
-      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Viewing as:</span>
-      <select id="repViewSelect" onchange="switchRepView(this.value)"
-        style="background:transparent;border:none;color:var(--gold-light);font-size:11px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;outline:none">
-        <option value="manager">Manager (All)</option>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Viewing as:</span>
+      <select id="repViewSelect" onchange="switchRepView(this.value)" style="background:transparent;border:none;color:var(--gold-light);font-size:11px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;outline:none">
+        <option value="all">Manager (All)</option>
         <option value="William">William</option>
         <option value="Robby">Robby</option>
         <option value="Alex">Alex</option>
@@ -244,7 +203,6 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
   </div>
 </header>
 
-<!-- PAGE TABS -->
 <div class="page-tabs">
   <button class="page-tab active" onclick="switchPage('pipeline',this)">Pipeline</button>
   <button class="page-tab" onclick="switchPage('followups',this)">Follow-Ups <span id="fuBadge" style="display:none;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;margin-left:4px"></span></button>
@@ -253,16 +211,14 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
   <button class="page-tab" onclick="switchPage('manager',this)">Manager View</button>
 </div>
 
-<!-- STAT CARDS -->
 <div class="stats-wrap">
-  <div class="stat-card gold"><div class="stat-label">Open Bids</div><div class="stat-value" id="statOpen">—</div><div class="stat-sub">active quotes</div></div>
-  <div class="stat-card blue"><div class="stat-label">Pipeline Value</div><div class="stat-value gold" id="statPipeline">—</div><div class="stat-sub">est. revenue</div></div>
-  <div class="stat-card green"><div class="stat-label">Won This Month</div><div class="stat-value green" id="statWon">—</div><div class="stat-sub" id="statWonYards">—</div></div>
-  <div class="stat-card"><div class="stat-label">Total Yardage</div><div class="stat-value gold" id="statYards">—</div><div class="stat-sub">CY in pipeline</div></div>
-  <div class="stat-card"><div class="stat-label">Close Rate</div><div class="stat-value" id="statClose">—</div><div class="stat-sub">won vs. closed</div></div>
+  <div class="stat-card gold"><div class="stat-label">Open Bids</div><div class="stat-value" id="statOpen">0</div><div class="stat-sub">active quotes</div></div>
+  <div class="stat-card blue"><div class="stat-label">Pipeline Value</div><div class="stat-value gold" id="statPipeline">$0</div><div class="stat-sub">est. revenue</div></div>
+  <div class="stat-card green"><div class="stat-label">Won This Month</div><div class="stat-value green" id="statWon">$0</div><div class="stat-sub" id="statWonYards">0 CY won</div></div>
+  <div class="stat-card"><div class="stat-label">Total Yardage</div><div class="stat-value gold" id="statYards">0</div><div class="stat-sub">CY in pipeline</div></div>
+  <div class="stat-card"><div class="stat-label">Close Rate</div><div class="stat-value" id="statClose">&#8212;</div><div class="stat-sub">won vs. closed</div></div>
 </div>
 
-<!-- TOOLBAR -->
 <div class="toolbar">
   <div class="toolbar-left">
     <div style="display:flex;gap:6px" id="repFilters">
@@ -272,13 +228,14 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
       <button class="filter-btn" onclick="filterRep('Alex',this)">Alex</button>
     </div>
   </div>
-  <div class="toolbar-right">
-    <button class="btn-add" onclick="openAddBidModal()" id="btnAddBid">+ New Bid</button>
-    <button class="btn-add" onclick="openAddCustomerModal()" id="btnAddCustomer" style="display:none">+ New Customer</button>
+  <div style="display:flex;gap:8px">
+    <button class="btn-add" id="btnAddBid" onclick="openAddBidModal()">+ New Bid</button>
+    <button class="btn-add" id="btnAddCustomer" onclick="openAddCustomerModal()" style="display:none">+ New Customer</button>
+    <button class="btn-add" id="btnAddContact" onclick="openAddContactModal()" style="display:none">+ New Contact</button>
   </div>
 </div>
 
-<!-- PIPELINE PAGE -->
+<!-- PIPELINE -->
 <div id="pagePipeline">
   <div class="pipeline">
     <div><div class="col-header pending"><span class="col-title">Pending</span><span class="col-count" id="cnt-pending">0</span></div><div class="col-cards" id="col-pending"></div></div>
@@ -289,90 +246,66 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
   </div>
 </div>
 
-<!-- FOLLOW-UPS PAGE -->
+<!-- FOLLOWUPS -->
 <div id="pageFollowups" style="display:none">
   <div style="padding:0 32px 16px;display:flex;gap:10px">
     <button class="filter-btn active" onclick="filterFU('all',this)">All</button>
-    <button class="filter-btn" onclick="filterFU('overdue',this)">🔴 Overdue</button>
-    <button class="filter-btn" onclick="filterFU('today',this)">🟡 Today</button>
+    <button class="filter-btn" onclick="filterFU('overdue',this)">Overdue</button>
+    <button class="filter-btn" onclick="filterFU('today',this)">Today</button>
     <button class="filter-btn" onclick="filterFU('upcoming',this)">Upcoming</button>
   </div>
   <div class="followup-list" id="followupList"></div>
 </div>
 
-<!-- CUSTOMERS PAGE -->
+<!-- CUSTOMERS -->
 <div id="pageCustomers" style="display:none">
   <div class="customer-grid" id="customerGrid"></div>
 </div>
 
-<!-- CONTACTS PAGE -->
+<!-- CONTACTS -->
 <div id="pageContacts" style="display:none">
-  <div style="padding:0 32px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-    <div style="display:flex;gap:8px;flex-wrap:wrap" id="contactCompanyFilters">
-      <button class="filter-btn active" onclick="filterContacts('all',this)">All Companies</button>
-    </div>
-    <button class="btn-add" onclick="openAddContactModal()">+ New Contact</button>
+  <div style="padding:0 32px 16px;display:flex;gap:8px;flex-wrap:wrap" id="contactFilters">
+    <button class="filter-btn active" onclick="filterContacts('all',this)">All Companies</button>
   </div>
   <div style="padding:0 32px 32px">
-    <table style="width:100%;border-collapse:collapse" id="contactsTable">
-      <thead>
-        <tr style="border-bottom:1px solid var(--dark-5)">
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Name</th>
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Company</th>
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Role</th>
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Phone</th>
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Email</th>
-          <th style="text-align:left;padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);background:var(--dark-3)">Open Bids</th>
-          <th style="padding:8px 14px;background:var(--dark-3)"></th>
-        </tr>
-      </thead>
+    <table class="contacts-table">
+      <thead><tr>
+        <th>Name</th><th>Company</th><th>Role</th><th>Phone</th><th>Email</th><th>Open Bids</th><th></th>
+      </tr></thead>
       <tbody id="contactsBody"></tbody>
     </table>
   </div>
 </div>
 
-<!-- MANAGER PAGE -->
+<!-- MANAGER -->
 <div id="pageManager" style="display:none">
   <div class="manager-grid" id="managerGrid"></div>
 </div>
 
-<!-- BID DETAIL MODAL -->
+<!-- BID MODAL -->
 <div class="modal-overlay" id="bidModal" onclick="closeOnOverlay(event,'bidModal')">
   <div class="modal">
     <div class="modal-head">
-      <div>
-        <div class="modal-title" id="bmTitle">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px" id="bmClient">—</div>
-      </div>
-      <button class="modal-close" onclick="closeModal('bidModal')">✕</button>
+      <div><div class="modal-title" id="bmTitle">&#8212;</div><div style="font-size:12px;color:var(--muted);margin-top:3px" id="bmClient">&#8212;</div></div>
+      <button class="modal-close" onclick="closeModal('bidModal')">&#10005;</button>
     </div>
     <div class="modal-body">
       <div class="modal-grid" id="bmGrid"></div>
       <div id="bmMixes"></div>
-      <div class="modal-section-label">Status & Follow-Up</div>
+      <div class="modal-section-label">Status &amp; Follow-Up</div>
       <div class="form-grid">
-        <div class="form-field">
-          <label>Status</label>
+        <div class="form-field"><label>Status</label>
           <select class="form-select" id="bmStatus" onchange="updateBidStatus()">
-            <option value="pending">Pending</option>
-            <option value="quoted">Quoted</option>
-            <option value="followup">Follow Up</option>
-            <option value="won">Won</option>
-            <option value="lost">Lost</option>
+            <option value="pending">Pending</option><option value="quoted">Quoted</option>
+            <option value="followup">Follow Up</option><option value="won">Won</option><option value="lost">Lost</option>
           </select>
         </div>
-        <div class="form-field">
-          <label>Follow-Up Date</label>
-          <input type="date" class="form-input" id="bmFollowupDate" onchange="updateBidFollowup()" />
-        </div>
+        <div class="form-field"><label>Follow-Up Date</label><input type="date" class="form-input" id="bmFollowupDate" onchange="updateBidFollowup()" /></div>
       </div>
-      <div class="form-field">
-        <label>Follow-Up Note</label>
-        <input type="text" class="form-input" id="bmFollowupNote" placeholder="e.g. Call to confirm start date..." onchange="updateBidFollowupNote()" />
-      </div>
+      <div class="form-field"><label>Follow-Up Note</label><input type="text" class="form-input" id="bmFollowupNote" placeholder="e.g. Call to confirm start date..." onchange="updateBidNote()" /></div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('bidModal')">Close</button>
-        <button class="btn-save" onclick="closeModal('bidModal')">Save & Close</button>
+        <button class="btn-save" onclick="closeModal('bidModal')">Save &amp; Close</button>
       </div>
     </div>
   </div>
@@ -381,72 +314,30 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
 <!-- ADD BID MODAL -->
 <div class="modal-overlay" id="addBidModal" onclick="closeOnOverlay(event,'addBidModal')">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title">New Bid Entry</div>
-      <button class="modal-close" onclick="closeModal('addBidModal')">✕</button>
-    </div>
+    <div class="modal-head"><div class="modal-title">New Bid Entry</div><button class="modal-close" onclick="closeModal('addBidModal')">&#10005;</button></div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Project Name</label>
-          <input type="text" class="form-input" id="nb_project" placeholder="Project name..." />
-        </div>
-        <div class="form-field">
-          <label>Customer (Company)</label>
-          <select class="form-select" id="nb_customer" onchange="populateContactsFromCustomer('nb_customer','nb_contact')">
+        <div class="form-field" style="grid-column:1/-1"><label>Project Name</label><input type="text" class="form-input" id="nb_project" placeholder="Project name..." /></div>
+        <div class="form-field"><label>Customer (Company)</label>
+          <select class="form-select" id="nb_customer" onchange="populateContacts('nb_customer','nb_contact')">
             <option value="">Select company...</option>
           </select>
         </div>
-        <div class="form-field">
-          <label>Contact</label>
-          <select class="form-select" id="nb_contact">
-            <option value="">Select contact...</option>
-          </select>
+        <div class="form-field"><label>Contact</label><select class="form-select" id="nb_contact"><option value="">Select contact...</option></select></div>
+        <div class="form-field" style="grid-column:1/-1"><label>Project Address</label><input type="text" class="form-input" id="nb_address" placeholder="Project address..." /></div>
+        <div class="form-field"><label>Sales Rep</label>
+          <select class="form-select" id="nb_rep"><option value="William">William</option><option value="Robby">Robby</option><option value="Alex">Alex</option></select>
         </div>
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Project Address</label>
-          <input type="text" class="form-input" id="nb_address" placeholder="Project address..." />
+        <div class="form-field"><label>Project Type</label>
+          <select class="form-select" id="nb_type"><option value="Commercial">Commercial</option><option value="Residential">Residential</option><option value="TXDOT">TXDOT</option></select>
         </div>
-        <div class="form-field">
-          <label>Sales Rep</label>
-          <select class="form-select" id="nb_rep">
-            <option value="William">William</option>
-            <option value="Robby">Robby</option>
-            <option value="Alex">Alex</option>
-          </select>
+        <div class="form-field"><label>Est. Yardage (CY)</label><input type="number" class="form-input" id="nb_yards" placeholder="0" /></div>
+        <div class="form-field"><label>Est. Revenue ($)</label><input type="number" class="form-input" id="nb_revenue" placeholder="0" /></div>
+        <div class="form-field"><label>Follow-Up Date</label><input type="date" class="form-input" id="nb_followup" /></div>
+        <div class="form-field"><label>Status</label>
+          <select class="form-select" id="nb_status"><option value="pending">Pending</option><option value="quoted">Quoted</option><option value="followup">Follow Up</option></select>
         </div>
-        <div class="form-field">
-          <label>Project Type</label>
-          <select class="form-select" id="nb_type">
-            <option value="Commercial">Commercial</option>
-            <option value="Residential">Residential</option>
-            <option value="TXDOT">TXDOT</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>Est. Yardage (CY)</label>
-          <input type="number" class="form-input" id="nb_yards" placeholder="0" />
-        </div>
-        <div class="form-field">
-          <label>Est. Revenue ($)</label>
-          <input type="number" class="form-input" id="nb_revenue" placeholder="0" />
-        </div>
-        <div class="form-field">
-          <label>Follow-Up Date</label>
-          <input type="date" class="form-input" id="nb_followup" />
-        </div>
-        <div class="form-field">
-          <label>Status</label>
-          <select class="form-select" id="nb_status">
-            <option value="pending">Pending</option>
-            <option value="quoted">Quoted</option>
-            <option value="followup">Follow Up</option>
-          </select>
-        </div>
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Notes</label>
-          <input type="text" class="form-input" id="nb_notes" placeholder="Any notes..." />
-        </div>
+        <div class="form-field" style="grid-column:1/-1"><label>Notes</label><input type="text" class="form-input" id="nb_notes" placeholder="Any notes..." /></div>
       </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('addBidModal')">Cancel</button>
@@ -456,45 +347,21 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
   </div>
 </div>
 
-<!-- ADD/EDIT CUSTOMER MODAL -->
+<!-- CUSTOMER MODAL -->
 <div class="modal-overlay" id="customerModal" onclick="closeOnOverlay(event,'customerModal')">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title" id="cmTitle">New Customer</div>
-      <button class="modal-close" onclick="closeModal('customerModal')">✕</button>
-    </div>
+    <div class="modal-head"><div class="modal-title" id="cmTitle">New Customer</div><button class="modal-close" onclick="closeModal('customerModal')">&#10005;</button></div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Company Name</label>
-          <input type="text" class="form-input" id="cm_name" placeholder="Company name..." />
-        </div>
-        <div class="form-field">
-          <label>Type</label>
-          <select class="form-select" id="cm_type">
-            <option value="Commercial">Commercial</option>
-            <option value="Residential">Residential</option>
-            <option value="TXDOT">TXDOT</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>Phone</label>
-          <input type="text" class="form-input" id="cm_phone" placeholder="Company phone..." />
-        </div>
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Address</label>
-          <input type="text" class="form-input" id="cm_address" placeholder="Company address..." />
-        </div>
-        <div class="form-field" style="grid-column:1/-1">
-          <label>Notes</label>
-          <input type="text" class="form-input" id="cm_notes" placeholder="Notes..." />
-        </div>
+        <div class="form-field" style="grid-column:1/-1"><label>Company Name</label><input type="text" class="form-input" id="cm_name" placeholder="Company name..." /></div>
+        <div class="form-field"><label>Type</label><select class="form-select" id="cm_type"><option value="Commercial">Commercial</option><option value="Residential">Residential</option><option value="TXDOT">TXDOT</option></select></div>
+        <div class="form-field"><label>Phone</label><input type="text" class="form-input" id="cm_phone" placeholder="Phone..." /></div>
+        <div class="form-field" style="grid-column:1/-1"><label>Address</label><input type="text" class="form-input" id="cm_address" placeholder="Address..." /></div>
+        <div class="form-field" style="grid-column:1/-1"><label>Notes</label><input type="text" class="form-input" id="cm_notes" placeholder="Notes..." /></div>
       </div>
-
       <div class="modal-section-label">Contacts</div>
       <div id="cmContactsList"></div>
-      <button class="filter-btn" onclick="addContactRow()" style="margin-top:8px;width:100%;text-align:center">+ Add Contact</button>
-
+      <button class="filter-btn" onclick="addContactRow()" style="width:100%;text-align:center;margin-top:8px">+ Add Contact</button>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('customerModal')">Cancel</button>
         <button class="btn-save" onclick="saveCustomer()">Save Customer</button>
@@ -503,277 +370,89 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
   </div>
 </div>
 
-<!-- ADD CONTACT MODAL -->
-<div class="modal-overlay" id="addContactModal" onclick="closeOnOverlay(event,'addContactModal')">
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal" onclick="closeOnOverlay(event,'contactModal')">
   <div class="modal modal-sm">
-    <div class="modal-head">
-      <div class="modal-title">New Contact</div>
-      <button class="modal-close" onclick="closeModal('addContactModal')">✕</button>
-    </div>
+    <div class="modal-head"><div class="modal-title" id="ctTitle">New Contact</div><button class="modal-close" onclick="closeModal('contactModal')">&#10005;</button></div>
     <div class="modal-body">
-      <div class="form-field">
-        <label>Company</label>
-        <select class="form-select" id="nc_company">
-          <option value="">Select company...</option>
-        </select>
-      </div>
+      <div class="form-field"><label>Company</label><select class="form-select" id="ct_company"><option value="">Select company...</option></select></div>
       <div class="form-grid">
-        <div class="form-field">
-          <label>Contact Name</label>
-          <input type="text" class="form-input" id="nc_name" placeholder="Full name..." />
-        </div>
-        <div class="form-field">
-          <label>Role</label>
-          <select class="form-select" id="nc_role">
-            <option value="estimator">Estimator</option>
-            <option value="superintendent">Superintendent</option>
-            <option value="project manager">Project Manager</option>
-            <option value="executive">Executive</option>
-            <option value="other">Other</option>
+        <div class="form-field"><label>Name</label><input type="text" class="form-input" id="ct_name" placeholder="Full name..." /></div>
+        <div class="form-field"><label>Role</label>
+          <select class="form-select" id="ct_role">
+            <option value="estimator">Estimator</option><option value="superintendent">Superintendent</option>
+            <option value="project manager">Project Manager</option><option value="executive">Executive</option><option value="other">Other</option>
           </select>
         </div>
-        <div class="form-field">
-          <label>Phone</label>
-          <input type="text" class="form-input" id="nc_phone" placeholder="555-000-0000" />
-        </div>
-        <div class="form-field">
-          <label>Email</label>
-          <input type="email" class="form-input" id="nc_email" placeholder="email@company.com" />
-        </div>
+        <div class="form-field"><label>Phone</label><input type="text" class="form-input" id="ct_phone" placeholder="555-000-0000" /></div>
+        <div class="form-field"><label>Email</label><input type="email" class="form-input" id="ct_email" placeholder="email@company.com" /></div>
       </div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal('addContactModal')">Cancel</button>
-        <button class="btn-save" onclick="saveNewContact()">Add Contact</button>
+        <button class="btn-cancel" onclick="closeModal('contactModal')">Cancel</button>
+        <button class="btn-save" id="ctSaveBtn" onclick="saveContact()">Add Contact</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- CUSTOMER DETAIL MODAL -->
-<div class="modal-overlay" id="customerDetailModal" onclick="closeOnOverlay(event,'customerDetailModal')">
+<div class="modal-overlay" id="custDetailModal" onclick="closeOnOverlay(event,'custDetailModal')">
   <div class="modal">
     <div class="modal-head">
-      <div>
-        <div class="modal-title" id="cdTitle">—</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px" id="cdSub">—</div>
-      </div>
-      <button class="modal-close" onclick="closeModal('customerDetailModal')">✕</button>
+      <div><div class="modal-title" id="cdTitle">&#8212;</div><div style="font-size:12px;color:var(--muted);margin-top:3px" id="cdSub">&#8212;</div></div>
+      <button class="modal-close" onclick="closeModal('custDetailModal')">&#10005;</button>
     </div>
     <div class="modal-body" id="cdBody"></div>
   </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────
-
-const DUMMY_CUSTOMERS = [
-  { id: 'c1', name: 'Beam Concrete', type: 'Commercial', phone: '469-742-0094', address: '640 Central Expressway, Melissa, TX', notes: 'Primary commercial GC — North Texas region',
-    contacts: [
-      { id: 'ct1', name: 'Ryan Smith', role: 'estimator', phone: '469-742-0094', email: 'rsmith@beamconcrete.com' },
-      { id: 'ct2', name: 'David Lee', role: 'superintendent', phone: '469-742-0101', email: 'dlee@beamconcrete.com' },
-    ]
-  },
-  { id: 'c2', name: 'Standridge Concrete', type: 'Commercial', phone: '972-555-0182', address: 'Anna, TX', notes: 'Grocery and retail specialist',
-    contacts: [
-      { id: 'ct3', name: 'Jake Standridge', role: 'executive', phone: '972-555-0182', email: 'jstandridge@standridgeconcrete.com' },
-    ]
-  },
-  { id: 'c3', name: 'Turner Construction', type: 'Commercial', phone: '972-555-0234', address: '1450 Ridge Rd, Rockwall, TX', notes: 'Medical and office builds',
-    contacts: [
-      { id: 'ct4', name: 'Brad Turner', role: 'pm', phone: '972-555-0234', email: 'bturner@turnerconstruction.com' },
-      { id: 'ct5', name: 'Sara Kim', role: 'estimator', phone: '972-555-0235', email: 'skim@turnerconstruction.com' },
-    ]
-  },
-  { id: 'c4', name: 'Forney Industrial LLC', type: 'Commercial', phone: '972-555-0311', address: 'US-80, Forney, TX', notes: 'Industrial tilt-wall projects',
-    contacts: [
-      { id: 'ct6', name: 'Mike Garrett', role: 'pm', phone: '972-555-0311', email: 'mgmt@forneyind.com' },
-    ]
-  },
-  { id: 'c5', name: 'Benchmark Civil', type: 'Commercial', phone: '903-555-0198', address: 'Kaufman, TX', notes: 'Municipal and civil contractor',
-    contacts: [
-      { id: 'ct7', name: 'Ricardo Diaz', role: 'estimator', phone: '903-555-0198', email: 'rdiaz@benchmarkcivil.com' },
-    ]
-  },
-  { id: 'c6', name: 'DR Horton', type: 'Residential', phone: '469-555-0277', address: 'Royse City, TX', notes: 'National homebuilder — high volume residential',
-    contacts: [
-      { id: 'ct8', name: 'Lisa Park', role: 'pm', phone: '469-555-0277', email: 'drh.tx@drhorton.com' },
-      { id: 'ct9', name: 'Tom Reed', role: 'superintendent', phone: '469-555-0278', email: 'treed@drhorton.com' },
-    ]
-  },
-  { id: 'c7', name: 'Prologis', type: 'Commercial', phone: '214-555-0422', address: 'Seagoville, TX', notes: 'Large distribution and warehouse developer',
-    contacts: [
-      { id: 'ct10', name: 'Tom Wheeler', role: 'pm', phone: '214-555-0422', email: 'txops@prologis.com' },
-    ]
-  },
-  { id: 'c8', name: 'StorRight LLC', type: 'Commercial', phone: '972-555-0511', address: 'Mesquite, TX', notes: '',
-    contacts: [
-      { id: 'ct11', name: 'Phil Cruz', role: 'executive', phone: '972-555-0511', email: 'dev@storright.com' },
-    ]
-  },
+// ─── DATA ───────────────────────────────
+var DUMMY_CUSTOMERS = [
+  {id:'c1',name:'Beam Concrete',type:'Commercial',phone:'469-742-0094',address:'640 Central Expressway, Melissa, TX',notes:'Primary commercial GC - North Texas',
+   contacts:[{id:'ct1',name:'Ryan Smith',role:'estimator',phone:'469-742-0094',email:'rsmith@beamconcrete.com'},{id:'ct2',name:'David Lee',role:'superintendent',phone:'469-742-0101',email:'dlee@beamconcrete.com'}]},
+  {id:'c2',name:'Standridge Concrete',type:'Commercial',phone:'972-555-0182',address:'Anna, TX',notes:'Grocery and retail specialist',
+   contacts:[{id:'ct3',name:'Jake Standridge',role:'executive',phone:'972-555-0182',email:'jstandridge@standridgeconcrete.com'}]},
+  {id:'c3',name:'Turner Construction',type:'Commercial',phone:'972-555-0234',address:'1450 Ridge Rd, Rockwall, TX',notes:'Medical and office builds',
+   contacts:[{id:'ct4',name:'Brad Turner',role:'pm',phone:'972-555-0234',email:'bturner@turnerconstruction.com'},{id:'ct5',name:'Sara Kim',role:'estimator',phone:'972-555-0235',email:'skim@turnerconstruction.com'}]},
+  {id:'c4',name:'Forney Industrial LLC',type:'Commercial',phone:'972-555-0311',address:'US-80, Forney, TX',notes:'Industrial tilt-wall projects',
+   contacts:[{id:'ct6',name:'Mike Garrett',role:'pm',phone:'972-555-0311',email:'mgmt@forneyind.com'}]},
+  {id:'c5',name:'Benchmark Civil',type:'Commercial',phone:'903-555-0198',address:'Kaufman, TX',notes:'Municipal and civil contractor',
+   contacts:[{id:'ct7',name:'Ricardo Diaz',role:'estimator',phone:'903-555-0198',email:'rdiaz@benchmarkcivil.com'}]},
+  {id:'c6',name:'DR Horton',type:'Residential',phone:'469-555-0277',address:'Royse City, TX',notes:'National homebuilder - high volume',
+   contacts:[{id:'ct8',name:'Lisa Park',role:'pm',phone:'469-555-0277',email:'drh.tx@drhorton.com'},{id:'ct9',name:'Tom Reed',role:'superintendent',phone:'469-555-0278',email:'treed@drhorton.com'}]},
+  {id:'c7',name:'Prologis',type:'Commercial',phone:'214-555-0422',address:'Seagoville, TX',notes:'Large distribution developer',
+   contacts:[{id:'ct10',name:'Tom Wheeler',role:'pm',phone:'214-555-0422',email:'txops@prologis.com'}]},
+  {id:'c8',name:'StorRight LLC',type:'Commercial',phone:'972-555-0511',address:'Mesquite, TX',notes:'Self storage developer',
+   contacts:[{id:'ct11',name:'Phil Cruz',role:'executive',phone:'972-555-0511',email:'dev@storright.com'}]}
 ];
 
-const today = new Date();
-today.setHours(0,0,0,0);
-function daysFromNow(d) { const dt = new Date(d); dt.setHours(0,0,0,0); return Math.round((dt-today)/(1000*60*60*24)); }
-function fuClass(d) { if (!d) return ''; const n = daysFromNow(d); if (n < 0) return 'overdue'; if (n === 0) return 'today'; return 'upcoming'; }
-function fuLabel(d) { if (!d) return ''; const n = daysFromNow(d); if (n < 0) return `${Math.abs(n)}d overdue`; if (n === 0) return 'Today'; if (n === 1) return 'Tomorrow'; return `In ${n} days`; }
-
-const DUMMY_BIDS = [
-  { id:'w1', rep:'William', status:'pending', customerId:'c1', contactId:'ct1',
-    project:'Lafayette Crossing Lot 5', client:'Beam Concrete', contact:'Ryan Smith', phone:'469-742-0094', email:'rsmith@beamconcrete.com',
-    address:'NWC FM 551 & I-30, Fate, TX 75189', yards:12200, revenue:1891600,
-    bid_date:'3/30/2026', expiry:'5/29/2026', followup_date:'2026-05-28', followup_note:'Confirm mix codes and start date with Ryan',
-    mixes:[{code:'C3515ALS',app:'All Other',vol:null},{code:'C3525ALS',app:'Footings',vol:null},{code:'C4015ALS',app:'Slab on Grade',vol:null},{code:'TXCl C',app:'TXDOT Firelane',vol:null}],
-    notes:'Commercial retail shell. TXDOT firelane spec confirmed.', type:'Commercial' },
-  { id:'w2', rep:'William', status:'won', customerId:'c2', contactId:'ct3',
-    project:'Sprouts - Anna, TX', client:'Standridge Concrete', contact:'Jake Standridge', phone:'972-555-0182', email:'jstandridge@standridgeconcrete.com',
-    address:'Standridge Pkwy, Anna, TX', yards:847, revenue:138379,
-    bid_date:'4/7/2026', expiry:'6/6/2026', followup_date:null, followup_note:'',
-    mixes:[{code:'C3515ALS',app:'Footings',vol:180},{code:'C4015ALS',app:'Slab on Grade',vol:520},{code:'C4015ALS',app:'Grade Beams',vol:147}],
-    notes:'Grocery retail. Won — scheduling in progress.', type:'Commercial' },
-  { id:'w3', rep:'William', status:'quoted', customerId:'c3', contactId:'ct4',
-    project:'Rockwall Medical Office', client:'Turner Construction', contact:'Brad Turner', phone:'972-555-0234', email:'bturner@turnerconstruction.com',
-    address:'1450 Ridge Rd, Rockwall, TX 75087', yards:2100, revenue:336000,
-    bid_date:'5/18/2026', expiry:'7/17/2026', followup_date:'2026-05-29', followup_note:'Follow up with Brad on pump mix confirmation',
-    mixes:[{code:'C4015ALS',app:'Foundation',vol:800},{code:'C4025ALS',app:'Elevated Slab',vol:1300}],
-    notes:'3-story medical office. Pump mix required.', type:'Commercial' },
-  { id:'r1', rep:'Robby', status:'pending', customerId:'c4', contactId:'ct6',
-    project:'Forney Industrial Park Ph2', client:'Forney Industrial LLC', contact:'Mike Garrett', phone:'972-555-0311', email:'mgmt@forneyind.com',
-    address:'US-80, Forney, TX 75126', yards:4500, revenue:702000,
-    bid_date:'5/20/2026', expiry:'7/19/2026', followup_date:'2026-06-01', followup_note:'Check on permit status',
-    mixes:[{code:'C3515ALS',app:'Tilt Wall Panels',vol:1800},{code:'C4015ALS',app:'Slab on Grade',vol:2700}],
-    notes:'Large industrial tilt-wall. High volume — AAA tier pricing.', type:'Commercial' },
-  { id:'r2', rep:'Robby', status:'pending', customerId:'c5', contactId:'ct7',
-    project:'Kaufman County Courthouse Annex', client:'Benchmark Civil', contact:'Ricardo Diaz', phone:'903-555-0198', email:'rdiaz@benchmarkcivil.com',
-    address:'100 W Mulberry, Kaufman, TX 75142', yards:680, revenue:109480,
-    bid_date:'5/22/2026', expiry:'7/21/2026', followup_date:'2026-05-28', followup_note:'Confirm bond requirements',
-    mixes:[{code:'C4015ALS',app:'Foundation',vol:320},{code:'C4515ALS',app:'Columns',vol:210},{code:'C3515ALS',app:'Flatwork',vol:150}],
-    notes:'Municipal project. Bond required.', type:'Commercial' },
-  { id:'r3', rep:'Robby', status:'followup', customerId:'c6', contactId:'ct8',
-    project:'Sunridge Estates Ph3', client:'DR Horton', contact:'Lisa Park', phone:'469-555-0277', email:'drh.tx@drhorton.com',
-    address:'Sunridge Dr, Royse City, TX 75189', yards:3200, revenue:467200,
-    bid_date:'5/10/2026', expiry:'7/9/2026', followup_date:'2026-05-28', followup_note:'Lisa requested revised pricing — send updated quote',
-    mixes:[{code:'R3515ABL',app:'House Slabs',vol:2400},{code:'R3015ABL',app:'Driveways',vol:800}],
-    notes:'DR Horton subdivision. 45 lots Ph3.', type:'Residential' },
-  { id:'a1', rep:'Alex', status:'quoted', customerId:'c7', contactId:'ct10',
-    project:'Seagoville Distribution Center', client:'Prologis', contact:'Tom Wheeler', phone:'214-555-0422', email:'txops@prologis.com',
-    address:'2800 E Ledbetter Dr, Seagoville, TX 75159', yards:8900, revenue:1424000,
-    bid_date:'5/15/2026', expiry:'7/14/2026', followup_date:'2026-06-02', followup_note:'Large project — confirm delivery schedule',
-    mixes:[{code:'C4015ALS',app:'Slab on Grade',vol:6200},{code:'C3515ALS',app:'Dock Aprons',vol:1400},{code:'C4025ALS',app:'Tilt Panels',vol:1300}],
-    notes:'Major distribution center near Seagoville plant. High priority.', type:'Commercial' },
-  { id:'a2', rep:'Alex', status:'lost', customerId:'c8', contactId:'ct11',
-    project:'Mesquite Self Storage', client:'StorRight LLC', contact:'Phil Cruz', phone:'972-555-0511', email:'dev@storright.com',
-    address:'4100 Gus Thomasson Rd, Mesquite, TX 75150', yards:420, revenue:67200,
-    bid_date:'4/28/2026', expiry:'6/27/2026', followup_date:null, followup_note:'',
-    mixes:[{code:'C3515ALS',app:'Slabs',vol:420}],
-    notes:'Lost to competitor on pricing. Follow up for future phases.', type:'Commercial' },
+var DUMMY_BIDS = [
+  {id:'w1',rep:'William',status:'pending',customerId:'c1',contactId:'ct1',project:'Lafayette Crossing Lot 5',client:'Beam Concrete',contact:'Ryan Smith',phone:'469-742-0094',email:'rsmith@beamconcrete.com',address:'NWC FM 551 & I-30, Fate, TX 75189',yards:12200,revenue:1891600,bid_date:'3/30/2026',expiry:'5/29/2026',followup_date:'2026-05-28',followup_note:'Confirm mix codes and start date',mixes:[{code:'C3515ALS',app:'All Other',vol:null},{code:'C4015ALS',app:'Slab on Grade',vol:null},{code:'TXCl C',app:'TXDOT Firelane',vol:null}],notes:'Commercial retail shell.',type:'Commercial'},
+  {id:'w2',rep:'William',status:'won',customerId:'c2',contactId:'ct3',project:'Sprouts - Anna, TX',client:'Standridge Concrete',contact:'Jake Standridge',phone:'972-555-0182',email:'jstandridge@standridgeconcrete.com',address:'Standridge Pkwy, Anna, TX',yards:847,revenue:138379,bid_date:'4/7/2026',expiry:'6/6/2026',followup_date:null,followup_note:'',mixes:[{code:'C3515ALS',app:'Footings',vol:180},{code:'C4015ALS',app:'Slab on Grade',vol:520}],notes:'Grocery retail. Won.',type:'Commercial'},
+  {id:'w3',rep:'William',status:'quoted',customerId:'c3',contactId:'ct4',project:'Rockwall Medical Office',client:'Turner Construction',contact:'Brad Turner',phone:'972-555-0234',email:'bturner@turnerconstruction.com',address:'1450 Ridge Rd, Rockwall, TX',yards:2100,revenue:336000,bid_date:'5/18/2026',expiry:'7/17/2026',followup_date:'2026-05-29',followup_note:'Follow up on pump mix confirmation',mixes:[{code:'C4015ALS',app:'Foundation',vol:800},{code:'C4025ALS',app:'Elevated Slab',vol:1300}],notes:'3-story medical office.',type:'Commercial'},
+  {id:'r1',rep:'Robby',status:'pending',customerId:'c4',contactId:'ct6',project:'Forney Industrial Park Ph2',client:'Forney Industrial LLC',contact:'Mike Garrett',phone:'972-555-0311',email:'mgmt@forneyind.com',address:'US-80, Forney, TX',yards:4500,revenue:702000,bid_date:'5/20/2026',expiry:'7/19/2026',followup_date:'2026-06-01',followup_note:'Check permit status',mixes:[{code:'C3515ALS',app:'Tilt Wall Panels',vol:1800},{code:'C4015ALS',app:'Slab on Grade',vol:2700}],notes:'Large industrial tilt-wall.',type:'Commercial'},
+  {id:'r2',rep:'Robby',status:'pending',customerId:'c5',contactId:'ct7',project:'Kaufman County Courthouse Annex',client:'Benchmark Civil',contact:'Ricardo Diaz',phone:'903-555-0198',email:'rdiaz@benchmarkcivil.com',address:'100 W Mulberry, Kaufman, TX',yards:680,revenue:109480,bid_date:'5/22/2026',expiry:'7/21/2026',followup_date:'2026-05-28',followup_note:'Confirm bond requirements',mixes:[{code:'C4015ALS',app:'Foundation',vol:320},{code:'C4515ALS',app:'Columns',vol:210}],notes:'Municipal project.',type:'Commercial'},
+  {id:'r3',rep:'Robby',status:'followup',customerId:'c6',contactId:'ct8',project:'Sunridge Estates Ph3',client:'DR Horton',contact:'Lisa Park',phone:'469-555-0277',email:'drh.tx@drhorton.com',address:'Sunridge Dr, Royse City, TX',yards:3200,revenue:467200,bid_date:'5/10/2026',expiry:'7/9/2026',followup_date:'2026-05-28',followup_note:'Lisa requested revised pricing',mixes:[{code:'R3515ABL',app:'House Slabs',vol:2400},{code:'R3015ABL',app:'Driveways',vol:800}],notes:'DR Horton subdivision.',type:'Residential'},
+  {id:'a1',rep:'Alex',status:'quoted',customerId:'c7',contactId:'ct10',project:'Seagoville Distribution Center',client:'Prologis',contact:'Tom Wheeler',phone:'214-555-0422',email:'txops@prologis.com',address:'2800 E Ledbetter Dr, Seagoville, TX',yards:8900,revenue:1424000,bid_date:'5/15/2026',expiry:'7/14/2026',followup_date:'2026-06-02',followup_note:'Confirm delivery schedule',mixes:[{code:'C4015ALS',app:'Slab on Grade',vol:6200},{code:'C3515ALS',app:'Dock Aprons',vol:1400}],notes:'Major distribution center.',type:'Commercial'},
+  {id:'a2',rep:'Alex',status:'lost',customerId:'c8',contactId:'ct11',project:'Mesquite Self Storage',client:'StorRight LLC',contact:'Phil Cruz',phone:'972-555-0511',email:'dev@storright.com',address:'4100 Gus Thomasson Rd, Mesquite, TX',yards:420,revenue:67200,bid_date:'4/28/2026',expiry:'6/27/2026',followup_date:null,followup_note:'',mixes:[{code:'C3515ALS',app:'Slabs',vol:420}],notes:'Lost to competitor on pricing.',type:'Commercial'}
 ];
 
-// ─────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────
-let allBids = [...DUMMY_BIDS];
-let allCustomers = [...DUMMY_CUSTOMERS];
-let currentRep = 'all';
-let currentPage = 'pipeline';
-let currentFUFilter = 'all';
-let currentContactFilter = 'all';
-let selectedBidId = null;
-let editingCustomerId = null;
-let contactRowCount = 0;
-let editingCustomerContacts = [];
+// ─── STATE ───────────────────────────────
+var allBids = [];
+var allCustomers = [];
+var currentRep = 'all';
+var currentPage = 'pipeline';
+var currentFUFilter = 'all';
+var currentContactFilter = 'all';
+var selectedBidId = null;
+var editingCustomerId = null;
+var editingContactId = null;
+var contactRowCount = 0;
 
-// Current logged-in rep (in production this comes from auth)
-// For demo: use the repViewSelect dropdown in the header
-// IS_MANAGER is computed dynamically based on currentRep
+var CUSTOMER_OWNERSHIP = {c1:'William',c2:'William',c3:'William',c4:'Robby',c5:'Robby',c6:'Robby',c7:'Alex',c8:'Alex'};
 
-// Per-rep customer ownership — maps customerId to rep name
-// In production this lives in Supabase; for demo it's seeded here
-const CUSTOMER_OWNERSHIP = {
-  'c1': 'William', 'c2': 'William', 'c3': 'William',
-  'c4': 'Robby',   'c5': 'Robby',   'c6': 'Robby',
-  'c7': 'Alex',    'c8': 'Alex',
-};
-
-function getMyCustomers() {
-  // Manager sees all; reps see only their own
-  if (currentRep === 'all') return allCustomers;
-  return allCustomers.filter(c => {
-    const owner = CUSTOMER_OWNERSHIP[c.id] || c.owner;
-    return owner === currentRep || !owner; // unassigned = visible to all
-  });
-}
-
-function switchRepView(rep) {
-  if (rep === 'manager') {
-    currentRep = 'all';
-    // Show all rep filter buttons
-    document.querySelectorAll('#repFilters .filter-btn').forEach(b => b.style.display = 'block');
-  } else {
-    currentRep = rep;
-    // Hide other rep filter buttons — rep only sees their own data
-    document.querySelectorAll('#repFilters .filter-btn').forEach(b => {
-      const btnText = b.textContent.trim();
-      b.style.display = (btnText === 'All Reps' || btnText === rep) ? 'block' : 'none';
-    });
-    // Set All Reps as active since rep sees all their own bids
-    document.querySelectorAll('#repFilters .filter-btn').forEach(b => {
-      b.classList.toggle('active', b.textContent.trim() === 'All Reps');
-    });
-  }
-  render();
-}
-
-// Load live bids from localStorage
-function loadLiveBids() {
-  try {
-    const live = localStorage.getItem('zamara_crm_entries');
-    if (live) {
-      const entries = JSON.parse(live);
-      entries.forEach(e => { if (!allBids.find(b => b.id === e.id)) allBids.unshift({...e, rep: e.rep||'William', status: e.status||'pending'}); });
-    }
-  } catch(err) {}
-}
-
-// Sync customers from shared localStorage key (written by both CRM and Bid Analyzer)
-function syncCustomers() {
-  // Merge any new customers added from the bid analyzer
-  // but NEVER replace existing dummy data
-  try {
-    const stored = localStorage.getItem('zamara_customers');
-    if (stored) {
-      const imported = JSON.parse(stored);
-      imported.forEach(c => {
-        // Only add if it's a new customer not in dummy data
-        if (!allCustomers.find(x => x.id === c.id)) {
-          allCustomers.push(c);
-        }
-        // Merge new contacts only
-        const existing = allCustomers.find(x => x.id === c.id);
-        if (existing && c.contacts) {
-          c.contacts.forEach(ct => {
-            if (!existing.contacts.find(x => x.id === ct.id)) {
-              existing.contacts.push(ct);
-            }
-          });
-        }
-      });
-    }
-  } catch(err) {}
-}
-
-// Save customers back to shared localStorage
-function saveCustomersToStorage() {
-  try {
-    localStorage.setItem('zamara_customers', JSON.stringify(allCustomers));
-  } catch(err) {}
-}
-
-// ─────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────
+// ─── HELPERS ─────────────────────────────
 function fmtRev(n) {
   if (!n) return 'TBD';
   if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
@@ -781,613 +460,454 @@ function fmtRev(n) {
   return '$' + n.toLocaleString();
 }
 function statusLabel(s) { return {pending:'Pending',quoted:'Quoted',followup:'Follow Up',won:'Won',lost:'Lost'}[s]||s; }
-function repCls(rep) { return (rep||'').toLowerCase(); }
-function roleClass(r) { return {estimator:'estimator',superintendent:'superintendent','project manager':'pm',pm:'pm',executive:'executive'}[r?.toLowerCase()]||'other'; }
-function roleLabel(r) { return {estimator:'Estimator',superintendent:'Superintendent','project manager':'PM',pm:'PM',executive:'Executive'}[r?.toLowerCase()]||r||'Other'; }
+function repCls(r) { return (r||'').toLowerCase(); }
+function roleLabel(r) { return {estimator:'Estimator',superintendent:'Superintendent','project manager':'PM',pm:'PM',executive:'Executive'}[(r||'').toLowerCase()]||(r||'Other'); }
+function roleCls(r) { return {estimator:'estimator',superintendent:'superintendent','project manager':'pm',pm:'pm',executive:'executive'}[(r||'').toLowerCase()]||'other'; }
 
-function getFiltered() {
-  if (currentRep === 'all') return allBids;
-  return allBids.filter(b => b.rep === currentRep);
+var today = new Date(); today.setHours(0,0,0,0);
+function daysFromNow(d) { var dt = new Date(d); dt.setHours(0,0,0,0); return Math.round((dt-today)/(86400000)); }
+function fuClass(d) { if (!d) return ''; var n = daysFromNow(d); return n < 0 ? 'overdue' : n === 0 ? 'today' : 'upcoming'; }
+function fuLabel(d) { if (!d) return ''; var n = daysFromNow(d); if (n < 0) return Math.abs(n)+'d overdue'; if (n === 0) return 'Today'; if (n === 1) return 'Tomorrow'; return 'In '+n+' days'; }
+
+function getFiltered() { return currentRep === 'all' ? allBids : allBids.filter(function(b){return b.rep===currentRep;}); }
+function getMyCustomers() {
+  if (currentRep === 'all') return allCustomers;
+  return allCustomers.filter(function(c){ var o = CUSTOMER_OWNERSHIP[c.id]||c.owner; return o===currentRep||!o; });
 }
 
-// ─────────────────────────────────────────
-// NAVIGATION
-// ─────────────────────────────────────────
+// ─── NAVIGATION ──────────────────────────
 function switchPage(page, btn) {
   currentPage = page;
-  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  ['pagePipeline','pageFollowups','pageCustomers','pageContacts','pageManager'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
+  document.querySelectorAll('.page-tab').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
+  ['pagePipeline','pageFollowups','pageCustomers','pageContacts','pageManager'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.style.display = 'none';
   });
-  const pageEl = document.getElementById('page' + page.charAt(0).toUpperCase() + page.slice(1));
-  if (pageEl) pageEl.style.display = 'block';
-  document.getElementById('btnAddBid').style.display = page === 'pipeline' ? 'block' : 'none';
-  document.getElementById('btnAddCustomer').style.display = page === 'customers' ? 'block' : 'none';
+  var pg = document.getElementById('page'+page.charAt(0).toUpperCase()+page.slice(1));
+  if (pg) pg.style.display = 'block';
+  document.getElementById('btnAddBid').style.display = page==='pipeline'?'block':'none';
+  document.getElementById('btnAddCustomer').style.display = page==='customers'?'block':'none';
+  document.getElementById('btnAddContact').style.display = page==='contacts'?'block':'none';
   render();
 }
 
 function filterRep(rep, btn) {
   currentRep = rep;
-  document.querySelectorAll('#repFilters .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('#repFilters .filter-btn').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
+  render();
+}
+
+function switchRepView(rep) {
+  currentRep = rep === 'all' ? 'all' : rep;
+  document.querySelectorAll('#repFilters .filter-btn').forEach(function(b){
+    var t = b.textContent.trim();
+    if (rep === 'all') { b.style.display='block'; b.classList.toggle('active', t==='All Reps'); }
+    else { b.style.display=(t==='All Reps'||t===rep)?'block':'none'; b.classList.toggle('active', t==='All Reps'); }
+  });
   render();
 }
 
 function filterFU(f, btn) {
   currentFUFilter = f;
-  document.querySelectorAll('#pageFollowups .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('#pageFollowups .filter-btn').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
   renderFollowups();
 }
 
-// ─────────────────────────────────────────
-// RENDER — STATS
-// ─────────────────────────────────────────
-function renderStats() {
-  const filtered = getFiltered();
-  const open = filtered.filter(b => !['won','lost'].includes(b.status));
-  const won = filtered.filter(b => b.status === 'won');
-  const lost = filtered.filter(b => b.status === 'lost');
-  const closed = won.length + lost.length;
-  document.getElementById('statOpen').textContent = open.length;
-  document.getElementById('statPipeline').textContent = fmtRev(open.reduce((s,b)=>s+(b.revenue||0),0));
-  document.getElementById('statWon').textContent = fmtRev(won.reduce((s,b)=>s+(b.revenue||0),0));
-  document.getElementById('statWonYards').textContent = won.reduce((s,b)=>s+(b.yards||0),0).toLocaleString() + ' CY won';
-  document.getElementById('statYards').textContent = filtered.reduce((s,b)=>s+(b.yards||0),0).toLocaleString();
-  document.getElementById('statClose').textContent = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '—';
-  // FU badge
-  const overdueCount = allBids.filter(b => b.followup_date && fuClass(b.followup_date) === 'overdue' && !['won','lost'].includes(b.status)).length;
-  const fuBadge = document.getElementById('fuBadge');
-  if (overdueCount > 0) { fuBadge.style.display = 'inline'; fuBadge.textContent = overdueCount; }
-  else { fuBadge.style.display = 'none'; }
-}
-
-// ─────────────────────────────────────────
-// RENDER — PIPELINE
-// ─────────────────────────────────────────
-function makeBidCard(bid) {
-  const rc = repCls(bid.rep);
-  const isLive = bid.live;
-  const fuc = bid.followup_date ? fuClass(bid.followup_date) : '';
-  const ful = bid.followup_date ? fuLabel(bid.followup_date) : '';
-  const fuIcon = fuc === 'overdue' ? '🔴' : fuc === 'today' ? '🟡' : '📅';
-  return `<div class="bid-card ${rc}${isLive?' live':''}" onclick="openBidModal('${bid.id}')">
-    ${isLive ? '<div class="live-badge">● Live</div>' : ''}
-    <div class="bid-project">${bid.project}</div>
-    <div class="bid-client">${bid.client}</div>
-    <div class="bid-meta">
-      <div><div class="bid-yards">${bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD'}</div><div class="bid-rev">${fmtRev(bid.revenue)}</div></div>
-      <span class="rep-tag ${rc}">${bid.rep}</span>
-    </div>
-    ${bid.followup_date ? `<div class="followup-flag ${fuc}">${fuIcon} ${ful}${bid.followup_note ? ' — '+bid.followup_note.substring(0,30) : ''}</div>` : ''}
-    <div class="bid-date">Bid: ${bid.bid_date||'—'} · Exp: ${bid.expiry||'—'}</div>
-  </div>`;
-}
-
-function renderPipeline() {
-  const filtered = getFiltered();
-  ['pending','quoted','followup','won','lost'].forEach(s => {
-    const bids = filtered.filter(b => b.status === s);
-    document.getElementById('cnt-'+s).textContent = bids.length;
-    document.getElementById('col-'+s).innerHTML = bids.length
-      ? bids.map(makeBidCard).join('')
-      : '<div class="empty-col">No bids</div>';
-  });
-}
-
-// ─────────────────────────────────────────
-// RENDER — FOLLOW-UPS
-// ─────────────────────────────────────────
-function renderFollowups() {
-  const bids = allBids.filter(b => b.followup_date && !['won','lost'].includes(b.status));
-  let filtered = bids;
-  if (currentFUFilter !== 'all') filtered = bids.filter(b => fuClass(b.followup_date) === currentFUFilter);
-  filtered.sort((a,b) => new Date(a.followup_date) - new Date(b.followup_date));
-
-  const list = document.getElementById('followupList');
-  if (!filtered.length) {
-    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">No follow-ups scheduled</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(bid => {
-    const fuc = fuClass(bid.followup_date);
-    const d = new Date(bid.followup_date);
-    const day = d.getDate();
-    const mon = d.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
-    const rc = repCls(bid.rep);
-    return `<div class="followup-item ${fuc}" onclick="openBidModal('${bid.id}')">
-      <div class="fu-date">${day}<small>${mon}</small></div>
-      <div class="fu-divider"></div>
-      <div class="fu-info">
-        <div class="fu-project">${bid.project}</div>
-        <div class="fu-client">${bid.client} · ${bid.contact||'—'}</div>
-        ${bid.followup_note ? `<div class="fu-note">"${bid.followup_note}"</div>` : ''}
-      </div>
-      <div class="fu-meta">
-        <span class="followup-badge ${fuc}">${fuLabel(bid.followup_date)}</span>
-        <span class="rep-tag ${rc}">${bid.rep}</span>
-        <span style="font-size:10px;color:var(--muted)">${statusLabel(bid.status)}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ─────────────────────────────────────────
-// RENDER — CUSTOMERS
-// ─────────────────────────────────────────
-function renderCustomers() {
-  const grid = document.getElementById('customerGrid');
-  const myCustomers = getMyCustomers();
-  if (!myCustomers.length) {
-    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No customers yet — add your first customer.</div>';
-    return;
-  }
-  grid.innerHTML = myCustomers.map(c => {
-    const custBids = allBids.filter(b => b.customerId === c.id);
-    const open = custBids.filter(b => !['won','lost'].includes(b.status));
-    const totalRev = custBids.reduce((s,b)=>s+(b.revenue||0),0);
-    const typeCls = c.type?.toLowerCase()||'commercial';
-    return `<div class="customer-card" onclick="openCustomerDetail('${c.id}')">
-      <div class="customer-head">
-        <div class="customer-name">${c.name}</div>
-        <span class="customer-type ${typeCls}">${c.type||'Commercial'}</span>
-      </div>
-      <div class="customer-contacts">
-        ${c.contacts.slice(0,3).map(ct => `
-          <div class="contact-row">
-            <div>
-              <div class="contact-name">${ct.name}</div>
-              <div class="contact-role">${ct.email||ct.phone||''}</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px">
-              <span class="role-badge ${roleClass(ct.role)}">${roleLabel(ct.role)}</span>
-              <div class="contact-actions">
-                <button class="icon-btn" onclick="event.stopPropagation();window.location='mailto:${ct.email}'" title="Email">✉</button>
-                <button class="icon-btn" onclick="event.stopPropagation();window.location='tel:${ct.phone}'" title="Call">📞</button>
-              </div>
-            </div>
-          </div>`).join('')}
-        ${c.contacts.length > 3 ? `<div style="font-size:10px;color:var(--muted);padding-top:4px">+${c.contacts.length-3} more contacts</div>` : ''}
-      </div>
-      <div class="customer-stats">
-        <div class="cust-stat"><label>Open Bids</label><value>${open.length}</value></div>
-        <div class="cust-stat"><label>Total Revenue</label><value class="gold">${fmtRev(totalRev)}</value></div>
-        <div class="cust-stat"><label>Contacts</label><value>${c.contacts.length}</value></div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ─────────────────────────────────────────
-// RENDER — MANAGER
-// ─────────────────────────────────────────
-function renderManager() {
-  const reps = ['William','Robby','Alex'];
-  document.getElementById('managerGrid').innerHTML = reps.map(rep => {
-    const bids = allBids.filter(b => b.rep === rep);
-    const open = bids.filter(b => !['won','lost'].includes(b.status));
-    const won = bids.filter(b => b.status === 'won');
-    const lost = bids.filter(b => b.status === 'lost');
-    const closed = won.length + lost.length;
-    const closeRate = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '—';
-    const pipelineRev = open.reduce((s,b)=>s+(b.revenue||0),0);
-    const totalYards = bids.reduce((s,b)=>s+(b.yards||0),0);
-    const rc = rep.toLowerCase();
-    return `<div class="rep-card">
-      <div class="rep-card-head">
-        <div class="rep-avatar ${rc}">${rep[0]}</div>
-        <div><div class="rep-name">${rep}</div><div class="rep-title">Sales Representative</div></div>
-      </div>
-      <div class="rep-stats">
-        <div class="rep-stat"><label>Open Bids</label><value>${open.length}</value></div>
-        <div class="rep-stat"><label>Pipeline</label><value class="gold">${fmtRev(pipelineRev)}</value></div>
-        <div class="rep-stat"><label>Total CY</label><value>${totalYards.toLocaleString()}</value></div>
-        <div class="rep-stat"><label>Close Rate</label><value class="${won.length>0?'green':''}">${closeRate}</value></div>
-      </div>
-      <div class="rep-bids">
-        ${bids.slice(0,5).map(b=>`<div class="rep-bid-row">
-          <span class="rep-bid-name">${b.project}</span>
-          <span><span class="sdot ${b.status}"></span><span style="font-size:10px;color:var(--muted)">${statusLabel(b.status)}</span></span>
-        </div>`).join('')}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderContacts() {
-  // Build company filter buttons
-  const myCustomers = getMyCustomers();
-  const filterBar = document.getElementById('contactCompanyFilters');
-  if (filterBar) {
-    let btns = '<button class="filter-btn' + (currentContactFilter==="all" ? " active" : "") + '" onclick="filterContacts(\'all\',this)">All Companies</button>';
-    myCustomers.forEach(c => {
-      btns += '<button class="filter-btn' + (currentContactFilter===c.id ? " active" : "") + '" onclick="filterContacts(\''+c.id+'\',this)">'+c.name+'</button>';
-    });
-    filterBar.innerHTML = btns;
-  } }
-
-  // Build contacts list
-  const tbody = document.getElementById('contactsBody');
-  if (!tbody) return;
-
-  let allContacts = [];
-  myCustomers.forEach(c => {
-    (c.contacts || []).forEach(ct => {
-      allContacts.push({ ...ct, companyId: c.id, companyName: c.name });
-    });
-  });
-
-  // Filter by company
-  if (currentContactFilter !== 'all') {
-    allContacts = allContacts.filter(ct => ct.companyId === currentContactFilter);
-  }
-
-  if (!allContacts.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);font-size:13px">No contacts found</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = allContacts.map(ct => {
-    const openBids = allBids.filter(b => b.contactId === ct.id && !['won','lost'].includes(b.status)).length;
-    const rc = roleClass(ct.role);
-    return `<tr style="border-bottom:1px solid var(--dark-4);transition:background 0.15s" onmouseover="this.style.background='var(--dark-3)'" onmouseout="this.style.background=''">
-      <td style="padding:11px 14px">
-        <div style="font-size:13px;font-weight:600;color:var(--white)">${ct.name}</div>
-        <span class="role-badge ${rc}" style="margin-top:3px;display:inline-block">${roleLabel(ct.role)}</span>
-      </td>
-      <td style="padding:11px 14px;font-size:12px;color:var(--dim)">${ct.companyName}</td>
-      <td style="padding:11px 14px"><span class="role-badge ${rc}">${roleLabel(ct.role)}</span></td>
-      <td style="padding:11px 14px;font-size:12px;color:var(--dim)">
-        ${ct.phone ? `<a href="tel:${ct.phone}" style="color:var(--dim);text-decoration:none" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--dim)'">${ct.phone}</a>` : '—'}
-      </td>
-      <td style="padding:11px 14px;font-size:12px;color:var(--dim)">
-        ${ct.email ? `<a href="mailto:${ct.email}" style="color:var(--dim);text-decoration:none" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--dim)'">${ct.email}</a>` : '—'}
-      </td>
-      <td style="padding:11px 14px">
-        ${openBids > 0 ? `<span style="font-size:12px;font-weight:600;color:var(--gold-light)">${openBids} open</span>` : '<span style="font-size:12px;color:var(--mid)">—</span>'}
-      </td>
-      <td style="padding:11px 14px">
-        <div style="display:flex;gap:8px">
-          ${ct.phone ? `<button class="icon-btn" onclick="window.location='tel:${ct.phone}'" title="Call">📞</button>` : ''}
-          ${ct.email ? `<button class="icon-btn" onclick="window.location='mailto:${ct.email}'" title="Email">✉</button>` : ''}
-          <button class="icon-btn" onclick="openEditContactModal('${ct.id}','${ct.companyId}')" title="Edit">✏</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-function filterContacts(filter, btn) {
-  currentContactFilter = filter;
-  document.querySelectorAll('#contactCompanyFilters .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+function filterContacts(f, btn) {
+  currentContactFilter = f;
+  document.querySelectorAll('#contactFilters .filter-btn').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
   renderContacts();
 }
 
-function openAddContactModal(preselectedCompanyId) {
-  // Populate company dropdown
-  const sel = document.getElementById('nc_company');
-  sel.innerHTML = '<option value="">Select company...</option>'
-    + getMyCustomers().map(c => `<option value="${c.id}" ${c.id===preselectedCompanyId?'selected':''}>${c.name}</option>`).join('');
-  ['nc_name','nc_phone','nc_email'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('nc_role').value = 'estimator';
-  openModal('addContactModal');
+// ─── RENDER STATS ────────────────────────
+function renderStats() {
+  var filtered = getFiltered();
+  var open = filtered.filter(function(b){return !['won','lost'].includes(b.status);});
+  var won = filtered.filter(function(b){return b.status==='won';});
+  var lost = filtered.filter(function(b){return b.status==='lost';});
+  var closed = won.length + lost.length;
+  document.getElementById('statOpen').textContent = open.length;
+  document.getElementById('statPipeline').textContent = fmtRev(open.reduce(function(s,b){return s+(b.revenue||0);},0));
+  document.getElementById('statWon').textContent = fmtRev(won.reduce(function(s,b){return s+(b.revenue||0);},0));
+  document.getElementById('statWonYards').textContent = won.reduce(function(s,b){return s+(b.yards||0);},0).toLocaleString()+' CY won';
+  document.getElementById('statYards').textContent = filtered.reduce(function(s,b){return s+(b.yards||0);},0).toLocaleString();
+  document.getElementById('statClose').textContent = closed > 0 ? Math.round((won.length/closed)*100)+'%' : '\u2014';
+  var overdue = allBids.filter(function(b){return b.followup_date && fuClass(b.followup_date)==='overdue' && !['won','lost'].includes(b.status);}).length;
+  var badge = document.getElementById('fuBadge');
+  if (overdue > 0) { badge.style.display='inline'; badge.textContent=overdue; } else { badge.style.display='none'; }
 }
 
-function saveNewContact() {
-  const companyId = document.getElementById('nc_company').value;
-  const name = document.getElementById('nc_name').value.trim();
-  if (!companyId) { alert('Select a company'); return; }
-  if (!name) { alert('Contact name required'); return; }
-  const c = allCustomers.find(x => x.id === companyId);
-  if (!c) return;
-  const newContact = {
-    id: 'ct_' + Date.now(),
-    name,
-    role: document.getElementById('nc_role').value,
-    phone: document.getElementById('nc_phone').value.trim(),
-    email: document.getElementById('nc_email').value.trim(),
-  };
-  c.contacts.push(newContact);
-  saveCustomersToStorage();
-  closeModal('addContactModal');
-  render();
+// ─── RENDER PIPELINE ─────────────────────
+function makeBidCard(bid) {
+  var rc = repCls(bid.rep);
+  var fuc = bid.followup_date ? fuClass(bid.followup_date) : '';
+  var ful = bid.followup_date ? fuLabel(bid.followup_date) : '';
+  var fuIcon = fuc==='overdue' ? '&#128308;' : fuc==='today' ? '&#128993;' : '&#128197;';
+  var fuHtml = bid.followup_date ? '<div class="fu-flag '+fuc+'">'+fuIcon+' '+ful+(bid.followup_note ? ' &mdash; '+bid.followup_note.substring(0,28) : '')+'</div>' : '';
+  var liveHtml = bid.live ? '<div class="live-badge">&#9679; Live</div>' : '';
+  return '<div class="bid-card '+rc+(bid.live?' live':'')+'" onclick="openBidModal(\''+bid.id+'\')">'
+    +liveHtml
+    +'<div class="bid-project">'+bid.project+'</div>'
+    +'<div class="bid-client">'+bid.client+'</div>'
+    +'<div class="bid-meta"><div><div class="bid-yards">'+(bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD')+'</div><div class="bid-rev">'+fmtRev(bid.revenue)+'</div></div>'
+    +'<span class="rep-tag '+rc+'">'+bid.rep+'</span></div>'
+    +fuHtml
+    +'<div class="bid-date">Bid: '+(bid.bid_date||'\u2014')+' &middot; Exp: '+(bid.expiry||'\u2014')+'</div>'
+    +'</div>';
 }
 
-function openEditContactModal(contactId, companyId) {
-  const c = allCustomers.find(x => x.id === companyId);
-  if (!c) return;
-  const ct = c.contacts.find(x => x.id === contactId);
-  if (!ct) return;
-  // Re-use add modal but pre-fill
-  const sel = document.getElementById('nc_company');
-  sel.innerHTML = '<option value="">Select company...</option>'
-    + getMyCustomers().map(cu => `<option value="${cu.id}" ${cu.id===companyId?'selected':''}>${cu.name}</option>`).join('');
-  document.getElementById('nc_name').value = ct.name;
-  document.getElementById('nc_role').value = ct.role || 'other';
-  document.getElementById('nc_phone').value = ct.phone || '';
-  document.getElementById('nc_email').value = ct.email || '';
-  // Change save button to update
-  const saveBtn = document.querySelector('#addContactModal .btn-save');
-  if (saveBtn) {
-    saveBtn.textContent = 'Update Contact';
-    saveBtn.onclick = () => updateContact(contactId, companyId);
-  }
-  openModal('addContactModal');
+function renderPipeline() {
+  var filtered = getFiltered();
+  ['pending','quoted','followup','won','lost'].forEach(function(s) {
+    var bids = filtered.filter(function(b){return b.status===s;});
+    document.getElementById('cnt-'+s).textContent = bids.length;
+    var col = document.getElementById('col-'+s);
+    col.innerHTML = bids.length ? bids.map(makeBidCard).join('') : '<div class="empty-col">No bids</div>';
+  });
 }
 
-function updateContact(contactId, companyId) {
-  const c = allCustomers.find(x => x.id === companyId);
-  if (!c) return;
-  const ct = c.contacts.find(x => x.id === contactId);
-  if (!ct) return;
-  const newCompanyId = document.getElementById('nc_company').value;
-  // If company changed, move the contact
-  if (newCompanyId !== companyId) {
-    c.contacts = c.contacts.filter(x => x.id !== contactId);
-    const newCompany = allCustomers.find(x => x.id === newCompanyId);
-    if (newCompany) newCompany.contacts.push({...ct, id: contactId});
-  } else {
-    ct.name = document.getElementById('nc_name').value.trim();
-    ct.role = document.getElementById('nc_role').value;
-    ct.phone = document.getElementById('nc_phone').value.trim();
-    ct.email = document.getElementById('nc_email').value.trim();
-  }
-  saveCustomersToStorage();
-  // Reset save button
-  const saveBtn = document.querySelector('#addContactModal .btn-save');
-  if (saveBtn) { saveBtn.textContent = 'Add Contact'; saveBtn.onclick = saveNewContact; }
-  closeModal('addContactModal');
-  render();
+// ─── RENDER FOLLOWUPS ────────────────────
+function renderFollowups() {
+  var bids = allBids.filter(function(b){return b.followup_date && !['won','lost'].includes(b.status);});
+  if (currentFUFilter !== 'all') bids = bids.filter(function(b){return fuClass(b.followup_date)===currentFUFilter;});
+  bids.sort(function(a,b){return new Date(a.followup_date)-new Date(b.followup_date);});
+  var list = document.getElementById('followupList');
+  if (!bids.length) { list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">No follow-ups scheduled</div>'; return; }
+  list.innerHTML = bids.map(function(bid) {
+    var fuc = fuClass(bid.followup_date);
+    var d = new Date(bid.followup_date);
+    var day = d.getDate(); var mon = d.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
+    var rc = repCls(bid.rep);
+    return '<div class="fu-item '+fuc+'" onclick="openBidModal(\''+bid.id+'\')">'
+      +'<div class="fu-date-box">'+day+'<small>'+mon+'</small></div>'
+      +'<div class="fu-divider"></div>'
+      +'<div class="fu-info"><div class="fu-project">'+bid.project+'</div><div class="fu-client">'+bid.client+' &middot; '+(bid.contact||'\u2014')+'</div>'
+      +(bid.followup_note ? '<div class="fu-note">&ldquo;'+bid.followup_note+'&rdquo;</div>' : '')
+      +'</div>'
+      +'<div class="fu-meta"><span class="fu-badge '+fuc+'">'+fuLabel(bid.followup_date)+'</span><span class="rep-tag '+rc+'">'+bid.rep+'</span><span style="font-size:10px;color:var(--muted)">'+statusLabel(bid.status)+'</span></div>'
+      +'</div>';
+  }).join('');
 }
 
+// ─── RENDER CUSTOMERS ────────────────────
+function renderCustomers() {
+  var grid = document.getElementById('customerGrid');
+  var custs = getMyCustomers();
+  if (!custs.length) { grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--muted)">No customers yet</div>'; return; }
+  grid.innerHTML = custs.map(function(c) {
+    var custBids = allBids.filter(function(b){return b.customerId===c.id;});
+    var open = custBids.filter(function(b){return !['won','lost'].includes(b.status);});
+    var totalRev = custBids.reduce(function(s,b){return s+(b.revenue||0);},0);
+    var typeCls = (c.type||'commercial').toLowerCase();
+    var contactHtml = c.contacts.slice(0,3).map(function(ct) {
+      return '<div class="cust-contact-row">'
+        +'<div><div style="font-size:12px;font-weight:500;color:var(--white)">'+ct.name+'</div><div style="font-size:10px;color:var(--muted)">'+(ct.email||ct.phone||'')+'</div></div>'
+        +'<div style="display:flex;align-items:center;gap:6px"><span class="role-badge '+roleCls(ct.role)+'">'+roleLabel(ct.role)+'</span>'
+        +(ct.email ? '<button class="icon-btn" onclick="event.stopPropagation();window.location=\'mailto:'+ct.email+'\'" title="Email">&#9993;</button>' : '')
+        +(ct.phone ? '<button class="icon-btn" onclick="event.stopPropagation();window.location=\'tel:'+ct.phone+'\'" title="Call">&#128222;</button>' : '')
+        +'</div></div>';
+    }).join('');
+    return '<div class="customer-card" onclick="openCustomerDetail(\''+c.id+'\')"><div class="customer-head"><div class="customer-name">'+c.name+'</div><span class="ctype '+typeCls+'">'+c.type+'</span></div>'
+      +'<div class="cust-contacts">'+contactHtml+(c.contacts.length>3?'<div style="font-size:10px;color:var(--muted);padding-top:4px">+'+( c.contacts.length-3)+' more</div>':'')+'</div>'
+      +'<div class="cust-stats"><div class="cust-stat"><label>Open Bids</label><value>'+open.length+'</value></div><div class="cust-stat"><label>Revenue</label><value class="gold">'+fmtRev(totalRev)+'</value></div><div class="cust-stat"><label>Contacts</label><value>'+c.contacts.length+'</value></div></div>'
+      +'</div>';
+  }).join('');
+}
+
+// ─── RENDER CONTACTS ─────────────────────
+function renderContacts() {
+  var custs = getMyCustomers();
+  // Rebuild filter buttons
+  var filterBar = document.getElementById('contactFilters');
+  var btns = '<button class="filter-btn'+(currentContactFilter==='all'?' active':'')+'" onclick="filterContacts(\'all\',this)">All Companies</button>';
+  custs.forEach(function(c) {
+    btns += '<button class="filter-btn'+(currentContactFilter===c.id?' active':'')+'" onclick="filterContacts(\''+c.id+'\',this)">'+c.name+'</button>';
+  });
+  filterBar.innerHTML = btns;
+
+  var contacts = [];
+  custs.forEach(function(c) {
+    (c.contacts||[]).forEach(function(ct) {
+      contacts.push(Object.assign({}, ct, {companyId:c.id, companyName:c.name}));
+    });
+  });
+  if (currentContactFilter !== 'all') contacts = contacts.filter(function(ct){return ct.companyId===currentContactFilter;});
+
+  var tbody = document.getElementById('contactsBody');
+  if (!contacts.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">No contacts found</td></tr>'; return; }
+  tbody.innerHTML = contacts.map(function(ct) {
+    var openBids = allBids.filter(function(b){return b.contactId===ct.id && !['won','lost'].includes(b.status);}).length;
+    return '<tr>'
+      +'<td><div style="font-size:13px;font-weight:600;color:var(--white)">'+ct.name+'</div></td>'
+      +'<td style="color:var(--dim)">'+ct.companyName+'</td>'
+      +'<td><span class="role-badge '+roleCls(ct.role)+'">'+roleLabel(ct.role)+'</span></td>'
+      +'<td>'+(ct.phone ? '<a href="tel:'+ct.phone+'" style="color:var(--dim);text-decoration:none">'+ct.phone+'</a>' : '\u2014')+'</td>'
+      +'<td>'+(ct.email ? '<a href="mailto:'+ct.email+'" style="color:var(--dim);text-decoration:none">'+ct.email+'</a>' : '\u2014')+'</td>'
+      +'<td>'+(openBids>0 ? '<span style="color:var(--gold-light);font-weight:600">'+openBids+' open</span>' : '<span style="color:var(--mid)">\u2014</span>')+'</td>'
+      +'<td><div style="display:flex;gap:6px">'
+      +(ct.phone ? '<button class="icon-btn" onclick="window.location=\'tel:'+ct.phone+'\'">&#128222;</button>' : '')
+      +(ct.email ? '<button class="icon-btn" onclick="window.location=\'mailto:'+ct.email+'\'">&#9993;</button>' : '')
+      +'<button class="icon-btn" onclick="openEditContactModal(\''+ct.id+'\',\''+ct.companyId+'\')">&#9998;</button>'
+      +'</div></td></tr>';
+  }).join('');
+}
+
+// ─── RENDER MANAGER ──────────────────────
+function renderManager() {
+  var reps = ['William','Robby','Alex'];
+  document.getElementById('managerGrid').innerHTML = reps.map(function(rep) {
+    var bids = allBids.filter(function(b){return b.rep===rep;});
+    var open = bids.filter(function(b){return !['won','lost'].includes(b.status);});
+    var won = bids.filter(function(b){return b.status==='won';});
+    var lost = bids.filter(function(b){return b.status==='lost';});
+    var closed = won.length+lost.length;
+    var rc = rep.toLowerCase();
+    return '<div class="rep-card"><div class="rep-card-head"><div class="rep-avatar '+rc+'">'+rep[0]+'</div><div><div class="rep-name">'+rep+'</div><div class="rep-title">Sales Representative</div></div></div>'
+      +'<div class="rep-stats"><div class="rep-stat"><label>Open Bids</label><value>'+open.length+'</value></div><div class="rep-stat"><label>Pipeline</label><value class="gold">'+fmtRev(open.reduce(function(s,b){return s+(b.revenue||0);},0))+'</value></div>'
+      +'<div class="rep-stat"><label>Total CY</label><value>'+bids.reduce(function(s,b){return s+(b.yards||0);},0).toLocaleString()+'</value></div>'
+      +'<div class="rep-stat"><label>Close Rate</label><value class="'+(won.length>0?'green':'')+'">'+(closed>0?Math.round((won.length/closed)*100)+'%':'\u2014')+'</value></div></div>'
+      +'<div class="rep-bids">'+bids.slice(0,5).map(function(b){return '<div class="rep-bid-row"><span style="color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">'+b.project+'</span><span><span class="sdot '+b.status+'"></span><span style="font-size:10px;color:var(--muted)">'+statusLabel(b.status)+'</span></span></div>';}).join('')+'</div></div>';
+  }).join('');
+}
+
+// ─── MASTER RENDER ───────────────────────
 function render() {
   renderStats();
-  if (currentPage === 'pipeline') renderPipeline();
-  else if (currentPage === 'followups') renderFollowups();
-  else if (currentPage === 'customers') renderCustomers();
-  else if (currentPage === 'contacts') renderContacts();
-  else if (currentPage === 'manager') renderManager();
+  if (currentPage==='pipeline') renderPipeline();
+  else if (currentPage==='followups') renderFollowups();
+  else if (currentPage==='customers') renderCustomers();
+  else if (currentPage==='contacts') renderContacts();
+  else if (currentPage==='manager') renderManager();
 }
 
-// ─────────────────────────────────────────
-// BID MODAL
-// ─────────────────────────────────────────
+// ─── BID MODAL ───────────────────────────
 function openBidModal(id) {
-  const bid = allBids.find(b => b.id === id);
+  var bid = allBids.find(function(b){return b.id===id;});
   if (!bid) return;
   selectedBidId = id;
   document.getElementById('bmTitle').textContent = bid.project;
-  document.getElementById('bmClient').textContent = (bid.client||'') + (bid.type ? ' · ' + bid.type : '');
+  document.getElementById('bmClient').textContent = (bid.client||'') + (bid.type ? ' \u00b7 '+bid.type : '');
   document.getElementById('bmStatus').value = bid.status;
-  document.getElementById('bmFollowupDate').value = bid.followup_date || '';
-  document.getElementById('bmFollowupNote').value = bid.followup_note || '';
-  document.getElementById('bmGrid').innerHTML = `
-    <div class="modal-field"><label>Contact</label><value>${bid.contact||'—'}</value></div>
-    <div class="modal-field"><label>Phone</label><value>${bid.phone||'—'}</value></div>
-    <div class="modal-field"><label>Email</label><value><a href="mailto:${bid.email||''}" style="color:var(--gold-light)">${bid.email||'—'}</a></value></div>
-    <div class="modal-field"><label>Project Address</label><value>${bid.address||'—'}</value></div>
-    <div class="modal-field"><label>Est. Yardage</label><value>${bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD'}</value></div>
-    <div class="modal-field"><label>Est. Revenue</label><value>${fmtRev(bid.revenue)}</value></div>
-    <div class="modal-field"><label>Bid Date</label><value>${bid.bid_date||'—'}</value></div>
-    <div class="modal-field"><label>Expiration</label><value>${bid.expiry||'—'}</value></div>
-    <div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>${bid.notes||'—'}</value></div>
-    <div class="modal-field"><label>Sales Rep</label><value>${bid.rep||'—'}</value></div>`;
-  document.getElementById('bmMixes').innerHTML = bid.mixes?.length
-    ? '<div class="modal-section-label">Mix Codes</div>' + bid.mixes.map(m=>`<div class="mix-row"><span class="mix-code">${m.code}</span><span class="mix-app">${m.app}</span><span class="mix-vol">${m.vol?m.vol.toLocaleString()+' CY':'TBD'}</span></div>`).join('')
+  document.getElementById('bmFollowupDate').value = bid.followup_date||'';
+  document.getElementById('bmFollowupNote').value = bid.followup_note||'';
+  document.getElementById('bmGrid').innerHTML =
+    '<div class="modal-field"><label>Contact</label><value>'+(bid.contact||'\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Phone</label><value>'+(bid.phone||'\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Email</label><value>'+(bid.email ? '<a href="mailto:'+bid.email+'" style="color:var(--gold-light)">'+bid.email+'</a>' : '\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Address</label><value>'+(bid.address||'\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Yardage</label><value>'+(bid.yards ? bid.yards.toLocaleString()+' CY' : 'TBD')+'</value></div>'
+    +'<div class="modal-field"><label>Revenue</label><value>'+fmtRev(bid.revenue)+'</value></div>'
+    +'<div class="modal-field"><label>Bid Date</label><value>'+(bid.bid_date||'\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Expiration</label><value>'+(bid.expiry||'\u2014')+'</value></div>'
+    +'<div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>'+(bid.notes||'\u2014')+'</value></div>'
+    +'<div class="modal-field"><label>Sales Rep</label><value>'+(bid.rep||'\u2014')+'</value></div>';
+  document.getElementById('bmMixes').innerHTML = bid.mixes && bid.mixes.length
+    ? '<div class="modal-section-label">Mix Codes</div>'+bid.mixes.map(function(m){return '<div class="mix-row"><span class="mix-code">'+m.code+'</span><span class="mix-app">'+m.app+'</span><span class="mix-vol">'+(m.vol?m.vol.toLocaleString()+' CY':'TBD')+'</span></div>';}).join('')
     : '';
   openModal('bidModal');
 }
+function updateBidStatus() { var bid=allBids.find(function(b){return b.id===selectedBidId;}); if(bid){bid.status=document.getElementById('bmStatus').value;render();} }
+function updateBidFollowup() { var bid=allBids.find(function(b){return b.id===selectedBidId;}); if(bid){bid.followup_date=document.getElementById('bmFollowupDate').value;render();} }
+function updateBidNote() { var bid=allBids.find(function(b){return b.id===selectedBidId;}); if(bid){bid.followup_note=document.getElementById('bmFollowupNote').value;} }
 
-function updateBidStatus() {
-  const bid = allBids.find(b => b.id === selectedBidId);
-  if (bid) { bid.status = document.getElementById('bmStatus').value; render(); }
-}
-function updateBidFollowup() {
-  const bid = allBids.find(b => b.id === selectedBidId);
-  if (bid) { bid.followup_date = document.getElementById('bmFollowupDate').value; render(); }
-}
-function updateBidFollowupNote() {
-  const bid = allBids.find(b => b.id === selectedBidId);
-  if (bid) { bid.followup_note = document.getElementById('bmFollowupNote').value; }
-}
-
-// ─────────────────────────────────────────
-// CUSTOMER DETAIL MODAL
-// ─────────────────────────────────────────
-function openCustomerDetail(id) {
-  const c = allCustomers.find(x => x.id === id);
-  if (!c) return;
-  document.getElementById('cdTitle').textContent = c.name;
-  document.getElementById('cdSub').textContent = (c.type||'') + (c.phone ? ' · ' + c.phone : '');
-  const custBids = allBids.filter(b => b.customerId === id);
-  document.getElementById('cdBody').innerHTML = `
-    <div class="modal-grid">
-      <div class="modal-field"><label>Type</label><value>${c.type||'—'}</value></div>
-      <div class="modal-field"><label>Phone</label><value>${c.phone||'—'}</value></div>
-      <div class="modal-field" style="grid-column:1/-1"><label>Address</label><value>${c.address||'—'}</value></div>
-      ${c.notes ? `<div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>${c.notes}</value></div>` : ''}
-    </div>
-    <div class="modal-section-label">Contacts (${c.contacts.length})</div>
-    ${c.contacts.map(ct=>`<div class="mix-row" style="flex-wrap:wrap;gap:8px">
-      <div><div style="font-size:13px;font-weight:600;color:var(--white)">${ct.name}</div><div style="font-size:11px;color:var(--muted)">${ct.email||''}</div></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
-        <span class="role-badge ${roleClass(ct.role)}">${roleLabel(ct.role)}</span>
-        <button class="icon-btn" onclick="window.location='mailto:${ct.email}'" title="Email">✉</button>
-        <button class="icon-btn" onclick="window.location='tel:${ct.phone}'" title="Call">📞</button>
-      </div>
-    </div>`).join('')}
-    <div class="modal-section-label">Bids (${custBids.length})</div>
-    ${custBids.length ? custBids.map(b=>`<div class="mix-row" style="cursor:pointer" onclick="closeModal('customerDetailModal');openBidModal('${b.id}')">
-      <span style="font-size:12px;font-weight:600;color:var(--white)">${b.project}</span>
-      <span><span class="sdot ${b.status}"></span><span style="font-size:11px;color:var(--muted)">${statusLabel(b.status)}</span></span>
-      <span style="font-size:12px;color:var(--gold-light)">${fmtRev(b.revenue)}</span>
-    </div>`).join('') : '<div style="font-size:12px;color:var(--muted);padding:8px">No bids yet</div>'}
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('customerDetailModal')">Close</button>
-      <button class="btn-save" onclick="closeModal('customerDetailModal');openEditCustomerModal('${id}')">Edit Customer</button>
-    </div>`;
-  openModal('customerDetailModal');
-}
-
-// ─────────────────────────────────────────
-// ADD / EDIT CUSTOMER MODAL
-// ─────────────────────────────────────────
-function openAddCustomerModal() {
-  editingCustomerId = null;
-  editingCustomerContacts = [];
-  contactRowCount = 0;
-  document.getElementById('cmTitle').textContent = 'New Customer';
-  document.getElementById('cm_name').value = '';
-  document.getElementById('cm_type').value = 'Commercial';
-  document.getElementById('cm_phone').value = '';
-  document.getElementById('cm_address').value = '';
-  document.getElementById('cm_notes').value = '';
-  document.getElementById('cmContactsList').innerHTML = '';
-  openModal('customerModal');
-}
-
-function openEditCustomerModal(id) {
-  const c = allCustomers.find(x => x.id === id);
-  if (!c) return;
-  editingCustomerId = id;
-  editingCustomerContacts = c.contacts.map(ct => ({...ct}));
-  contactRowCount = 0;
-  document.getElementById('cmTitle').textContent = 'Edit Customer';
-  document.getElementById('cm_name').value = c.name || '';
-  document.getElementById('cm_type').value = c.type || 'Commercial';
-  document.getElementById('cm_phone').value = c.phone || '';
-  document.getElementById('cm_address').value = c.address || '';
-  document.getElementById('cm_notes').value = c.notes || '';
-  document.getElementById('cmContactsList').innerHTML = '';
-  c.contacts.forEach(ct => addContactRow(ct));
-  openModal('customerModal');
-}
-
-function addContactRow(ct) {
-  const i = contactRowCount++;
-  const roles = ['Estimator','Superintendent','Project Manager','Executive','Other'];
-  const div = document.createElement('div');
-  div.id = 'cr_' + i;
-  div.style.cssText = 'background:var(--dark-3);border:1px solid var(--dark-5);border-radius:var(--radius);padding:12px;margin-bottom:8px';
-  div.innerHTML = `
-    <div class="form-grid" style="margin-bottom:8px">
-      <div class="form-field" style="margin-bottom:0"><label>Name</label><input type="text" class="form-input" id="crn_${i}" value="${ct?.name||''}" placeholder="Contact name..." /></div>
-      <div class="form-field" style="margin-bottom:0"><label>Role</label>
-        <select class="form-select" id="crr_${i}">
-          ${roles.map(r=>`<option value="${r.toLowerCase().replace(' ','_')}" ${(ct?.role||'').toLowerCase()===r.toLowerCase()||ct?.role?.toLowerCase()===r.toLowerCase().replace(' manager','').replace(' ','_')?'selected':''}>${r}</option>`).join('')}
-        </select>
-      </div>
-    </div>
-    <div class="form-grid">
-      <div class="form-field" style="margin-bottom:0"><label>Email</label><input type="email" class="form-input" id="cre_${i}" value="${ct?.email||''}" placeholder="email@company.com" /></div>
-      <div class="form-field" style="margin-bottom:0"><label>Phone</label><input type="text" class="form-input" id="crp_${i}" value="${ct?.phone||''}" placeholder="555-000-0000" /></div>
-    </div>
-    <button onclick="document.getElementById('cr_${i}').remove()" style="background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;margin-top:8px">✕ Remove contact</button>`;
-  document.getElementById('cmContactsList').appendChild(div);
-}
-
-function saveCustomer() {
-  const name = document.getElementById('cm_name').value.trim();
-  if (!name) { alert('Company name required'); return; }
-  const contacts = [];
-  document.querySelectorAll('[id^="cr_"]').forEach(row => {
-    const i = row.id.replace('cr_','');
-    const n = document.getElementById('crn_'+i)?.value?.trim();
-    if (n) contacts.push({
-      id: 'ct_' + Date.now() + '_' + i,
-      name: n,
-      role: document.getElementById('crr_'+i)?.value || 'other',
-      email: document.getElementById('cre_'+i)?.value?.trim() || '',
-      phone: document.getElementById('crp_'+i)?.value?.trim() || '',
-    });
-  });
-  if (editingCustomerId) {
-    const c = allCustomers.find(x => x.id === editingCustomerId);
-    if (c) { c.name = name; c.type = document.getElementById('cm_type').value; c.phone = document.getElementById('cm_phone').value; c.address = document.getElementById('cm_address').value; c.notes = document.getElementById('cm_notes').value; c.contacts = contacts; }
-  } else {
-    allCustomers.push({ id: 'c_' + Date.now(), name, type: document.getElementById('cm_type').value, phone: document.getElementById('cm_phone').value, address: document.getElementById('cm_address').value, notes: document.getElementById('cm_notes').value, contacts });
-  }
-  closeModal('customerModal');
-  saveCustomersToStorage();
-  render();
-}
-
-// ─────────────────────────────────────────
-// ADD BID MODAL
-// ─────────────────────────────────────────
+// ─── ADD BID MODAL ───────────────────────
 function openAddBidModal() {
-  // Populate customer dropdown
-  const sel = document.getElementById('nb_customer');
-  sel.innerHTML = '<option value="">Select company...</option>' + allCustomers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  var sel = document.getElementById('nb_customer');
+  sel.innerHTML = '<option value="">Select company...</option>'+allCustomers.map(function(c){return '<option value="'+c.id+'">'+c.name+'</option>';}).join('');
   document.getElementById('nb_contact').innerHTML = '<option value="">Select contact...</option>';
-  // Set default followup to 3 days from now
-  const fu = new Date(); fu.setDate(fu.getDate()+3);
+  var fu = new Date(); fu.setDate(fu.getDate()+3);
   document.getElementById('nb_followup').value = fu.toISOString().split('T')[0];
-  ['nb_project','nb_address','nb_yards','nb_revenue','nb_notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('nb_rep').value = 'William';
-  document.getElementById('nb_status').value = 'pending';
+  ['nb_project','nb_address','nb_yards','nb_revenue','nb_notes'].forEach(function(id){document.getElementById(id).value='';});
   openModal('addBidModal');
 }
-
-function populateContactsFromCustomer(custSelId, contactSelId) {
-  const custId = document.getElementById(custSelId).value;
-  const c = allCustomers.find(x => x.id === custId);
-  const sel = document.getElementById(contactSelId);
+function populateContacts(custSelId, contactSelId) {
+  var custId = document.getElementById(custSelId).value;
+  var c = allCustomers.find(function(x){return x.id===custId;});
+  var sel = document.getElementById(contactSelId);
   sel.innerHTML = '<option value="">Select contact...</option>';
-  if (c) c.contacts.forEach(ct => { const opt = document.createElement('option'); opt.value = ct.id; opt.textContent = ct.name + ' (' + roleLabel(ct.role) + ')'; sel.appendChild(opt); });
+  if (c) c.contacts.forEach(function(ct){var o=document.createElement('option');o.value=ct.id;o.textContent=ct.name+' ('+roleLabel(ct.role)+')';o.dataset.phone=ct.phone||'';o.dataset.email=ct.email||'';sel.appendChild(o);});
 }
-
 function saveNewBid() {
-  const project = document.getElementById('nb_project').value.trim();
-  if (!project) { alert('Project name required'); return; }
-  const custId = document.getElementById('nb_customer').value;
-  const contactId = document.getElementById('nb_contact').value;
-  const c = allCustomers.find(x => x.id === custId);
-  const ct = c?.contacts.find(x => x.id === contactId);
-  const bid = {
-    id: 'bid_' + Date.now(),
-    rep: document.getElementById('nb_rep').value,
-    status: document.getElementById('nb_status').value,
-    customerId: custId, contactId,
-    project,
-    client: c?.name || '',
-    contact: ct?.name || '',
-    phone: ct?.phone || '',
-    email: ct?.email || '',
-    address: document.getElementById('nb_address').value,
-    yards: parseFloat(document.getElementById('nb_yards').value) || null,
-    revenue: parseFloat(document.getElementById('nb_revenue').value) || null,
-    bid_date: new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}),
-    expiry: (() => { const e = new Date(); e.setDate(e.getDate()+60); return e.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}); })(),
-    followup_date: document.getElementById('nb_followup').value,
-    followup_note: document.getElementById('nb_notes').value,
-    mixes: [], notes: document.getElementById('nb_notes').value,
-    type: document.getElementById('nb_type').value,
-  };
-  allBids.unshift(bid);
-  closeModal('addBidModal');
-  render();
+  var proj = document.getElementById('nb_project').value.trim();
+  if (!proj) { alert('Project name required'); return; }
+  var custId = document.getElementById('nb_customer').value;
+  var contactId = document.getElementById('nb_contact').value;
+  var c = allCustomers.find(function(x){return x.id===custId;});
+  var ct = c ? c.contacts.find(function(x){return x.id===contactId;}) : null;
+  var expiry = new Date(); expiry.setDate(expiry.getDate()+60);
+  allBids.unshift({
+    id:'bid_'+Date.now(), rep:document.getElementById('nb_rep').value,
+    status:document.getElementById('nb_status').value,
+    customerId:custId, contactId:contactId,
+    project:proj, client:c?c.name:'', contact:ct?ct.name:'',
+    phone:ct?ct.phone:'', email:ct?ct.email:'',
+    address:document.getElementById('nb_address').value,
+    yards:parseFloat(document.getElementById('nb_yards').value)||null,
+    revenue:parseFloat(document.getElementById('nb_revenue').value)||null,
+    bid_date:new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}),
+    expiry:expiry.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}),
+    followup_date:document.getElementById('nb_followup').value,
+    followup_note:document.getElementById('nb_notes').value,
+    mixes:[], notes:document.getElementById('nb_notes').value,
+    type:document.getElementById('nb_type').value
+  });
+  closeModal('addBidModal'); render();
 }
 
-// ─────────────────────────────────────────
-// MODAL UTILS
-// ─────────────────────────────────────────
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); if (id==='bidModal') selectedBidId=null; }
-function closeOnOverlay(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+// ─── CUSTOMER DETAIL ─────────────────────
+function openCustomerDetail(id) {
+  var c = allCustomers.find(function(x){return x.id===id;});
+  if (!c) return;
+  document.getElementById('cdTitle').textContent = c.name;
+  document.getElementById('cdSub').textContent = (c.type||'') + (c.phone ? ' \u00b7 '+c.phone : '');
+  var custBids = allBids.filter(function(b){return b.customerId===id;});
+  document.getElementById('cdBody').innerHTML =
+    '<div class="modal-grid"><div class="modal-field"><label>Type</label><value>'+(c.type||'\u2014')+'</value></div><div class="modal-field"><label>Phone</label><value>'+(c.phone||'\u2014')+'</value></div>'
+    +'<div class="modal-field" style="grid-column:1/-1"><label>Address</label><value>'+(c.address||'\u2014')+'</value></div>'
+    +(c.notes?'<div class="modal-field" style="grid-column:1/-1"><label>Notes</label><value>'+c.notes+'</value></div>':'')+'</div>'
+    +'<div class="modal-section-label">Contacts ('+c.contacts.length+')</div>'
+    +c.contacts.map(function(ct){return '<div class="mix-row" style="flex-wrap:wrap;gap:8px"><div><div style="font-size:13px;font-weight:600;color:var(--white)">'+ct.name+'</div><div style="font-size:11px;color:var(--muted)">'+(ct.email||ct.phone||'')+'</div></div><div style="display:flex;align-items:center;gap:8px;margin-left:auto"><span class="role-badge '+roleCls(ct.role)+'">'+roleLabel(ct.role)+'</span>'+(ct.email?'<button class="icon-btn" onclick="window.location=\'mailto:'+ct.email+'\'">&#9993;</button>':'')+(ct.phone?'<button class="icon-btn" onclick="window.location=\'tel:'+ct.phone+'\'">&#128222;</button>':'')+'</div></div>';}).join('')
+    +'<div class="modal-section-label">Bids ('+custBids.length+')</div>'
+    +(custBids.length?custBids.map(function(b){return '<div class="mix-row" style="cursor:pointer" onclick="closeModal(\'custDetailModal\');openBidModal(\''+b.id+'\')"><span style="font-size:12px;font-weight:600;color:var(--white)">'+b.project+'</span><span><span class="sdot '+b.status+'"></span><span style="font-size:11px;color:var(--muted)">'+statusLabel(b.status)+'</span></span><span style="font-size:12px;color:var(--gold-light)">'+fmtRev(b.revenue)+'</span></div>';}).join(''):'<div style="font-size:12px;color:var(--muted);padding:8px">No bids yet</div>')
+    +'<div class="modal-actions"><button class="btn-cancel" onclick="closeModal(\'custDetailModal\')">Close</button><button class="btn-save" onclick="closeModal(\'custDetailModal\');openEditCustomerModal(\''+id+'\')">Edit Customer</button></div>';
+  openModal('custDetailModal');
+}
 
-// ─────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────
-// Always re-seed from dummy data so demo data is always present
-allBids = [...DUMMY_BIDS];
-allCustomers = [...DUMMY_CUSTOMERS];
+// ─── CUSTOMER ADD/EDIT ───────────────────
+var _contactRowCount = 0;
+function addContactRow(ct) {
+  var i = _contactRowCount++;
+  ct = ct || {};
+  var roles = ['estimator','superintendent','project manager','executive','other'];
+  var div = document.createElement('div');
+  div.className = 'contact-row-item'; div.id = 'cr_'+i;
+  div.innerHTML = '<div class="form-grid" style="margin-bottom:8px">'
+    +'<div class="form-field" style="margin-bottom:0"><label>Name</label><input type="text" class="form-input" id="crn_'+i+'" value="'+(ct.name||'')+'" placeholder="Contact name..." /></div>'
+    +'<div class="form-field" style="margin-bottom:0"><label>Role</label><select class="form-select" id="crr_'+i+'">'+roles.map(function(r){return '<option value="'+r+'" '+(ct.role===r?'selected':'')+'>'+r.charAt(0).toUpperCase()+r.slice(1)+'</option>';}).join('')+'</select></div>'
+    +'</div><div class="form-grid">'
+    +'<div class="form-field" style="margin-bottom:0"><label>Email</label><input type="email" class="form-input" id="cre_'+i+'" value="'+(ct.email||'')+'" placeholder="email@company.com" /></div>'
+    +'<div class="form-field" style="margin-bottom:0"><label>Phone</label><input type="text" class="form-input" id="crp_'+i+'" value="'+(ct.phone||'')+'" placeholder="555-000-0000" /></div>'
+    +'</div><button onclick="document.getElementById(\'cr_'+i+'\').remove()" style="background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;margin-top:8px">&#10005; Remove</button>';
+  document.getElementById('cmContactsList').appendChild(div);
+}
+function openAddCustomerModal() {
+  editingCustomerId = null; _contactRowCount = 0;
+  document.getElementById('cmTitle').textContent = 'New Customer';
+  ['cm_name','cm_phone','cm_address','cm_notes'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('cm_type').value = 'Commercial';
+  document.getElementById('cmContactsList').innerHTML = '';
+  openModal('customerModal');
+}
+function openEditCustomerModal(id) {
+  var c = allCustomers.find(function(x){return x.id===id;}); if (!c) return;
+  editingCustomerId = id; _contactRowCount = 0;
+  document.getElementById('cmTitle').textContent = 'Edit Customer';
+  document.getElementById('cm_name').value = c.name||'';
+  document.getElementById('cm_type').value = c.type||'Commercial';
+  document.getElementById('cm_phone').value = c.phone||'';
+  document.getElementById('cm_address').value = c.address||'';
+  document.getElementById('cm_notes').value = c.notes||'';
+  document.getElementById('cmContactsList').innerHTML = '';
+  c.contacts.forEach(addContactRow);
+  openModal('customerModal');
+}
+function saveCustomer() {
+  var name = document.getElementById('cm_name').value.trim();
+  if (!name) { alert('Company name required'); return; }
+  var contacts = [];
+  document.querySelectorAll('[id^="cr_"]').forEach(function(row) {
+    var i = row.id.replace('cr_','');
+    var n = document.getElementById('crn_'+i) ? document.getElementById('crn_'+i).value.trim() : '';
+    if (n) contacts.push({id:'ct_'+Date.now()+'_'+i, name:n, role:document.getElementById('crr_'+i).value, email:document.getElementById('cre_'+i).value.trim(), phone:document.getElementById('crp_'+i).value.trim()});
+  });
+  if (editingCustomerId) {
+    var c = allCustomers.find(function(x){return x.id===editingCustomerId;});
+    if (c) { c.name=name; c.type=document.getElementById('cm_type').value; c.phone=document.getElementById('cm_phone').value; c.address=document.getElementById('cm_address').value; c.notes=document.getElementById('cm_notes').value; c.contacts=contacts; }
+  } else {
+    allCustomers.push({id:'c_'+Date.now(), name:name, type:document.getElementById('cm_type').value, phone:document.getElementById('cm_phone').value, address:document.getElementById('cm_address').value, notes:document.getElementById('cm_notes').value, contacts:contacts});
+  }
+  saveCustomersToStorage();
+  closeModal('customerModal'); render();
+}
+
+// ─── CONTACT ADD/EDIT ────────────────────
+function openAddContactModal(preselect) {
+  editingContactId = null;
+  document.getElementById('ctTitle').textContent = 'New Contact';
+  document.getElementById('ctSaveBtn').textContent = 'Add Contact';
+  document.getElementById('ctSaveBtn').onclick = saveContact;
+  var sel = document.getElementById('ct_company');
+  sel.innerHTML = '<option value="">Select company...</option>'+allCustomers.map(function(c){return '<option value="'+c.id+'" '+(c.id===preselect?'selected':'')+'>'+c.name+'</option>';}).join('');
+  ['ct_name','ct_phone','ct_email'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('ct_role').value = 'estimator';
+  openModal('contactModal');
+}
+function openEditContactModal(contactId, companyId) {
+  var c = allCustomers.find(function(x){return x.id===companyId;}); if (!c) return;
+  var ct = c.contacts.find(function(x){return x.id===contactId;}); if (!ct) return;
+  editingContactId = contactId;
+  document.getElementById('ctTitle').textContent = 'Edit Contact';
+  document.getElementById('ctSaveBtn').textContent = 'Update Contact';
+  document.getElementById('ctSaveBtn').onclick = function(){saveContact(companyId);};
+  var sel = document.getElementById('ct_company');
+  sel.innerHTML = '<option value="">Select company...</option>'+allCustomers.map(function(c2){return '<option value="'+c2.id+'" '+(c2.id===companyId?'selected':'')+'>'+c2.name+'</option>';}).join('');
+  document.getElementById('ct_name').value = ct.name||'';
+  document.getElementById('ct_role').value = ct.role||'other';
+  document.getElementById('ct_phone').value = ct.phone||'';
+  document.getElementById('ct_email').value = ct.email||'';
+  openModal('contactModal');
+}
+function saveContact(originalCompanyId) {
+  var companyId = document.getElementById('ct_company').value;
+  var name = document.getElementById('ct_name').value.trim();
+  if (!companyId) { alert('Select a company'); return; }
+  if (!name) { alert('Contact name required'); return; }
+  var c = allCustomers.find(function(x){return x.id===companyId;}); if (!c) return;
+  if (editingContactId && originalCompanyId) {
+    var orig = allCustomers.find(function(x){return x.id===originalCompanyId;});
+    if (orig) orig.contacts = orig.contacts.filter(function(x){return x.id!==editingContactId;});
+    c.contacts.push({id:editingContactId, name:name, role:document.getElementById('ct_role').value, phone:document.getElementById('ct_phone').value.trim(), email:document.getElementById('ct_email').value.trim()});
+  } else {
+    c.contacts.push({id:'ct_'+Date.now(), name:name, role:document.getElementById('ct_role').value, phone:document.getElementById('ct_phone').value.trim(), email:document.getElementById('ct_email').value.trim()});
+  }
+  saveCustomersToStorage();
+  closeModal('contactModal'); render();
+}
+
+// ─── STORAGE ─────────────────────────────
+function saveCustomersToStorage() {
+  try { localStorage.setItem('zamara_customers', JSON.stringify(allCustomers)); } catch(e) {}
+}
+function loadLiveBids() {
+  try {
+    var live = localStorage.getItem('zamara_crm_entries');
+    if (live) { JSON.parse(live).forEach(function(e){ if (!allBids.find(function(b){return b.id===e.id;})) allBids.unshift(Object.assign({rep:'William',status:'pending'},e)); }); }
+  } catch(e) {}
+}
+function syncExtraCustomers() {
+  try {
+    var stored = localStorage.getItem('zamara_customers');
+    if (stored) {
+      JSON.parse(stored).forEach(function(c) {
+        if (!allCustomers.find(function(x){return x.id===c.id;})) allCustomers.push(c);
+      });
+    }
+  } catch(e) {}
+}
+
+// ─── MODAL UTILS ─────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); if(id==='bidModal') selectedBidId=null; }
+function closeOnOverlay(e, id) { if (e.target===document.getElementById(id)) closeModal(id); }
+
+// ─── INIT ────────────────────────────────
+allBids = DUMMY_BIDS.slice();
+allCustomers = DUMMY_CUSTOMERS.slice();
 loadLiveBids();
-syncCustomers();
-// Write customers to shared storage so bid analyzer dropdowns are populated
+syncExtraCustomers();
 saveCustomersToStorage();
 render();
 </script>
