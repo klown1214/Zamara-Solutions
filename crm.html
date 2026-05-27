@@ -233,10 +233,10 @@ body { font-family: 'Barlow', sans-serif; background: var(--dark); color: var(--
       <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Viewing as:</span>
       <select id="repViewSelect" onchange="switchRepView(this.value)"
         style="background:transparent;border:none;color:var(--gold-light);font-size:11px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;outline:none">
+        <option value="manager">Manager (All)</option>
         <option value="William">William</option>
         <option value="Robby">Robby</option>
         <option value="Alex">Alex</option>
-        <option value="manager">Manager (All)</option>
       </select>
     </div>
     <div class="powered-tag">Zamara Solutions</div>
@@ -686,9 +686,8 @@ let contactRowCount = 0;
 let editingCustomerContacts = [];
 
 // Current logged-in rep (in production this comes from auth)
-// For demo: reps only see their own customers; manager sees all
-const CURRENT_USER = 'William'; // Change to 'Robby', 'Alex', or 'manager' to demo different views
-const IS_MANAGER = currentRep === 'all' && CURRENT_USER === 'manager';
+// For demo: use the repViewSelect dropdown in the header
+// IS_MANAGER is computed dynamically based on currentRep
 
 // Per-rep customer ownership — maps customerId to rep name
 // In production this lives in Supabase; for demo it's seeded here
@@ -740,16 +739,20 @@ function loadLiveBids() {
 
 // Sync customers from shared localStorage key (written by both CRM and Bid Analyzer)
 function syncCustomers() {
+  // Merge any new customers added from the bid analyzer
+  // but NEVER replace existing dummy data
   try {
     const stored = localStorage.getItem('zamara_customers');
     if (stored) {
       const imported = JSON.parse(stored);
       imported.forEach(c => {
+        // Only add if it's a new customer not in dummy data
         if (!allCustomers.find(x => x.id === c.id)) {
           allCustomers.push(c);
-        } else {
-          // Update existing with any new contacts
-          const existing = allCustomers.find(x => x.id === c.id);
+        }
+        // Merge new contacts only
+        const existing = allCustomers.find(x => x.id === c.id);
+        if (existing && c.contacts) {
           c.contacts.forEach(ct => {
             if (!existing.contacts.find(x => x.id === ct.id)) {
               existing.contacts.push(ct);
@@ -1384,6 +1387,8 @@ allBids = [...DUMMY_BIDS];
 allCustomers = [...DUMMY_CUSTOMERS];
 loadLiveBids();
 syncCustomers();
+// Write customers to shared storage so bid analyzer dropdowns are populated
+saveCustomersToStorage();
 render();
 </script>
 </body>

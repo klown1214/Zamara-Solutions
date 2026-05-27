@@ -370,7 +370,7 @@ input[type=file] { display: none; }
       <span id="statusText">Upload documents</span>
     </div>
     <div class="powered-tag">Zamara Solutions</div>
-    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.14</div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.15</div>
   </div>
 </header>
 
@@ -385,6 +385,16 @@ input[type=file] { display: none; }
         <span style="font-size:11px;color:var(--dim)">Zamara Solutions API</span>
         <span style="font-size:10px;color:var(--muted);margin-left:auto">CONNECTED</span>
       </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sales Rep</div>
+      <select class="tier-select" id="currentRepSelect" onchange="updateRepDisplay()">
+        <option value="William">William Emmett</option>
+        <option value="Robby">Robby</option>
+        <option value="Alex">Alex</option>
+      </select>
+      <div style="font-size:10px;color:var(--muted);margin-top:5px">Login-based in production</div>
     </div>
 
     <div class="sidebar-section">
@@ -1211,7 +1221,7 @@ function renderResults(d) {
       <div class="crm-field"><label>Est. Yardage</label><value>${totalYards?totalYards.toLocaleString()+' CY':'TBD'}</value></div>
       <div class="crm-field"><label>Bid Date</label><value>${d.bid_date||new Date().toLocaleDateString()}</value></div>
       <div class="crm-field"><label>Expiration Date</label><value>${getBidExpiry(d.bid_date)}</value></div>
-      <div class="crm-field"><label>Sales Rep</label><value>William Emmett</value></div>
+      <div class="crm-field"><label>Sales Rep</label><value>${{William:'William Emmett',Robby:'Robby',Alex:'Alex'}[getCurrentRep()]||getCurrentRep()}</value></div>
       <div class="crm-field"><label>Est. Revenue</label><value>${rev>0?'$'+Math.round(rev).toLocaleString():'TBD'}</value></div>
     </div>
     <div class="crm-summary">${d.summary||'No summary available.'}</div>
@@ -1510,6 +1520,28 @@ function initCRMCustomers() {
   }
 }
 
+function getCurrentRep() {
+  const sel = document.getElementById('currentRepSelect');
+  return sel ? sel.value : 'William';
+}
+
+function getCurrentRepFullName() {
+  const names = { William: 'William Emmett', Robby: 'Robby', Alex: 'Alex' };
+  return names[getCurrentRep()] || getCurrentRep();
+}
+
+function updateRepDisplay() {
+  // Update the "Bid Prepared by" field in project info if visible
+  const repNames = { William: 'William Emmett', Robby: 'Robby', Alex: 'Alex' };
+  // Update CRM entry rep when analysis rerenders
+  if (analysisData) {
+    const crmDate = document.getElementById('crmDate');
+    if (crmDate) {
+      const repEl = document.querySelector('.crm-field value');
+    }
+  }
+}
+
 function getFieldVal(id, fallback) {
   const el = document.getElementById(id);
   return el ? (el.value.trim() || fallback || '') : (fallback || '');
@@ -1624,7 +1656,7 @@ table {width:100%;border-collapse:collapse}
     + '<div class="info-row"><span class="info-lbl">Bond#</span><span>'+getFieldVal('fi_bond',d.bond_surety)+'</span></div>'
     + '</div>'
     + '<div class="info-col">'
-    + '<div class="info-row"><span class="info-lbl">Bid Prepared by (Name):</span><span>William Emmett</span></div>'
+    + '<div class="info-row"><span class="info-lbl">Bid Prepared by (Name):</span><span>'+getCurrentRepFullName()+'</span></div>'
     + '<div class="info-row"><span class="info-lbl">Attn:</span><span>'+getFieldVal('fi_contact',d.client_contact)+'</span></div>'
     + '<div class="info-row"><span class="info-lbl">Project Name:</span><span>'+getFieldVal('fi_project_name',d.project_name)+'</span></div>'
     + '<div class="info-row"><span class="info-lbl">Project Address:</span><span>'+getFieldVal('fi_project_address',d.project_address)+'</span></div>'
