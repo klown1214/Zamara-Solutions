@@ -370,7 +370,7 @@ input[type=file] { display: none; }
       <span id="statusText">Upload documents</span>
     </div>
     <div class="powered-tag">Zamara Solutions</div>
-    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.13</div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px">v0.14</div>
   </div>
 </header>
 
@@ -431,6 +431,21 @@ input[type=file] { display: none; }
         <input class="fuel-input" type="number" id="fuelSurcharge" placeholder="0.00" min="0" step="0.01" onchange="updatePrices()" />
         <span style="font-size:11px;color:var(--muted)">/load</span>
       </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Global Price Adj</div>
+      <div class="fuel-label">
+        <span>Applied to all rows</span>
+        <span class="fuel-editable">● PRE-SET</span>
+      </div>
+      <div class="fuel-input-row">
+        <span style="font-size:13px;color:var(--dim)">±$</span>
+        <input class="fuel-input" type="number" id="globalAdj" placeholder="0" step="1" min="-10" max="10"
+          style="color:var(--gold-light)" onchange="applyGlobalAdj()" />
+        <span style="font-size:11px;color:var(--muted)">/CY</span>
+      </div>
+      <div style="font-size:10px;color:var(--mid);margin-top:4px">Range: -$10 to +$10</div>
     </div>
 
     <div class="separator"></div>
@@ -508,6 +523,7 @@ input[type=file] { display: none; }
               <div class="section-head-icon">🧱</div>
               <div class="section-head-title">Concrete Requirements — Mix Matching</div>
             </div>
+            <button class="btn-outline" onclick="addMixRow()" style="padding:5px 12px;font-size:11px">+ Add Mix</button>
           </div>
           <div style="overflow-x:auto">
             <table class="mix-tbl">
@@ -521,6 +537,7 @@ input[type=file] { display: none; }
                   <th>Unit Price</th>
                   <th>Adj (±$)</th>
                   <th>Extended</th>
+                  <th style="width:32px"></th>
                 </tr>
               </thead>
               <tbody id="mixRows"></tbody>
@@ -1069,27 +1086,68 @@ function renderResults(d) {
   const tbody = document.getElementById('mixRows');
   tbody.innerHTML = '';
   let grandYards = 0, grandRev = 0;
-  d.concrete_requirements.forEach((req, i) => {
-    const reqFlags = { txdot_class: !!(req.txdot_class), early_strength: !!(req.early_strength_required), no_fly_ash: !!(req.no_fly_ash), pump_required: !!(req.pump_required) };
-    const mix = findBestMix(req.psi, req.air_entrained, req.cementitious, d.project_type, reqFlags);
+  let mixRowCount = 0;
+
+  // ── DEDUPLICATION: group requirements by best mix code ──
+  // If multiple applications map to the same mix code, combine their applications
+  const seen_codes = {};
+  const deduped_reqs = [];
+  d.concrete_requirements.forEach(req => {
+    // Only flag as TXDOT if backend explicitly said so — don't infer
+    const reqFlags = {
+      txdot_class: !!(req.txdot_class),
+      early_strength: !!(req.early_strength_required),
+      no_fly_ash: !!(req.no_fly_ash),
+      pump_required: !!(req.pump_required)
+    };
+    // Don't force TXDOT/HE type unless backend explicitly flagged it
+    // project_type alone should not force these types
+    const safeProjType = (reqFlags.txdot_class) ? 'TXDOT' : (d.project_type === 'Residential' ? 'Residential' : 'Commercial');
+    const mix = findBestMix(req.psi, req.air_entrained, req.cementitious, safeProjType, reqFlags);
+    const code = mix ? mix.code : ('PSI_' + req.psi);
+    if (seen_codes[code] !== undefined) {
+      // Merge application name into existing row
+      const existingApp = deduped_reqs[seen_codes[code]].application || '';
+      const newApp = req.application || '';
+      if (newApp && !existingApp.toLowerCase().includes(newApp.toLowerCase())) {
+        deduped_reqs[seen_codes[code]].application = existingApp + ' / ' + newApp;
+      }
+      // Sum volumes if both are stated
+      if (req.volume_cy && deduped_reqs[seen_codes[code]].volume_cy) {
+        deduped_reqs[seen_codes[code]].volume_cy += req.volume_cy;
+      }
+    } else {
+      seen_codes[code] = deduped_reqs.length;
+      deduped_reqs.push({ ...req, _resolvedMix: mix });
+    }
+  });
+
+  deduped_reqs.forEach((req, i) => {
+    const mix = req._resolvedMix;
+    // Apply global adj if set
+    const globalAdjVal = parseInt(document.getElementById('globalAdj')?.value) || 0;
     const price = mix ? mix[tier] : null;
     const vol = req.volume_cy || '';
-    const ext = price && vol ? price * vol : null;
+    const adjVal = globalAdjVal;
+    const adjPrice = price ? price + adjVal : null;
+    const ext = adjPrice && vol ? adjPrice * vol : null;
     if (vol) grandYards += parseFloat(vol);
     if (ext) grandRev += ext;
+
+    // Determine type — ONLY use TXDOT/HE if backend explicitly flagged it
     let initType = 'Commercial';
     if (mix) {
       if (mix.type === 'Residential') initType = 'Residential';
-      else if (mix.type === 'TXDOT') initType = 'TXDOT';
-      else if (mix.type.includes('HIGHEARLY')) initType = 'High Early';
+      else if (mix.type === 'TXDOT' && req.txdot_class) initType = 'TXDOT';
+      else if (mix.type.includes('HIGHEARLY') && req.early_strength_required) initType = 'High Early';
       else initType = 'Commercial';
     }
+
     const estBadge = req.volume_estimated ? '<span class="est-badge">EST</span>' : '';
-    const txdotBadge = req.txdot_class ? '<span class="est-badge" style="background:rgba(142,68,173,0.15);border-color:rgba(142,68,173,0.4);color:#C39BD3;margin-left:4px">TXDOT</span>' : '';
-    const earlyBadge = req.early_strength_required ? '<span class="est-badge" style="background:rgba(231,76,60,0.12);border-color:rgba(231,76,60,0.4);color:#E74C3C;margin-left:4px">HE</span>' : '';
     const pumpBadge = req.pump_required ? '<span class="est-badge" style="background:rgba(41,128,185,0.12);border-color:rgba(41,128,185,0.4);color:#5DADE2;margin-left:4px">PUMP</span>' : '';
-    const noFlyAshBadge = req.no_fly_ash ? '<span class="est-badge" style="background:rgba(192,57,43,0.12);border-color:rgba(192,57,43,0.4);color:#E74C3C;margin-left:4px">NO FA</span>' : '';
+
     const tr = document.createElement('tr');
+    tr.id = 'mix_row_' + i;
     tr.innerHTML = `
       <td><input class="app-input" type="text" id="app_${i}" value="${(req.application||'').replace(/"/g,'&quot;')}" /></td>
       <td><select class="row-select" id="type_${i}" onchange="onTypeChange(${i})">
@@ -1101,12 +1159,14 @@ function renderResults(d) {
       </select></td>
       <td><select class="mix-code-select" id="code_${i}" onchange="onCodeChange(${i})">${getMixOptions(initType, mix?mix.code:'')}</select></td>
       <td><span class="desc-text" id="desc_${i}">${mix?mix.description:'—'}</span></td>
-      <td style="white-space:nowrap"><input class="vol-input" type="number" id="vol_${i}" value="${vol}" placeholder="—" onchange="recalcRow(this,getBasePrice(${i}),${i})" />${estBadge}${txdotBadge}${earlyBadge}${pumpBadge}${noFlyAshBadge}</td>
-      <td><span class="price-text" id="base_${i}">${price?'$'+price:'—'}</span></td>
-      <td><input class="vol-input" type="number" id="adj_${i}" value="0" style="width:56px;text-align:center" onchange="recalcRow(document.getElementById('vol_${i}'),getBasePrice(${i}),${i})" /></td>
+      <td style="white-space:nowrap"><input class="vol-input" type="number" id="vol_${i}" value="${vol}" placeholder="—" onchange="recalcRow(this,getBasePrice(${i}),${i})" />${estBadge}${pumpBadge}</td>
+      <td><span class="price-text" id="base_${i}">${adjPrice?'$'+adjPrice:'—'}</span></td>
+      <td><input class="vol-input" type="number" id="adj_${i}" value="${adjVal}" style="width:56px;text-align:center" onchange="recalcRow(document.getElementById('vol_${i}'),getBasePrice(${i}),${i})" /></td>
       <td><span class="ext-text" id="ext_${i}">${ext?'$'+Math.round(ext).toLocaleString():'—'}</span></td>
+      <td><button class="del-btn" onclick="removeMixRow('mix_row_${i}')" title="Remove row">✕</button></td>
     `;
     tbody.appendChild(tr);
+    mixRowCount = i + 1;
   });
   document.getElementById('totalYards').textContent = grandYards > 0 ? Math.round(grandYards).toLocaleString() : '—';
   document.getElementById('totalRevenue').textContent = grandRev > 0 ? '$' + Math.round(grandRev).toLocaleString() : '—';
@@ -1242,6 +1302,51 @@ function switchTab(name, btn) {
 
 // Init CRM customers on load
 try { initCRMCustomers(); } catch(e) {}
+
+function removeMixRow(rowId) {
+  const el = document.getElementById(rowId);
+  if (el) el.remove();
+  recalcTotals();
+}
+
+function addMixRow() {
+  const tbody = document.getElementById('mixRows');
+  const i = Date.now(); // unique id
+  const tier = document.getElementById('globalTier').value;
+  const adjVal = parseInt(document.getElementById('globalAdj')?.value) || 0;
+  const tr = document.createElement('tr');
+  tr.id = 'mix_row_' + i;
+  tr.innerHTML = `
+    <td><input class="app-input" type="text" id="app_${i}" value="" placeholder="Application..." /></td>
+    <td><select class="row-select" id="type_${i}" onchange="onTypeChange(${i})">
+      <option value="Commercial" selected>Commercial</option>
+      <option value="Residential">Residential</option>
+      <option value="TXDOT">TXDOT</option>
+      <option value="High Early">High Early</option>
+      <option value="Special">Grout/Flow Fill</option>
+    </select></td>
+    <td><select class="mix-code-select" id="code_${i}" onchange="onCodeChange(${i})">${getMixOptions('Commercial','')}</select></td>
+    <td><span class="desc-text" id="desc_${i}">—</span></td>
+    <td><input class="vol-input" type="number" id="vol_${i}" value="" placeholder="—" onchange="recalcRow(this,getBasePrice(${i}),${i})" /></td>
+    <td><span class="price-text" id="base_${i}">—</span></td>
+    <td><input class="vol-input" type="number" id="adj_${i}" value="${adjVal}" style="width:56px;text-align:center" onchange="recalcRow(document.getElementById('vol_${i}'),getBasePrice(${i}),${i})" /></td>
+    <td><span class="ext-text" id="ext_${i}">—</span></td>
+    <td><button class="del-btn" onclick="removeMixRow('mix_row_${i}')" title="Remove row">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  onCodeChange(i);
+}
+
+function applyGlobalAdj() {
+  const adjVal = parseInt(document.getElementById('globalAdj')?.value) || 0;
+  // Apply to all visible adj fields
+  document.querySelectorAll('[id^="adj_"]').forEach(el => {
+    el.value = adjVal;
+    const idx = el.id.replace('adj_', '');
+    const volEl = document.getElementById('vol_' + idx);
+    if (volEl) recalcRow(volEl, getBasePrice(idx), idx);
+  });
+}
 
 function resetTool() {
   uploadedFiles = []; analysisData = null;
