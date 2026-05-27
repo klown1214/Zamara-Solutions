@@ -270,7 +270,7 @@ body{font-family:'Barlow',sans-serif;background:var(--dark);color:var(--light);m
   <div style="padding:0 32px 32px">
     <table class="contacts-table">
       <thead><tr>
-        <th>Name</th><th>Company</th><th>Role</th><th>Phone</th><th>Email</th><th>Open Bids</th><th></th>
+        <th>Name</th><th>Company</th><th id="repColHead">Rep</th><th>Role</th><th>Phone</th><th>Email</th><th>Open Bids</th><th></th>
       </tr></thead>
       <tbody id="contactsBody"></tbody>
     </table>
@@ -571,7 +571,7 @@ function renderPipeline() {
 
 // ─── RENDER FOLLOWUPS ────────────────────
 function renderFollowups() {
-  var bids = allBids.filter(function(b){return b.followup_date && !['won','lost'].includes(b.status);});
+  var bids = getFiltered().filter(function(b){return b.followup_date && !['won','lost'].includes(b.status);});
   if (currentFUFilter !== 'all') bids = bids.filter(function(b){return fuClass(b.followup_date)===currentFUFilter;});
   bids.sort(function(a,b){return new Date(a.followup_date)-new Date(b.followup_date);});
   var list = document.getElementById('followupList');
@@ -602,6 +602,8 @@ function renderCustomers() {
     var open = custBids.filter(function(b){return !['won','lost'].includes(b.status);});
     var totalRev = custBids.reduce(function(s,b){return s+(b.revenue||0);},0);
     var typeCls = (c.type||'commercial').toLowerCase();
+    var repOwner = CUSTOMER_OWNERSHIP[c.id] || c.owner || null;
+    var repOwnerHtml = (currentRep === 'all' && repOwner) ? '<span class="rep-tag '+repOwner.toLowerCase()+'" style="margin-left:6px">'+repOwner+'</span>' : '';
     var contactHtml = c.contacts.slice(0,3).map(function(ct) {
       return '<div class="cust-contact-row">'
         +'<div><div style="font-size:12px;font-weight:500;color:var(--white)">'+ct.name+'</div><div style="font-size:10px;color:var(--muted)">'+(ct.email||ct.phone||'')+'</div></div>'
@@ -610,7 +612,7 @@ function renderCustomers() {
         +(ct.phone ? '<button class="icon-btn" onclick="event.stopPropagation();window.location=\'tel:'+ct.phone+'\'" title="Call">&#128222;</button>' : '')
         +'</div></div>';
     }).join('');
-    return '<div class="customer-card" onclick="openCustomerDetail(\''+c.id+'\')"><div class="customer-head"><div class="customer-name">'+c.name+'</div><span class="ctype '+typeCls+'">'+c.type+'</span></div>'
+    return '<div class="customer-card" onclick="openCustomerDetail(\''+c.id+'\')"><div class="customer-head"><div style="display:flex;align-items:center;gap:8px"><div class="customer-name">'+c.name+'</div>'+repOwnerHtml+'</div><span class="ctype '+typeCls+'">'+c.type+'</span></div>'
       +'<div class="cust-contacts">'+contactHtml+(c.contacts.length>3?'<div style="font-size:10px;color:var(--muted);padding-top:4px">+'+( c.contacts.length-3)+' more</div>':'')+'</div>'
       +'<div class="cust-stats"><div class="cust-stat"><label>Open Bids</label><value>'+open.length+'</value></div><div class="cust-stat"><label>Revenue</label><value class="gold">'+fmtRev(totalRev)+'</value></div><div class="cust-stat"><label>Contacts</label><value>'+c.contacts.length+'</value></div></div>'
       +'</div>';
@@ -640,9 +642,11 @@ function renderContacts() {
   if (!contacts.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">No contacts found</td></tr>'; return; }
   tbody.innerHTML = contacts.map(function(ct) {
     var openBids = allBids.filter(function(b){return b.contactId===ct.id && !['won','lost'].includes(b.status);}).length;
+    var ctRep = CUSTOMER_OWNERSHIP[ct.companyId] || '';
     return '<tr>'
       +'<td><div style="font-size:13px;font-weight:600;color:var(--white)">'+ct.name+'</div></td>'
       +'<td style="color:var(--dim)">'+ct.companyName+'</td>'
+      +'<td>'+(ctRep ? '<span class="rep-tag '+ctRep.toLowerCase()+'">'+ctRep+'</span>' : '—')+'</td>'
       +'<td><span class="role-badge '+roleCls(ct.role)+'">'+roleLabel(ct.role)+'</span></td>'
       +'<td>'+(ct.phone ? '<a href="tel:'+ct.phone+'" style="color:var(--dim);text-decoration:none">'+ct.phone+'</a>' : '\u2014')+'</td>'
       +'<td>'+(ct.email ? '<a href="mailto:'+ct.email+'" style="color:var(--dim);text-decoration:none">'+ct.email+'</a>' : '\u2014')+'</td>'
