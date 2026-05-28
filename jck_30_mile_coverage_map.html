@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    
+    <style>
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        #map_coverage_root { position: relative; width: 100%; height: 100%; }
+        .leaflet-container { font-size: 1rem; }
+    </style>
+</head>
+<body>
+    
+    <div style="
+     position: fixed; 
+     bottom: 25px; left: 25px; width: 280px; z-index:9999; 
+     background: white; border:1px solid #E4E4E7; border-radius:12px; padding:14px;
+     font-family: sans-serif; font-size:13px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    ">
+        <b style="font-size:14px; display:block; margin-bottom:6px; color:#111;">JCK 20-Mile Coverage Map</b>
+        <div style="margin-bottom:4px;"><span style="color:#2563EB;">&#9679;</span> Royse City Ready-Mix</div>
+        <div style="margin-bottom:4px;"><span style="color:#16A34A;">&#9679;</span> Seagoville Ready-Mix</div>
+        <div style="margin-bottom:4px;"><span style="color:#DC2626;">&#9679;</span> Kemp Ready-Mix</div>
+        <div style="margin-bottom:8px;"><span style="color:#F59E0B;">&#9679;</span> JCK Sand Pit (Quinlan)</div>
+        <div style="font-size:11px; color:#666; border-t: 1px solid #EEE; pt-4; line-height:1.4;">
+            Each circle footprint details an optimized 20-mile standard dispatch handling runtime.
+        </div>
+    </div>
+    
+    <div class="folium-map" id="map_coverage_root"></div>
+        
+</body>
+<script>
+    // Initialize central focus bounding box encompassing all 4 core elements
+    var map_coverage_root = L.map("map_coverage_root", {
+        center: [32.695, -96.335],
+        zoom: 9,
+        zoomControl: true,
+        preferCanvas: false,
+    });
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        minZoom: 0, maxZoom: 19, opacity: 1,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map_coverage_root);
+
+    // --- 1. ROYSE CITY PLANT ---
+    var marker_royse = L.marker([32.9021949, -96.3404922]).addTo(map_coverage_root);
+    marker_royse.setIcon(L.AwesomeMarkers.icon({markerColor: 'blue', iconColor: 'white', icon: 'industry', prefix: 'fa'}));
+    marker_royse.bindPopup(`<b>Royse City Plant</b><br>6880 S Farm to Market 548, Royse City, TX 75189<br>Phone: 469-707-6053`);
+    marker_royse.bindTooltip(`<div>Royse City Ready-Mix</div>`, {sticky: true});
+    
+    L.circle([32.9021949, -96.3404922], {
+        color: "#2563EB", fillColor: "#2563EB", fillOpacity: 0.1, radius: 32186.8, weight: 2
+    }).addTo(map_coverage_root).bindPopup("Royse City 20-mile operating radius");
+
+    // --- 2. SEAGOVILLE PLANT ---
+    var marker_seago = L.marker([32.6364716, -96.5970678]).addTo(map_coverage_root);
+    marker_seago.setIcon(L.AwesomeMarkers.icon({markerColor: 'green', iconColor: 'white', icon: 'industry', prefix: 'fa'}));
+    marker_seago.bindPopup(`<b>Seagoville Plant</b><br>1702 W Simonds Rd, Seagoville, TX 75159<br>Phone: 469-707-6080`);
+    marker_seago.bindTooltip(`<div>Seagoville Ready-Mix</div>`, {sticky: true});
+    
+    L.circle([32.6364716, -96.5970678], {
+        color: "#16A34A", fillColor: "#16A34A", fillOpacity: 0.1, radius: 32186.8, weight: 2
+    }).addTo(map_coverage_root).bindPopup("Seagoville 20-mile operating radius");
+
+    // --- 3. KEMP PLANT ---
+    var marker_kemp = L.marker([32.4426403, -96.2299771]).addTo(map_coverage_root);
+    marker_kemp.setIcon(L.AwesomeMarkers.icon({markerColor: 'red', iconColor: 'white', icon: 'industry', prefix: 'fa'}));
+    marker_kemp.bindPopup(`<b>Kemp Plant</b><br>16259 US-175, Kemp, TX 75143<br>Phone: 469-707-6053`);
+    marker_kemp.bindTooltip(`<div>Kemp Ready-Mix</div>`, {sticky: true});
+    
+    L.circle([32.4426403, -96.2299771], {
+        color: "#DC2626", fillColor: "#DC2626", fillOpacity: 0.1, radius: 32186.8, weight: 2
+    }).addTo(map_coverage_root).bindPopup("Kemp 20-mile operating radius");
+
+    // --- 4. JCK SAND PIT (NEW LOCATION ENTRY) ---
+    var marker_sandpit = L.marker([32.8805, -96.1265]).addTo(map_coverage_root); // Targeted geodata mapping coordinates for CR 2300 Quinlan area
+    marker_sandpit.setIcon(L.AwesomeMarkers.icon({markerColor: 'orange', iconColor: 'white', icon: 'mound', prefix: 'fa'}));
+    marker_sandpit.bindPopup(`<b>JCK Sand Pit</b><br>10831 Co Rd 2300, Quinlan, TX 75474<br>Phone: +1 469-338-2223`);
+    marker_sandpit.bindTooltip(`<div>JCK Sand Pit (Aggregates)</div>`, {sticky: true});
+</script>
+</html>
