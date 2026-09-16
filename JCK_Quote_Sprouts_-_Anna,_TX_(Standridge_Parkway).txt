@@ -1,0 +1,36 @@
+JCK BATCH PLANT LLC — QUOTE DRAFT
+════════════════════════════════════════════════════════════
+Generated: 5/21/2026  |  Prepared by: William Emmett
+Pricing Tier: A (201-300 CY)  |  Fuel Surcharge: $0.00/load
+
+CLIENT INFORMATION
+────────────────────────────────────────
+Company:  Sprouts Farmers Market
+Attention: —
+Phone:    —
+Email:    —
+
+PROJECT INFORMATION
+────────────────────────────────────────
+Project:  Sprouts - Anna, TX (Standridge Parkway)
+Address:  Anna, TX - Standridge Parkway
+Type:     Commercial
+Start:    4.7.26
+Terms:    Net 30
+
+CONCRETE PRICING
+──────────────────────────────────────────────────────────────────────────────────────────
+MIX CODE           APPLICATION              VOL (CY)   UNIT     EXTENDED
+──────────────────────────────────────────────────────────────────────────────────────────
+C3015ALS           Footings                 -          $150     -
+C4015ALS           Foundation Walls / Elev  -          $157     -
+C3515ALS           Slab on Grade            -          $152     -
+──────────────────────────────────────────────────────────────────────────────────────────
+ESTIMATED TOTAL                                                -
+
+FEES (fixed rates apply)
+Environmental: $0.00/CY  |  Fuel Surcharge: $0.00/load  |  Wait Time: $120/hr after 40min
+Short Load: $200/load  |  Cancel <12hr: $900/order  |  Truck Wash: $150/load
+
+TERMS: Net 30  |  Late fee: $2.00/CY per 30 days past due
+Bid valid 60 days from issue date.

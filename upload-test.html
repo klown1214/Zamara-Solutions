@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Upload Test</title>
+<style>
+body { background: #111; color: #fff; font-family: Arial; padding: 40px; }
+.zone {
+  border: 2px dashed #D4910A;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+.zone:hover { background: rgba(212,145,10,0.1); }
+#log {
+  background: #222;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.8;
+  min-height: 100px;
+}
+</style>
+</head>
+<body>
+
+<h2 style="color:#D4910A">File Upload Test</h2>
+
+<!-- TEST 1: Label approach -->
+<p>Test 1: Label + hidden input</p>
+<input type="file" id="input1" accept=".pdf" multiple
+  style="position:absolute;opacity:0;width:0;height:0"
+  onchange="log('TEST 1 onchange fired — files: ' + this.files.length)" />
+<label for="input1" class="zone">Click here (Label method)</label>
+
+<!-- TEST 2: Direct visible input -->
+<p>Test 2: Visible input (control test)</p>
+<input type="file" id="input2" accept=".pdf" multiple
+  onchange="log('TEST 2 onchange fired — files: ' + this.files.length)"
+  style="display:block;margin:10px 0;color:#fff" />
+
+<!-- TEST 3: Button + JS click() -->
+<p>Test 3: Button triggers JS .click()</p>
+<input type="file" id="input3" accept=".pdf" multiple
+  style="display:none"
+  onchange="log('TEST 3 onchange fired — files: ' + this.files.length)" />
+<button onclick="document.getElementById('input3').click()"
+  style="background:#D4910A;border:none;padding:12px 24px;cursor:pointer;border-radius:6px;font-weight:700">
+  Click here (JS .click() method)
+</button>
+
+<br><br>
+<div id="log">Waiting for file selection...<br></div>
+
+<script>
+function log(msg) {
+  const el = document.getElementById('log');
+  el.innerHTML += msg + '<br>';
+  console.log(msg);
+}
+
+// Also attach addEventListener to all 3
+document.getElementById('input1').addEventListener('change', function(e) {
+  log('TEST 1 addEventListener fired — files: ' + e.target.files.length);
+});
+document.getElementById('input2').addEventListener('change', function(e) {
+  log('TEST 2 addEventListener fired — files: ' + e.target.files.length);
+});
+document.getElementById('input3').addEventListener('change', function(e) {
+  log('TEST 3 addEventListener fired — files: ' + e.target.files.length);
+});
+
+log('Page loaded — all listeners attached');
+</script>
+</body>
+</html>
